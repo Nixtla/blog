@@ -4,24 +4,40 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Forecasting with Machine Learning models | fastpages</title>
+<title>Forecasting with Machine Learning models | Nixtla</title>
 <meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Forecasting with Machine Learning models" />
 <meta name="author" content="José Morales" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="mlforecast makes forecasting with machine learning models easy." />
-<meta property="og:description" content="mlforecast makes forecasting with machine learning models easy." />
+<meta name="description" content="mlforecast makes forecasting with machine learning models easy" />
+<meta property="og:description" content="mlforecast makes forecasting with machine learning models easy" />
 <link rel="canonical" href="https://nixtla.github.io/blog/machine%20learning/forecasting/2021/06/10/Intro-mlforecast.html" />
 <meta property="og:url" content="https://nixtla.github.io/blog/machine%20learning/forecasting/2021/06/10/Intro-mlforecast.html" />
-<meta property="og:site_name" content="fastpages" />
+<meta property="og:site_name" content="Nixtla" />
 <meta property="og:image" content="https://nixtla.github.io/blog/images/nixtla_logo.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-06-10T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://nixtla.github.io/blog/machine%20learning/forecasting/2021/06/10/Intro-mlforecast.html","@type":"BlogPosting","headline":"Forecasting with Machine Learning models","dateModified":"2021-06-10T00:00:00-05:00","datePublished":"2021-06-10T00:00:00-05:00","image":"https://nixtla.github.io/blog/images/nixtla_logo.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://nixtla.github.io/blog/machine%20learning/forecasting/2021/06/10/Intro-mlforecast.html"},"author":{"@type":"Person","name":"José Morales"},"description":"mlforecast makes forecasting with machine learning models easy.","@context":"https://schema.org"}</script>
+{"url":"https://nixtla.github.io/blog/machine%20learning/forecasting/2021/06/10/Intro-mlforecast.html","@type":"BlogPosting","headline":"Forecasting with Machine Learning models","dateModified":"2021-06-10T00:00:00-05:00","datePublished":"2021-06-10T00:00:00-05:00","image":"https://nixtla.github.io/blog/images/nixtla_logo.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://nixtla.github.io/blog/machine%20learning/forecasting/2021/06/10/Intro-mlforecast.html"},"author":{"@type":"Person","name":"José Morales"},"description":"mlforecast makes forecasting with machine learning models easy","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://nixtla.github.io/blog/feed.xml" title="fastpages" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://nixtla.github.io/blog/feed.xml" title="Nixtla" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
 
 <script>
 function wrap_img(fn) {
@@ -55,7 +71,7 @@ window.onload = wrap_img;
 </head>
 <body><header class="site-header">
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">fastpages</a><nav class="site-nav">
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Nixtla</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
@@ -73,7 +89,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Forecasting with Machine Learning models</h1><p class="page-description">**mlforecast** makes forecasting with machine learning models easy.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-06-10T00:00:00-05:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Forecasting with Machine Learning models</h1><p class="page-description">mlforecast makes forecasting with machine learning models easy</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-06-10T00:00:00-05:00" itemprop="datePublished">
         Jun 10, 2021
       </time>• 
           <span itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -922,53 +938,11 @@ dtype: int64</pre>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>With these problems in mind I created <a href="https://github.com/Nixtla/mlforecast">mlforecast</a>, which is a framework to help you forecast time series using machine learning models. It takes care of all the details for you, you just need to give it a model and which features you want to use and let it do the rest.</p>
-<p><strong>mlforecast</strong> is available in <a href="https://pypi.org/project/mlforecast/">PyPI</a></p>
+<p><strong>mlforecast</strong> is available in <a href="https://pypi.org/project/mlforecast/">PyPI</a> (<code>pip install mlforecast</code>) as well as <a href="https://anaconda.org/conda-forge/mlforecast">conda-forge</a> (<code>conda install -c conda-forge mlforecast</code>)</p>
 
 </div>
 </div>
 </div>
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    
-
-<div class="cell border-box-sizing text_cell rendered">
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>As well as <a href="https://anaconda.org/conda-forge/mlforecast">conda-forge</a></p>
-
-</div>
-</div>
-</div>
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -2476,11 +2450,11 @@ Mean MSE: 0.67
         </p>
       </div>
       <div class="footer-col">
-        <p>An easy to use blogging platform with support for Jupyter Notebooks.</p>
+        <p>Open source time series forecasting</p>
       </div>
     </div>
 
-    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" title="fastai"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/Nixtla" title="Nixtla"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
 </div>
 
   </div>
