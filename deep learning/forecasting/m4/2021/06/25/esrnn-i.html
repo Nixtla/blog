@@ -7,16 +7,18 @@
 <title>Replicating ESRNN results with nixtlats (I): M4 Yearly dataset | Nixtla</title>
 <meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Replicating ESRNN results with nixtlats (I): M4 Yearly dataset" />
+<meta name="author" content="Federico Garza" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="[nikstla] (noun, nahuatl) Period of time." />
 <meta property="og:description" content="[nikstla] (noun, nahuatl) Period of time." />
-<link rel="canonical" href="https://nixtla.github.io/blog/2021/06/25/esrnn-i.html" />
-<meta property="og:url" content="https://nixtla.github.io/blog/2021/06/25/esrnn-i.html" />
+<link rel="canonical" href="https://nixtla.github.io/blog/deep%20learning/forecasting/m4/2021/06/25/esrnn-i.html" />
+<meta property="og:url" content="https://nixtla.github.io/blog/deep%20learning/forecasting/m4/2021/06/25/esrnn-i.html" />
 <meta property="og:site_name" content="Nixtla" />
+<meta property="og:image" content="https://nixtla.github.io/blog/images/nixtla_logo.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-06-25T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://nixtla.github.io/blog/2021/06/25/esrnn-i.html","@type":"BlogPosting","headline":"Replicating ESRNN results with nixtlats (I): M4 Yearly dataset","dateModified":"2021-06-25T00:00:00-05:00","datePublished":"2021-06-25T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://nixtla.github.io/blog/2021/06/25/esrnn-i.html"},"description":"[nikstla] (noun, nahuatl) Period of time.","@context":"https://schema.org"}</script>
+{"url":"https://nixtla.github.io/blog/deep%20learning/forecasting/m4/2021/06/25/esrnn-i.html","@type":"BlogPosting","headline":"Replicating ESRNN results with nixtlats (I): M4 Yearly dataset","dateModified":"2021-06-25T00:00:00-05:00","datePublished":"2021-06-25T00:00:00-05:00","image":"https://nixtla.github.io/blog/images/nixtla_logo.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://nixtla.github.io/blog/deep%20learning/forecasting/m4/2021/06/25/esrnn-i.html"},"author":{"@type":"Person","name":"Federico Garza"},"description":"[nikstla] (noun, nahuatl) Period of time.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://nixtla.github.io/blog/feed.xml" title="Nixtla" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
@@ -87,9 +89,11 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Replicating ESRNN results with `nixtlats` (I): M4 Yearly dataset</h1><p class="page-description">[nikstla] (noun, nahuatl) Period of time.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-06-25T00:00:00-05:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Replicating ESRNN results with nixtlats (I): M4 Yearly dataset</h1><p class="page-description">[nikstla] (noun, nahuatl) Period of time.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-06-25T00:00:00-05:00" itemprop="datePublished">
         Jun 25, 2021
-      </time>
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Federico Garza</span></span>
        • <span class="read-time" title="Estimated read time">
     
     
@@ -98,25 +102,33 @@ window.onload = wrap_img;
 </span></p>
 
     
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#deep learning">deep learning</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#forecasting">forecasting</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#M4">M4</a>
+        
+      
+      </p>
+    
 
     
       
         <div class="pb-5 d-flex flex-wrap flex-justify-end">
           <div class="px-2">
 
-    <a href="https://github.com/Nixtla/blog/tree/master/_notebooks/2021-06-25-esrnn-i.ipynb" role="button" target="_blank">
+    <a href="https://github.com/Nixtla/blog/tree/main/_notebooks/2021-06-25-esrnn-i.ipynb" role="button" target="_blank">
 <img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
     </a>
 </div>
 
+          
           <div class="px-2">
-    <a href="https://mybinder.org/v2/gh/Nixtla/blog/master?filepath=_notebooks%2F2021-06-25-esrnn-i.ipynb" target="_blank">
-        <img class="notebook-badge-image" src="/blog/assets/badges/binder.svg" alt="Open In Binder"/>
-    </a>
-</div>
-
-          <div class="px-2">
-    <a href="https://colab.research.google.com/github/Nixtla/blog/blob/master/_notebooks/2021-06-25-esrnn-i.ipynb" target="_blank">
+    <a href="https://colab.research.google.com/github/Nixtla/blog/blob/main/_notebooks/2021-06-25-esrnn-i.ipynb" target="_blank">
         <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
     </a>
 </div>
@@ -124,7 +136,22 @@ window.onload = wrap_img;
       </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <!--
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Introduction">Introduction </a></li>
+<li class="toc-entry toc-h2"><a href="#Install-nixtlats">Install nixtlats </a></li>
+<li class="toc-entry toc-h2"><a href="#GPU-usage">GPU usage </a></li>
+<li class="toc-entry toc-h2"><a href="#Import-libraries">Import libraries </a></li>
+<li class="toc-entry toc-h2"><a href="#Import-M4-Yearly-data">Import M4 Yearly data </a></li>
+<li class="toc-entry toc-h2"><a href="#Define-Time-Series-Datasets">Define Time Series Datasets </a></li>
+<li class="toc-entry toc-h2"><a href="#Define-Time-Series-Loaders">Define Time Series Loaders </a></li>
+<li class="toc-entry toc-h2"><a href="#Define-ESRNN-model">Define ESRNN model </a></li>
+<li class="toc-entry toc-h2"><a href="#Train-model">Train model </a></li>
+<li class="toc-entry toc-h2"><a href="#Make-forecasts">Make forecasts </a></li>
+<li class="toc-entry toc-h2"><a href="#Evaluate-results">Evaluate results </a></li>
+<li class="toc-entry toc-h2"><a href="#Original-results">Original results </a></li>
+<li class="toc-entry toc-h2"><a href="#Conclusion">Conclusion </a></li>
+<li class="toc-entry toc-h2"><a href="#How-to-contribute">How to contribute </a></li>
+</ul><!--
 #################################################
 ### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
 #################################################
@@ -133,44 +160,36 @@ window.onload = wrap_img;
 
 <div class="container" id="notebook-container">
         
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li>toc: true</li>
-<li>branch: main</li>
-<li>badges: true</li>
-<li>hide_binder_badge: true</li>
-<li>comments: true</li>
-<li>author: Federico Garza</li>
-<li>categories: [deep learning, forecasting, M4]</li>
-<li>image: images/nixtla_logo.png</li>
-</ul>
-
+<h2 id="Introduction">
+<a class="anchor" href="#Introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction<a class="anchor-link" href="#Introduction"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post we introduce <code>nixtlats</code>: a library of state-of-the-art deep learning models for time series forecasting written in pytorch, focused on usability and replicability. In this first post we introduce the Exponential Smoothing with Recurrent Neural Networks (<a href="https://www.sciencedirect.com/science/article/abs/pii/S0169207019301153">ESRNN</a>) model, winner of the <a href="https://www.researchgate.net/publication/325901666_The_M4_Competition_Results_findings_conclusion_and_way_forward">M4 time series competition</a> and show that our implementation achieves similar performance to the original submission. Throughout the post we describe the pipeline for training the models using <code>nixtlats</code> and also a brief description of the datasets included in the library. This work is inspired by an <a href="https://medium.com/analytics-vidhya/forecasting-in-python-with-esrnn-model-75f7fae1d242">earlier implementation of ESRNN in pytorch</a>.</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Install-nixtlats">Install <code>nixtlats</code><a class="anchor-link" href="#Install-nixtlats"> </a></h2>
+<h2 id="Install-nixtlats">
+<a class="anchor" href="#Install-nixtlats" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install <code>nixtlats</code><a class="anchor-link" href="#Install-nixtlats"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The <code>nixtltats</code> library is available in <a href="https://pypi.org/project/nixtlats/">pip</a> so to install it just use:</p>
+<p>The <code>nixtlats</code> library is available in <a href="https://pypi.org/project/nixtlats/">pip</a> so to install it just use:</p>
 
 </div>
 </div>
@@ -192,22 +211,29 @@ window.onload = wrap_img;
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="GPU-usage">GPU usage<a class="anchor-link" href="#GPU-usage"> </a></h2>
+<h2 id="GPU-usage">
+<a class="anchor" href="#GPU-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>GPU usage<a class="anchor-link" href="#GPU-usage"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To use GPU in colab: <code>Edit &gt; Notebook settings or Runtime&gt;Change runtime type and select GPU as Hardware accelerator</code>.</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Import-libraries">Import libraries<a class="anchor-link" href="#Import-libraries"> </a></h2>
+<h2 id="Import-libraries">
+<a class="anchor" href="#Import-libraries" aria-hidden="true"><span class="octicon octicon-link"></span></a>Import libraries<a class="anchor-link" href="#Import-libraries"> </a>
+</h2>
 </div>
 </div>
 </div>
@@ -279,13 +305,17 @@ window.onload = wrap_img;
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Import-M4-Yearly-data">Import M4 Yearly data<a class="anchor-link" href="#Import-M4-Yearly-data"> </a></h2>
+<h2 id="Import-M4-Yearly-data">
+<a class="anchor" href="#Import-M4-Yearly-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Import M4 Yearly data<a class="anchor-link" href="#Import-M4-Yearly-data"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The <code>nixtlats</code> library provides functions to download and manipulate M4 data. The <code>M4.load</code> method returns train and test sets. The library also provides a wide variety of datasets, <a href="https://nixtla.github.io/nixtlats">see the documentation</a>.</p>
 
@@ -299,8 +329,8 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">group</span> <span class="o">=</span> <span class="n">M4Info</span><span class="p">[</span><span class="s1">&#39;Yearly&#39;</span><span class="p">]</span>
-<span class="n">Y_df</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">S_df</span> <span class="o">=</span> <span class="n">M4</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">group</span> <span class="o">=</span> <span class="n">M4Info</span><span class="p">[</span><span class="s1">'Yearly'</span><span class="p">]</span>
+<span class="n">Y_df</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">S_df</span> <span class="o">=</span> <span class="n">M4</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">'data'</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -317,7 +347,7 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y_df_test</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;unique_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">horizon</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y_df_test</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'unique_id'</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">horizon</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -344,7 +374,8 @@ window.onload = wrap_img;
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To avoid leakage, set test values as zero.</p>
 
@@ -358,7 +389,7 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y_df_test</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y_df_test</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 </pre></div>
 
     </div>
@@ -368,7 +399,8 @@ window.onload = wrap_img;
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><code>nixtlats</code> requires a dummy test set to make forecasts.</p>
 
@@ -382,7 +414,7 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y_df_full</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">Y_df_train</span><span class="p">,</span> <span class="n">Y_df_test</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;unique_id&#39;</span><span class="p">,</span> <span class="s1">&#39;ds&#39;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y_df_full</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">Y_df_train</span><span class="p">,</span> <span class="n">Y_df_test</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">'unique_id'</span><span class="p">,</span> <span class="s1">'ds'</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -392,13 +424,17 @@ window.onload = wrap_img;
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Define-Time-Series-Datasets">Define Time Series Datasets<a class="anchor-link" href="#Define-Time-Series-Datasets"> </a></h2>
+<h2 id="Define-Time-Series-Datasets">
+<a class="anchor" href="#Define-Time-Series-Datasets" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Time Series Datasets<a class="anchor-link" href="#Define-Time-Series-Datasets"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The pipeline for model training follows the logic of deep learning practices. In the first instance a <code>Dataset</code> must be instantiated. The <code>TimeSeriesDataset</code> class allows to return the complete series in each iteration, this is useful for recurrent models such as ESRNN. To be instantiated, the class receives the target series <code>Y_df</code> as a pandas dataframe with columns <code>unique_id</code>, <code>ds</code> and <code>y</code>. Additionally, temporary exogenous variables <code>X_df</code> and static variables <code>S_df</code> can be included. In this case we only use static variables as in the original model.</p>
 
@@ -443,13 +479,17 @@ window.onload = wrap_img;
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Define-Time-Series-Loaders">Define Time Series Loaders<a class="anchor-link" href="#Define-Time-Series-Loaders"> </a></h2>
+<h2 id="Define-Time-Series-Loaders">
+<a class="anchor" href="#Define-Time-Series-Loaders" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Time Series Loaders<a class="anchor-link" href="#Define-Time-Series-Loaders"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Once the training and test <code>TimeSeriesDatasets</code> are defined, the loaders must be instantiated through <code>TimeSeriesLoader</code> which is a wrapper of the pytorch's <code>DataLoader</code>, so it can receive all the original arguments.</p>
 
@@ -495,13 +535,17 @@ window.onload = wrap_img;
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Define-ESRNN-model">Define ESRNN model<a class="anchor-link" href="#Define-ESRNN-model"> </a></h2>
+<h2 id="Define-ESRNN-model">
+<a class="anchor" href="#Define-ESRNN-model" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define ESRNN model<a class="anchor-link" href="#Define-ESRNN-model"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The instantiation of the model is carried out as follows. For an overview of all parameters <a href="https://github.com/Nixtla/nixtlats/blob/master/nixtlats/models/esrnn/esrnn.py#L464">see the documentation</a>.</p>
 
@@ -529,12 +573,12 @@ window.onload = wrap_img;
               <span class="n">level_variability_penalty</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
               <span class="n">testing_percentile</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
               <span class="n">training_percentile</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-              <span class="n">cell_type</span><span class="o">=</span><span class="s1">&#39;GRU&#39;</span><span class="p">,</span>
+              <span class="n">cell_type</span><span class="o">=</span><span class="s1">'GRU'</span><span class="p">,</span>
               <span class="n">state_hsize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
               <span class="n">dilations</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]],</span>
               <span class="n">add_nl_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-              <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;SMYL&#39;</span><span class="p">,</span>
-              <span class="n">val_loss</span><span class="o">=</span><span class="s1">&#39;SMAPE&#39;</span><span class="p">,</span>
+              <span class="n">loss</span><span class="o">=</span><span class="s1">'SMYL'</span><span class="p">,</span>
+              <span class="n">val_loss</span><span class="o">=</span><span class="s1">'SMAPE'</span><span class="p">,</span>
               <span class="n">seasonality</span><span class="o">=</span><span class="p">[])</span>
 </pre></div>
 
@@ -545,13 +589,17 @@ window.onload = wrap_img;
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Train-model">Train model<a class="anchor-link" href="#Train-model"> </a></h2>
+<h2 id="Train-model">
+<a class="anchor" href="#Train-model" aria-hidden="true"><span class="octicon octicon-link"></span></a>Train model<a class="anchor-link" href="#Train-model"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The <code>nixtlats</code> library is designed to operate with <code>pytorch-lightning</code> so that all its functionalities can be used. Add <code>gpus = 1</code> for GPU training using colab.</p>
 
@@ -607,13 +655,17 @@ Global seed set to 117982
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Make-forecasts">Make forecasts<a class="anchor-link" href="#Make-forecasts"> </a></h2>
+<h2 id="Make-forecasts">
+<a class="anchor" href="#Make-forecasts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Make forecasts<a class="anchor-link" href="#Make-forecasts"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The ESRNN model returns for each test batch three elements: <code>y</code>, the test values <code>y_hat</code> and the mask <code>mask</code>.</p>
 
@@ -669,7 +721,8 @@ Global seed set to 117982
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The ESRNN model returns forecasts for all windows each <code>step_size</code>. We need the last window only.</p>
 
@@ -693,13 +746,17 @@ Global seed set to 117982
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Evaluate-results">Evaluate results<a class="anchor-link" href="#Evaluate-results"> </a></h2>
+<h2 id="Evaluate-results">
+<a class="anchor" href="#Evaluate-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Evaluate results<a class="anchor-link" href="#Evaluate-results"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>An M4 performance evaluator function is included within <code>nixtlats</code> to facilitate the reproduction of the results.</p>
 
@@ -713,7 +770,7 @@ Global seed set to 117982
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">M4Evaluation</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;Yearly&#39;</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">M4Evaluation</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="s1">'Yearly'</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -770,13 +827,17 @@ Global seed set to 117982
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Original-results">Original results<a class="anchor-link" href="#Original-results"> </a></h2>
+<h2 id="Original-results">
+<a class="anchor" href="#Original-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Original results<a class="anchor-link" href="#Original-results"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In addition, the results of the original submissions can be evaluated as follows.</p>
 
@@ -790,7 +851,7 @@ Global seed set to 117982
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">esrnn_url</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/Nixtla/m4-forecasts/raw/master/forecasts/submission-118.zip&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">esrnn_url</span> <span class="o">=</span> <span class="s1">'https://github.com/Nixtla/m4-forecasts/raw/master/forecasts/submission-118.zip'</span>
 </pre></div>
 
     </div>
@@ -807,7 +868,7 @@ Global seed set to 117982
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">M4Evaluation</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;Yearly&#39;</span><span class="p">,</span> <span class="n">esrnn_url</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">M4Evaluation</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="s1">'Yearly'</span><span class="p">,</span> <span class="n">esrnn_url</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -864,24 +925,53 @@ Global seed set to 117982
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion"> </a></h2>
+<h2 id="Conclusion">
+<a class="anchor" href="#Conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion<a class="anchor-link" href="#Conclusion"> </a>
+</h2>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this post we present <code>nixtlats</code>, a time series forecasting library using deep learning. As can be seen for the case of <code>Yearly</code> in <code>M4</code> the results are similar to those obtained by the original implementation. These results are encouraging because the ensembles of different models used by the original implementation were not considered.</p>
 
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="How-to-contribute">
+<a class="anchor" href="#How-to-contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to contribute<a class="anchor-link" href="#How-to-contribute"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The full code is publicly available at <a href="https://github.com/Nixtla/nixtlats">github</a>. To contribute you can fork this repository and make a PR with your improvements. You can also create issues if you have problems running the model.</p>
+
+</div>
+</div>
+</div>
 </div>
 
 
 
-  </div><a class="u-url" href="/blog/2021/06/25/esrnn-i.html" hidden></a>
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="Nixtla/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/deep%20learning/forecasting/m4/2021/06/25/esrnn-i.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
