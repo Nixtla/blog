@@ -97,7 +97,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      13 min read
+      14 min read
     
 </span></p>
 
@@ -151,13 +151,13 @@ window.onload = wrap_img;
 </li>
 <li class="toc-entry toc-h2"><a href="#mlforecast">mlforecast </a>
 <ul>
-<li class="toc-entry toc-h3"><a href="#Easier-experiments">Easier experiments </a></li>
+<li class="toc-entry toc-h3"><a href="#Experiments-made-easier">Experiments made easier </a></li>
 <li class="toc-entry toc-h3"><a href="#Backtesting">Backtesting </a></li>
 <li class="toc-entry toc-h3"><a href="#Lag-transformations">Lag transformations </a></li>
 <li class="toc-entry toc-h3"><a href="#Date-features">Date features </a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h2"><a href="#Summary">Summary </a></li>
+<li class="toc-entry toc-h2"><a href="#TL;DR">TL;DR </a></li>
 <li class="toc-entry toc-h2"><a href="#Next-steps">Next steps </a></li>
 </ul><!--
 #################################################
@@ -180,7 +180,7 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this post I'll talk about using machine learning models in forecasting tasks. I'll use an example to show what the main challanges are and then I'll introduce <a href="https://github.com/Nixtla/mlforecast">mlforecast</a>, a framework that facilitates using machine learning models in forecasting. <strong>mlforecast</strong> does the feature engineering and takes care of the updates for you, you only have to provide a regressor that follows the scikit-learn API (implements fit and predict) and specify the features that you want to use which can be lags, lag-based transformations and date features.</p>
+<p>We at Nixlta, are trying to make time series forecasting more accesible to everyone. In this post I'll talk about using machine learning models in forecasting tasks. I'll use an example to show what the main challanges are and then I'll introduce <a href="https://github.com/Nixtla/mlforecast">mlforecast</a>, a framework that facilitates using machine learning models in forecasting. <strong>mlforecast</strong> does feature engineering and takes care of the updates for you, the user only has to provide a regressor that follows the scikit-learn API (implements fit and predict) and specify the features that she wants to use. These features can be lags, lag-based transformations and date features. (For further feature creation or an automated forecasting pipeline check <a href="https://github.com/Nixtla/fasttsfeatures">fasttsfeatures</a> and <a href="https://github.com/Nixtla/autotimeseries">autotimeseries</a></p>
 
 </div>
 </div>
@@ -197,10 +197,11 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>For many years classical methods like ARIMA and ETS dominated the forecasting field. One of the reasons was that most of the use cases involved forecasting low frequency series like monthly, quarterly or yearly. Furthermore, there weren't many distinct time series to forecast, so fitting a single model to each one and getting forecasts from them was straightforward.</p>
-<p>In recent years, there has been a rise in the need to forecast more time series and with higher frequencies. This imposes a challenge because classical methods aren't mean to model several time series together, so using them is suboptimal because it takes more time (you have to train many models) and there could be some common patterns between the series that could be learned by modeling them together.</p>
-<p>In order to address this problem there have been various efforts in proposing different methods that can train a single model on many time series. Some very interesting deep learning architectures have been designed that can accurately forecast many time series like ESRNN, DeepAR, NBEATS among others.</p>
-<p>Traditional machine learning models like gradient boosted trees have been used as well and have shown that they can achieve very good performance as well. However, using these models with lag-based features isn't very straightforward because you have to update your features in every timestep in order to compute the predictions. Additionally, depending on your forecasting horizon and the lags that you use, at some point you run out of real values of your series to update your features, so you have to do something to fill those gaps. One possible approach is using your predictions as the values for the serie and update your features using them, which is what <strong>mlforecast</strong> does.</p>
+<p>For many years classical methods like ARIMA and ETS dominated the forecasting field. One of the reasons was that most of the use cases involved forecasting low-frequency series with monthly, quarterly or yearly granularity.  Furthermore, there weren't many time-series datasets, so fitting a single model to each one and getting forecasts from them was straightforward.</p>
+<p>However, in recent years, the need to forecast bigger datasets higher frequencies has risen. Bigger and higher frequency time series imposes a challenge for classical forecasting methods. Those methods aren't mean to model many time series together, and their implementation is suboptimal and slow (you have to train many models) and besides, there could be some common or shared patterns between the series that could be learned by modeling them together.</p>
+<p>To address this problem, there have been various efforts in proposing different methods that can train a single model on many time series. Some fascinating deep learning architectures have been designed that can accurately forecast many time series like ESRNN, DeepAR, NBEATS among others. (Check <a href="https://github.com/Nixtla/nixtlats">nixtlats</a> and <a href="https://nixtla.github.io/blog/deep%20learning/forecasting/m4/2021/06/25/esrnn-i.html">Replicating ESRNN results</a> for our WIP)</p>
+<p>Traditional machine learning models like gradient boosted trees have been used as well and have shown that they can achieve very good performance as well. However, using these models with lag-based features isn't very straightforward because you have to update your features in every timestep in order to compute the predictions. Additionally, depending on your forecasting horizon and the lags that you use, at some point you run out of real values of your series to update your features, so you have to do something to fill those gaps. 
+One possible approach is using your predictions as the values for the series and update your features using them. This is exactly what <strong>mlforecast</strong> does for you.</p>
 
 </div>
 </div>
@@ -217,7 +218,7 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In the following section I'll show a very simple example with a single serie to highlight the difficulties in using machine learning models in forecasting tasks.</p>
+<p>In the following section I'll show a very simple example with a single series to highlight the difficulties in using machine learning models in forecasting tasks. This will later motivate te use of <em>mlforecast</em>, a library that makes the whole process easier and faster.</p>
 
 </div>
 </div>
@@ -484,7 +485,7 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We'll train a linear regression without intercept. Since the best model would be taking the average for each day of the week, we expect to get coefficients that are close to 0.5.</p>
+<p>For simplicity sake, we'll train a linear regression without intercept. Since the best model would be taking the average for each day of the week, we expect to get coefficients that are close to 0.5.</p>
 
 </div>
 </div>
@@ -543,8 +544,8 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Great. So now that we have our trained model, how can we compute the forecasts for the next 14 days? Machine learning models a feature matrix <em>X</em> and output the predicted values <em>y</em>. So we need to create the feature matrix <em>X</em> for the next 14 days and give it to our model.</p>
-<p>If we want to get the <em>lag-7</em> for the next day following the training set we can just get the value in the 7th position starting from the end. The <em>lag-7</em> two days after the end of the training set would be the value in the 6th position starting from the end and so on. Similarly for the <em>lag-14</em>.</p>
+<p>Great. We have our trained model. How can we compute the forecast for the next 14 days? Machine learning models a feature matrix <em>X</em> and output the predicted values <em>y</em>. So we need to create the feature matrix <em>X</em> for the next 14 days and give it to our model.</p>
+<p>If we want to get the <em>lag-7</em> for the next day, following the training set, we can just get the value in the 7th position starting from the end. The <em>lag-7</em> two days after the end of the training set would be the value in the 6th position starting from the end and so on. Similarly for the <em>lag-14</em>.</p>
 
 </div>
 </div>
@@ -918,7 +919,7 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>And now we have our forecasts for the next 14 days! This wasn't that painful but it wasn't pretty either. And we just used lags which are the easiest feature we can have because you just have to shift your data.</p>
+<p>And now we have our forecasts for the next 14 days! This wasn't that painful but it wasn't pretty or easy either. And we just used lags which are the easiest feature we can have.</p>
 <p>What if we had used <em>lag-1</em>? We would have needed to do this predict-update step 14 times!</p>
 <p>And what if we had more elaborate features like the rolling mean over some lag?  As you can imagine it can get quite messy and is very error prone.</p>
 
@@ -937,7 +938,7 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>With these problems in mind I created <a href="https://github.com/Nixtla/mlforecast">mlforecast</a>, which is a framework to help you forecast time series using machine learning models. It takes care of all the details for you, you just need to give it a model and which features you want to use and let it do the rest.</p>
+<p>With these problems in mind we created <a href="https://github.com/Nixtla/mlforecast">mlforecast</a>, which is a framework to help you forecast time series using machine learning models. It takes care of all these messy details for you. You just need to give it a model and define which features you want to use and let <em>mlforecast</em> do the rest.</p>
 <p><strong>mlforecast</strong> is available in <a href="https://pypi.org/project/mlforecast/">PyPI</a> (<code>pip install mlforecast</code>) as well as <a href="https://anaconda.org/conda-forge/mlforecast">conda-forge</a> (<code>conda install -c conda-forge mlforecast</code>)</p>
 
 </div>
@@ -946,7 +947,7 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The problem in the example can be solved using <strong>mlforecast</strong> with the following lines.</p>
+<p>The previously described problem can be solved using <strong>mlforecast</strong> with the following code.</p>
 <p>First we have to set up our data in the required format.</p>
 
 </div>
@@ -1326,7 +1327,7 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Internally this did the same as we did before, which we can verify real quick.</p>
+<p>This was a lot easier and internally this did the same as we did before. Lets verify real quick.</p>
 <p>Check that we got the same predictions:</p>
 
 </div>
@@ -1377,8 +1378,8 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Easier-experiments">
-<a class="anchor" href="#Easier-experiments" aria-hidden="true"><span class="octicon octicon-link"></span></a>Easier experiments<a class="anchor-link" href="#Easier-experiments"> </a>
+<h3 id="Experiments-made-easier">
+<a class="anchor" href="#Experiments-made-easier" aria-hidden="true"><span class="octicon octicon-link"></span></a>Experiments made easier<a class="anchor-link" href="#Experiments-made-easier"> </a>
 </h3>
 </div>
 </div>
@@ -1386,7 +1387,7 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Having this high level abstraction allows us to focus on defining the best features and model instead of worrying about implementation details. For example, we can try out different lags very easily:</p>
+<p>Having this high level abstraction allows us to focus on defining the best features and model instead of worrying about implementation details. For example, we can try out different lags very easily by writing a simple function that leverages <em>mlforecast</em>:</p>
 
 </div>
 </div>
@@ -2385,8 +2386,8 @@ Mean MSE: 0.67
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Summary">
-<a class="anchor" href="#Summary" aria-hidden="true"><span class="octicon octicon-link"></span></a>Summary<a class="anchor-link" href="#Summary"> </a>
+<h2 id="TL;DR">
+<a class="anchor" href="#TL;DR" aria-hidden="true"><span class="octicon octicon-link"></span></a>TL;DR<a class="anchor-link" href="#TL;DR"> </a>
 </h2>
 </div>
 </div>
@@ -2394,8 +2395,8 @@ Mean MSE: 0.67
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this post I presented <strong>mlforecast</strong>, a framework to use machine learning models in forecasting tasks. It allows you to focus on the model and features instead of implementation details. It has built-in backtesting to help you find the best performing model.</p>
-<p>Although this example contained only a single time serie it is able to handle thousands of them and is very efficient both time and memory wise.</p>
+<p>In this post we presented <strong>mlforecast</strong>, a framework that makes the use of machine learning models in forecasting tasks fast and easy. It allows you to focus on the model and features instead of implementation details. With <em>mlforecast</em> you can make experiemnts in an esasier way and it has a built-in backtesting functionality to help you find the best performing model.</p>
+<p>Although this example contained only a single time series it is able to handle thousands of them and is very efficient both time and memory wise.</p>
 
 </div>
 </div>
