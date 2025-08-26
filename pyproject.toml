@@ -1,0 +1,12 @@
+[project]
+name = "blog"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "ipykernel>=6.30.0",
+    "lightgbm>=4.6.0",
+    "matplotlib>=3.10.3",
+    "mlforecast>=1.0.2",
+]
