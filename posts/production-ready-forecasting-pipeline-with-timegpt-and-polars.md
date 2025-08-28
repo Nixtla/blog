@@ -8,7 +8,7 @@ tags:
   - zero-shot forecasting
   - DataFrame libraries
   - scalable forecasting
-image: "/images/production-ready-forecasting-pipeline-with-timegpt-and-polars/featured_image.png
+image: "/images/production-ready-forecasting-pipeline-with-timegpt-and-polars/featured_image.png"
 author_name: Khuyen Tran
 author_image: "/images/authors/khuyen.jpeg"
 author_position: Developer Advocate - Nixtla
