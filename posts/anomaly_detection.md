@@ -14,7 +14,7 @@ author_position: Developer Advocate - Nixtla
 publication_date: 2025-08-26
 ---
 
-Imagine you're tracking daily website traffic. Some days show spikes in visits, but it's hard to tell which ones reflect real behavioral changes versus normal fluctuations. Manually spotting anomalies is time-consuming, unreliable, and impractical as your traffic data becomes more complex.
+Imagine that you're tracking daily website traffic. Some days show spikes in visits, but it's hard to tell which ones reflect real behavioral changes versus normal fluctuations. Manually spotting anomalies is time-consuming, unreliable, and impractical as your traffic data becomes more complex.
 
 ![](/images/anomaly_detection/daily_website_traffic.svg)
 
