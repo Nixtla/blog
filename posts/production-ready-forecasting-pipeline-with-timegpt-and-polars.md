@@ -66,7 +66,7 @@ print(train_pl.head())
 
 Output:
 
-```text
+```bash
 Dataset shape: (373372, 3)
 shape: (5, 3)
 ┌───────────┬─────┬───────┐
@@ -114,7 +114,7 @@ print(demo_long.head())
 
 Output:
 
-```text
+```bash
 shape: (5, 3)
 ┌───────────┬─────────────────────┬──────┐
 │ unique_id ┆ ds                  ┆ y    │
@@ -194,7 +194,7 @@ print(f"Pandas: {pandas_time:.4f}s | Polars: {polars_time:.4f}s | Speedup: {pand
 
 Output:
 
-```text
+```bash
 Pandas: 0.0087s | Polars: 0.0027s | Speedup: 3.2x
 ```
 
@@ -216,7 +216,7 @@ print(f"Memory savings: {((pandas_memory - polars_memory) / pandas_memory * 100)
 
 Output:
 
-```text
+```bash
 Pandas DataFrame: 37.3 MB
 Polars DataFrame: 7.0 MB
 Memory savings: 81.1%
@@ -258,7 +258,7 @@ print(forecast_df.head())
 
 Output:
 
-```text
+```bash
 Generated 240 forecasts for 10 series
 
 shape: (5, 3)
@@ -333,7 +333,7 @@ print(uncertainty_stats)
 
 Output:
 
-```text
+```bash
 Forecast Uncertainty Analysis:
 shape: (10, 4)
 ┌───────────┬─────────────────┬─────────────────┬─────────────────────┐
@@ -400,7 +400,7 @@ print(cv_results.head())
 
 Output:
 
-```text
+```bash
 ┌───────────┬─────────────────────┬─────────────────────┬──────┬───────────┐
 │ unique_id ┆ ds                  ┆ cutoff              ┆ y    ┆ TimeGPT   │
 │ ---       ┆ ---                 ┆ ---                 ┆ ---  ┆ ---       │
@@ -438,7 +438,7 @@ print(cv_performance)
 
 Output:
 
-```text
+```bash
 Cross-validation performance summary:
 shape: (10, 3)
 ┌───────────┬───────────┬────────────┐
