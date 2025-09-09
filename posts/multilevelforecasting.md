@@ -8,9 +8,9 @@ tags:
   - AutoARIMA
   - multi-horizon forecasting
   - polynomial regression
-author_name: Khuyen Tran
-author_image: "/images/authors/khuyen.jpeg"
-author_position: Developer Advocate - Nixtla
+author_name: Piero Paialunga
+author_image: "/images/authors/piero.jpg"
+author_position: Data Scientist - The Trade Desk
 publication_date: 2025-08-26
 ---
 
@@ -317,7 +317,7 @@ fcst_df = nixtla_client.forecast(
 
 And this is how it looks like:
 
-- **In blue**, we show the training data — the historical daily US Dollar to Euro conversion leading up to the forecast window.
+- **In blue**, we show the training data, which is the historical daily US Dollar to Euro conversion leading up to the forecast window.
 
 - **In lime**, we display the actual test data for the short-term future.
 

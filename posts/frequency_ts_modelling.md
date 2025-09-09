@@ -8,9 +8,9 @@ tags:
   - Fourier Transform
   - frequency analysis
   - signal decomposition
-author_name: Khuyen Tran
-author_image: "/images/authors/khuyen.jpeg"
-author_position: Developer Advocate - Nixtla
+author_name: Piero Paialunga
+author_image: "/images/authors/piero.jpg"
+author_position: Data Scientist - The Trade Desk
 publication_date: 2025-08-26
 ---
 
@@ -91,7 +91,7 @@ More precisely:
 
 - The index of the array (or the corresponding frequency from `np.fft.fftfreq`) tells you which frequency this component represents.
 
-- The magnitude (i.e., `np.abs(y_fft[k])`) represents the amplitude of that frequency in the original signal — how strong that frequency is.
+- The magnitude (i.e., `np.abs(y_fft[k])`) represents the amplitude of that frequency in the original signal, which represents how strong that frequency is.
 
 - The angle (i.e., `np.angle(y_fft[k])`) represents the phase shift of that frequency.
 
