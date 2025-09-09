@@ -91,7 +91,7 @@ More precisely:
 
 - The index of the array (or the corresponding frequency from `np.fft.fftfreq`) tells you which frequency this component represents.
 
-- The magnitude (i.e., `np.abs(y_fft[k])`) represents the amplitude of that frequency in the original signal — how strong that frequency is.
+- The magnitude (i.e., `np.abs(y_fft[k])`) represents the amplitude of that frequency in the original signal, which represents how strong that frequency is.
 
 - The angle (i.e., `np.angle(y_fft[k])`) represents the phase shift of that frequency.
 

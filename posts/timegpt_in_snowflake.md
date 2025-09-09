@@ -16,7 +16,7 @@ publication_date: 2025-08-26
 
 Forecasting directly inside Snowflake is highly desirable: it keeps data in place, simplifies governance, and allows teams to use familiar SQL workflows. Business teams already use Snowflake for analytics, so adding forecasting into the same environment reduces friction and accelerates deployment.
 
-However, native Snowflake forecasting tools fall short. They are difficult to configure, slow to run, and frequently produce inaccurate results—especially at scale.
+However, native Snowflake forecasting tools fall short. They are difficult to configure, slow to run, and frequently produce inaccurate results, especially at scale.
 
 Nixtla offers a better approach. It brings state-of-the-art forecasting models to Snowflake, fully accessible through SQL with no infrastructure setup or external orchestration required.
 

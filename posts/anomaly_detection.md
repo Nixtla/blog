@@ -90,7 +90,7 @@ nixtla_client.plot(wikipedia)
 
 ![](/images/anomaly_detection/wikipedia_plot.svg)
 
-The time series spans several years and shows clear seasonal spikes—likely tied to NFL events—alongside irregular, sharp peaks. These mixed patterns make it hard to judge by eye which spikes are expected and which are truly unusual, making TimeGPT essential for accurate anomaly detection.
+The time series spans several years and shows clear seasonal spikes, likely tied to NFL events, alongside irregular, sharp peaks. These mixed patterns make it hard to judge by eye which spikes are expected and which are truly unusual, making TimeGPT essential for accurate anomaly detection.
 
 ## Detect Anomalies with TimeGPT
 
@@ -129,7 +129,7 @@ nixtla_client.plot(wikipedia, anomalies_df)
 
 The plot reveals several key insights:
 
-- While many anomalies occur during seasonal peaks, only a few are flagged with green dots—showing that TimeGPT can distinguish expected fluctuations from true outliers.
+- While many anomalies occur during seasonal peaks, only a few are flagged with green dots, showing that TimeGPT can distinguish expected fluctuations from true outliers.
 - The gray confidence band covers most of the variation, but the flagged points fall well outside this range, indicating significant deviations.
 
 ## Add Exogenous Features
@@ -162,7 +162,7 @@ nixtla_client.weights_x.plot.barh(
 In this plot:
 
 - Each bar represents how strongly a particular feature (like a specific year or month) influenced TimeGPT's modeling. **Higher bars** indicate more influential features.
-- In this dataset, **certain years and months stand out**—this makes sense given the strong seasonal and event-driven patterns in Peyton Manning's page traffic.
+- In this dataset, **certain years and months stand out**. This makes sense given the strong seasonal and event-driven patterns in Peyton Manning's page traffic.
 
 Let's compare the number of anomalies between with and without exogenous variables:
 
@@ -206,7 +206,7 @@ Number of anomalies with 70% confidence interval: 505
 
 Reducing the confidence interval from 99% to 70% narrows the range of expected values, making the model more sensitive to deviations and resulting in many more anomalies being flagged.
 
-This is useful when you want to flag **more subtle deviations** or prefer a higher sensitivity in anomaly detection—especially for use cases where catching borderline anomalies is more important than minimizing false positives.
+This is useful when you want to flag **more subtle deviations** or prefer a higher sensitivity in anomaly detection, especially for use cases where catching borderline anomalies is more important than minimizing false positives.
 
 ## Final Thoughts
 

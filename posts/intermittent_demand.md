@@ -93,7 +93,7 @@ The plot reveals the intermittent nature of the demand, with many periods showin
 
 ## Transforming the Data
 
-We apply a log transformation to the data to stabilize variance, reduce the influence of sharp peaks, and bring the distribution closer to normal—conditions that benefit many forecasting models. Because the log of zero is undefined, we add one to each sales value before applying the transformation.
+We apply a log transformation to the data to stabilize variance, reduce the influence of sharp peaks, and bring the distribution closer to normal, conditions that benefit many forecasting models. Because the log of zero is undefined, we add one to each sales value before applying the transformation.
 
 ```python
 log_transformed_data = sales_data.copy()
@@ -152,7 +152,7 @@ After log transformation, the extreme spikes are significantly reduced, and the 
 To evaluate model performance more realistically, we split the data into training and test sets. We hold out the last 28 observations for each time series as test data:
 
 ```python
-# Select the last 28 observations for each unique_id — used as test data
+# Select the last 28 observations for each unique_id, used as test data
 test_data = log_transformed_data.groupby("unique_id").tail(28)
 
 # Drop the test set indices from the original dataset to form the training set
@@ -278,7 +278,7 @@ The fine-tuned model achieves a lower MAE than the base model, indicating improv
 
 ## Incorporating Exogenous Variables
 
-To enhance the forecast, we include future [exogenous variables](https://www.nixtla.io/docs/capabilities-forecast-add_exogenous_variables) like calendar events that affect demand but aren't part of the target series. These features add helpful context—such as holidays or promotions—so the model can make more informed predictions.
+To enhance the forecast, we include future [exogenous variables](https://www.nixtla.io/docs/capabilities-forecast-add_exogenous_variables) like calendar events that affect demand but aren't part of the target series. These features add helpful context, such as holidays or promotions, so the model can make more informed predictions.
 
 We pull them from test_data to ensure they align with the forecast period and product IDs.
 
@@ -329,7 +329,7 @@ Output:
 0.48701362689497757
 ```
 
-Including event-type features reduced the MAE to 0.487—slightly better than the fine-tuned forecast (0.492) and clearly better than the base model (0.514), confirming their value in improving forecast precision.
+Including event-type features reduced the MAE to 0.487, which is slightly better than the fine-tuned forecast (0.492) and clearly better than the base model (0.514), confirming their value in improving forecast precision.
 
 ## MAE Comparison Table
 

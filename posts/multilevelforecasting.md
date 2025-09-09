@@ -317,7 +317,7 @@ fcst_df = nixtla_client.forecast(
 
 And this is how it looks like:
 
-- **In blue**, we show the training data — the historical daily US Dollar to Euro conversion leading up to the forecast window.
+- **In blue**, we show the training data, which is the historical daily US Dollar to Euro conversion leading up to the forecast window.
 
 - **In lime**, we display the actual test data for the short-term future.
 

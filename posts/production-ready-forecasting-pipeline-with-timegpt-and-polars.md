@@ -297,7 +297,7 @@ The plot shows 8 different time series (H314, H188, H355, H390, H406, H414, H277
 - **Historical data** appears in cyan lines showing various seasonal and trend patterns
 - **Forecasts** extend into the future (bright green lines) with different prediction patterns for each series
 - **Time series separation** displays each `unique_id` in its own subplot for easy comparison
-- **Prediction accuracy**: TimeGPT accurately captures each series' unique patterns—seasonality, steady trends, and declines
+- **Prediction accuracy**: TimeGPT accurately captures each series' unique patterns, which includes seasonality, steady trends, and declines
 
 ## Adding Confidence Intervals
 
@@ -469,6 +469,6 @@ The results show clear performance differences across series:
 
 Ready to scale your forecasting pipeline? Here are practical next steps:
 
-1. **Try the code examples** with your own data—start with 100 series and scale up
+1. **Try the code examples** with your own data, which starts with 100 series and scale up
 2. **Build production pipelines** using Polars for preprocessing and TimeGPT for forecasting
 3. **Monitor performance gains** by comparing your current pipeline against the Polars + TimeGPT combination
