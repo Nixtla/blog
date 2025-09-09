@@ -8,9 +8,9 @@ tags:
   - AutoARIMA
   - multi-horizon forecasting
   - polynomial regression
-author_name: Khuyen Tran
-author_image: "/images/authors/khuyen.jpeg"
-author_position: Developer Advocate - Nixtla
+author_name: Piero Paialunga
+author_image: "/images/authors/piero.jpeg"
+author_position: Data Scientist - The Trade Desk
 publication_date: 2025-08-26
 ---
 
