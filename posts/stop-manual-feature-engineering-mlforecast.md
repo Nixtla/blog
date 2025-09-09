@@ -89,7 +89,7 @@ print(f"Dataset shape: {sales_data.shape}")
 sales_data.head()
 ```
 
-```text
+```bash
 Dataset shape: (2046, 3)
 ```
 
@@ -117,7 +117,7 @@ print(f"Lags: {fcst.ts.lags}")
 print(f"Date features: {fcst.ts.date_features}")
 ```
 
-```text
+```bash
 Configured features:
 Lags: [1, 7, 14]
 Date features: ['dayofweek', 'month']
@@ -182,7 +182,7 @@ print(f"\nLag features for product_1 (first 5 rows):")
 print(product_sample[["ds", "y", "lag1", "lag7", "lag14"]].head(5))
 ```
 
-```text
+```bash
 Automatically created features:
 ['unique_id', 'ds', 'y', 'lag1', 'lag7', 'lag14', 'dayofweek', 'month']
 
@@ -243,7 +243,7 @@ print(
 )
 ```
 
-```text
+```bash
 Enhanced lag features:
 ['unique_id', 'ds', 'y', 'lag1', 'lag7', 'lag14', 'rolling_mean_lag1_window_size7', 'expanding_mean_lag7', 'dayofweek', 'month']
 
@@ -321,7 +321,7 @@ print(f"\nTransformed features for product_1:")
 sample_transformed[["ds", "y"]].head()
 ```
 
-```text
+```bash
 Features with transformations:
 ['unique_id', 'ds', 'y', 'dayofweek', 'month']
 
@@ -382,7 +382,7 @@ print("\nCV results sample:")
 print(cv_results.head(5))
 ```
 
-```text
+```bash
 Cross-validation results shape: (63, 5)
 
 CV results sample:
@@ -420,7 +420,7 @@ print(f"\nMAE by product and validation window:")
 print(cv_summary.head(5))
 ```
 
-```text
+```bash
 MAE by product and validation window:
    unique_id     cutoff        mae
 0  product_1 2024-11-10  17.970560
@@ -471,7 +471,7 @@ print(f"Test data: {test_data.shape}")
 final_fcst.fit(train_data)
 ```
 
-```text
+```bash
 Training data: (2010, 3)
 Test data: (93, 3)
 ```
@@ -486,7 +486,7 @@ print(f"\nForecast results:")
 print(forecasts.head(5))
 ```
 
-```text
+```bash
 Forecast results:
    unique_id         ds  LGBMRegressor
 0  product_1 2024-11-01     142.816836
@@ -541,7 +541,7 @@ print(f"\nTop 10 most important automatically created features:")
 print(importance_df.head(10))
 ```
 
-```text
+```bash
 Top 10 most important automatically created features:
                            feature  importance
 4   rolling_mean_lag1_window_size7         458
