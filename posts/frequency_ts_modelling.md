@@ -9,7 +9,7 @@ tags:
   - frequency analysis
   - signal decomposition
 author_name: Piero Paialunga
-author_image: "/images/authors/piero.jpeg"
+author_image: "/images/authors/piero.jpg"
 author_position: Data Scientist - The Trade Desk
 publication_date: 2025-08-26
 ---
