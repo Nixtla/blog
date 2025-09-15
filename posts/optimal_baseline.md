@@ -7,7 +7,7 @@ tags:
   ["anomaly detection", "optimal baseline subtraction", "OBS", "statsforecast"]
 author_name: Piero Paialunga
 author_image: "/images/authors/piero.jpg"
-author_position: Data Scientist - The Trade Desk
+author_position: Data Scientist
 publication_date: 2025-08-26
 ---
 
