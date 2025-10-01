@@ -122,11 +122,11 @@ def make_cloud_cost_daily(
     cost_per_request,
     base_traffic,
     weekday_weekend_ratio=0.92,   # weekend traffic lower
-    trend_growth=0.55,            # 25% growth across the period
+    trend_growth=0.55,            # 55% growth across the period
     noise_usd=2.0,              # additive noise
     random_walk_std=0.002,        # slow drift in traffic
     promo_days=None,
-    promo_lift=0.25,              # +15% traffic on promo days
+    promo_lift=0.25,              # +25% traffic on promo days
     seed=42,
 ):
     """
