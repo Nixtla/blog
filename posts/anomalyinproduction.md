@@ -199,7 +199,7 @@ We use Nixtla’s TimeGPT-1 to forecast tomorrow’s cloud cost and a 99% confid
 3. **When tomorrow arrives, we evaluate the expected and real cloud cost**. If the real cost is outside the range and the difference is not tiny, we call it an anomaly. If it’s inside the range or only a hair off, we don’t.
 4. **We show a simple chart: recent costs, TimeGPT’s range, and a red mark when something’s off.** In a real world scenario, the data and the plot will be provided to the monitoring team.
 
-We can make it stricter or looser by changing how wide the range is and what “not tiny” meansI (in general, it is good practice to define what we are willing to accept as "expected fluctuation" and what isn't). 
+We can make it stricter or looser by changing how wide the range is and what “not tiny” means. (In general, it is good practice to define what we are willing to accept as "expected fluctuation" and what isn't). 
 
 Here's a chart to display the anomaly detection process:
 
