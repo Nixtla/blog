@@ -207,7 +207,7 @@ Here's a chart to display the anomaly detection process:
 
 ## Nixtla Forecasting Algorithm
 
-Let's explore Nixtla's forecasting algorithm. In just a few lines, you can train TimeGPT-1 up to a given date, you can train Time GPT-1 until a given date. Then, you can predict the next day's cloud cost using the trained Time GPT-1. Finally, you can integrate the real value for the next day in the training, and repeat the process. 
+Let's explore Nixtla's forecasting algorithm. In just a few lines, you can train TimeGPT-1 up to a given date. Then, you can predict the next day's cloud cost using the trained TimeGPT-1. Finally, you can integrate the real value for the next day into the training, and repeat the process.
 
 To make things easier for you, I wrapped everything around a function named `plot_last_k_days_next_h_forecasts`. This function (and others) is included in the following GitHub Folder: [PieroPaialungaAI/AnomalyDetectionCloudCosts/](https://github.com/PieroPaialungaAI/AnomalyDetectionCloudCosts/tree/main)
 
