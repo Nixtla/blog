@@ -17,7 +17,7 @@ publication_date: 2025-08-26
 
 Monitoring the cost of the cloud operation is vital for every company. From a mathematical perspective, the cloud cost signal is a perfect example of a time series: the cost (dependent variable, y axis) is monitored against time (independent variable, x axis). 
 
-For the most part, this time series can be predicted with a certain level of accuracy. After all, we are the ones using the cloud, we know when we are going to launch products, and we are the one using a specific cloud provider (AWS, GC or whatnot). 
+For the most part, this time series can be predicted with a certain level of accuracy. After all, we are the ones using the cloud, we know when we are going to launch products, and we are the ones using a specific cloud provider (AWS, GC or whatnot). 
 
 Nonetheless, there are various sources of uncertainty in this process. Some of them are:
 
