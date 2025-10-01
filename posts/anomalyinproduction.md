@@ -190,7 +190,7 @@ A very important thing to notice is that, as stated above, this function does ha
 
 ## Anomaly Detection Algorithm using Nixtla
 
-The **anomaly detection algorithm** that we will be testing is the ```TimeGPT-1``` model, developed by the [Nixtla](https://www.nixtla.io/) team. The idea behind TimeGPT-1 is to use the **transformer** algorithm and conformal probabilities to get accurate predictions and uncertainty boundaries. You can read more about it in the original [paper](https://arxiv.org/abs/2310.03589), while another application of anomaly detection through TimeGPT-1 can be found in this [blogpost](https://www.nixtla.io/blog/anomaly-detection-in-time-series-with-timegpt-and-python).
+The **anomaly detection algorithm** that we will be testing is the ```TimeGPT-1``` model, developed by the [Nixtla](https://www.nixtla.io/) team. The idea behind TimeGPT-1 is to use the **transformer** algorithm and conformal probabilities to get accurate predictions and uncertainty boundaries. You can read more about it in the original [paper](https://arxiv.org/abs/2310.03589), while another application of anomaly detection through TimeGPT-1 can be found in this [blogpost](https://www.nixtla.io/blog/anomaly_detection).
 
 We use Nixtla’s TimeGPT-1 to forecast tomorrow’s cloud cost and a 99% confidence band from our daily history. This prediction will be used to assess anomalies day by day. More precisely, we will follow this pipeline:
 
@@ -245,7 +245,7 @@ This experiment leads us to two considerations:
 
 ## Monitoring algorithm 
 
-This algorithm is implemented using the function `simulate_and_plot_last_k_next_day_anomalies`.
+This algorithm is implemented using the function `simulate_and_plot_last_k_next_day_anomalies`, which uses TimeGPT's [`detect_anomalies_online`](https://www.nixtla.io/docs/anomaly_detection/real-time/introduction) method for real-time monitoring.
 
 This is how to run the monitoring algorithm:
 
