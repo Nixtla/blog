@@ -1,11 +1,19 @@
 ---
-title: Anomaly Detection for Cloud Cost Monitoring with Nixtla
-description: Learn how to build a synthetic cloud cost dataset and use Nixtla’s algorithms to detect spikes, drifts, and level shifts—helping teams monitor performance and prevent unexpected billing surprises. 
-image: /images/anomaly_detection_monitoring/blog/anomaly_detection_cloud_cost/main_image.svg
+title: "Anomaly Detection for Cloud Cost Monitoring with Nixtla"
+description: "Learn how to build a synthetic cloud cost dataset and use Nixtla's algorithms to detect spikes, drifts, and level shifts. This approach helps teams monitor performance and prevent unexpected billing surprises."
+image: "/images/anomaly_detection_monitoring/CloudCostTimeSeries.svg"
+categories: ["Anomaly Detection"]
+tags:
+  - TimeGPT
+  - anomaly detection
+  - cloud cost monitoring
+  - Python
+author_name: Piero Paialunga
+author_image: "/images/authors/piero.jpg"
+author_position: Data Scientist
+publication_date: 2025-08-26
 ---
 
-
-# Anomaly Detection for Cloud Cost Monitoring with Nixtla
 
 Monitoring the cost of the cloud operation is vital for every company. From a mathematical perspective, the cloud cost signal is a perfect example of a time series: the cost (dependent variable, y axis) is monitored against time (independent variable, x axis). 
 
@@ -51,15 +59,12 @@ For this reason, they serve as a good test case for our time series **anomalies*
 ![Anomaly Example](/images/anomaly_detection_monitoring/Traffic.svg)
 
 
-All these assumptions are modelled using the following block of code: 
+All these assumptions are modelled using code. Let's start by importing the necessary libraries and setting up utility functions:
 
 ```python
 import numpy as np
 import pandas as pd
 
-# -----------------------------
-# Utilities
-# -----------------------------
 def _rng(seed):
     return np.random.default_rng(None if seed is None else seed)
 
@@ -68,22 +73,60 @@ def _as_df_long(metric_id, ts, values, **extras):
     for k, v in extras.items():
         df[k] = v
     return df
+```
 
-# -----------------------------
-# Synthetic: CLOUD COST (DAILY)
-# -----------------------------
+Next, we'll create a function to generate the base traffic pattern. This incorporates the weekday/weekend behavior, linear growth trend, and random walk noise:
+
+```python
+def generate_traffic_pattern(idx, weekday_weekend_ratio, trend_growth, random_walk_std, base_traffic, rng):
+    """Generate base traffic pattern with weekday factor, trend, and random walk."""
+    n = len(idx)
+    weekday = idx.weekday
+    weekday_factor = np.where(weekday < 5, 1.0, weekday_weekend_ratio)
+    trend = np.linspace(1.0, 1.0 + trend_growth, n)
+    random_walk = np.cumsum(rng.normal(0, random_walk_std, n))
+    traffic = (base_traffic * weekday_factor * trend * (1 + random_walk)).clip(min=base_traffic * 0.4)
+    return traffic
+```
+
+To simulate business events like product launches or promotional campaigns, we apply traffic spikes on specific dates:
+
+```python
+def apply_promotions(traffic, idx, promo_days, promo_lift):
+    """Apply promotional lift to traffic and return promo flags."""
+    if promo_days is None:
+        promo_days = []
+    promo_days = pd.to_datetime(list(promo_days)) if promo_days else pd.to_datetime([])
+    promo_flag = np.isin(idx, promo_days).astype(int)
+    traffic = traffic * (1 + promo_lift * promo_flag)
+    return traffic, promo_flag
+```
+
+With the traffic pattern established, we can now calculate the final cloud cost by adding baseline infrastructure costs and random noise:
+
+```python
+def calculate_cost_from_traffic(traffic, baseline_infra_usd, cost_per_request, noise_usd, n, rng):
+    """Calculate final cost from traffic with baseline infrastructure cost and noise."""
+    noise = rng.normal(0, noise_usd, n)
+    cost = baseline_infra_usd + traffic * cost_per_request + noise
+    return cost
+```
+
+Now we bring everything together in the main function that orchestrates the entire simulation:
+
+```python
 def make_cloud_cost_daily(
-    start="2025-01-01",
-    end="2025-08-31",
-    baseline_infra_usd=2000.0,
-    cost_per_request=8e-4,
+    start,
+    end,
+    baseline_infra_usd,
+    cost_per_request,
+    base_traffic,
     weekday_weekend_ratio=0.92,   # weekend traffic lower
     trend_growth=0.55,            # 25% growth across the period
     noise_usd=2.0,              # additive noise
     random_walk_std=0.002,        # slow drift in traffic
-    promo_days=("2025-03-15", "2025-05-10", "2025-07-04"),
+    promo_days=None,
     promo_lift=0.25,              # +15% traffic on promo days
-    base_traffic=1_000_000,
     seed=42,
 ):
     """
@@ -94,21 +137,18 @@ def make_cloud_cost_daily(
     idx = pd.date_range(pd.Timestamp(start), pd.Timestamp(end), freq="D")
     n = len(idx)
 
-    # --- traffic drivers ---
-    weekday = idx.weekday
-    weekday_factor = np.where(weekday < 5, 1.0, weekday_weekend_ratio)
-    trend = np.linspace(1.0, 1.0 + trend_growth, n)
-    random_walk = np.cumsum(rng.normal(0, random_walk_std, n))
-    traffic = (base_traffic * weekday_factor * trend * (1 + random_walk)).clip(min=base_traffic * 0.4)
+    # Generate base traffic pattern
+    traffic = generate_traffic_pattern(
+        idx, weekday_weekend_ratio, trend_growth, random_walk_std, base_traffic, rng
+    )
 
-    # promos
-    promo_days = pd.to_datetime(list(promo_days)) if promo_days else pd.to_datetime([])
-    promo_flag = np.isin(idx, promo_days).astype(int)
-    traffic = traffic * (1 + promo_lift * promo_flag)
+    # Apply promotional events
+    traffic, promo_flag = apply_promotions(traffic, idx, promo_days, promo_lift)
 
-    # cost model
-    noise = rng.normal(0, noise_usd, n)
-    cost = baseline_infra_usd + traffic * cost_per_request + noise
+    # Calculate final cost
+    cost = calculate_cost_from_traffic(
+        traffic, baseline_infra_usd, cost_per_request, noise_usd, n, rng
+    )
 
     return _as_df_long(
         "cloud_cost_usd",
@@ -117,13 +157,21 @@ def make_cloud_cost_daily(
         traffic=traffic.astype(int),
         promo_flag = promo_flag
     )
-# ------------------------------------
-cloud_cost_df = make_cloud_cost_daily()
+```
 
-# Show schemas & counts (optional; remove if you want absolutely no stdout)
+Finally, let's generate the synthetic dataset and examine the first few rows:
+
+```python
+cloud_cost_df = make_cloud_cost_daily(
+    start="2025-01-01",
+    end="2025-08-31",
+    baseline_infra_usd=2000.0,
+    cost_per_request=8e-4,
+    base_traffic=1_000_000,
+    promo_days=("2025-03-15", "2025-05-10", "2025-07-04")
+)
 print(cloud_cost_df.head(3))
 print("Rows:", len(cloud_cost_df))
-print(cloud_cost_df.head(3).to_markdown())
 ```
 
 
@@ -155,7 +203,7 @@ We can make it stricter or looser by changing how wide the range is and what “
 
 Here's a chart to display the anomaly detection process:
 
-![Anomaly Example](/images/anomaly_detection_monitoring/Anomaly_workflow.svg)
+![Anomaly Example](/images/anomaly_detection_monitoring/anomaly_workflow.svg)
 
 ## Nixtla Forecasting Algorithm
 
