@@ -11,53 +11,50 @@ tags:
 author_name: Piero Paialunga
 author_image: "/images/authors/piero.jpg"
 author_position: Data Scientist
-publication_date: 2025-08-26
+publication_date: 2025-09-26
 ---
 
+Monitoring the cost of the cloud operation is vital for every company. From a mathematical perspective, the cloud cost signal is a perfect example of a time series: the cost (dependent variable, y axis) is monitored against time (independent variable, x axis).
 
-Monitoring the cost of the cloud operation is vital for every company. From a mathematical perspective, the cloud cost signal is a perfect example of a time series: the cost (dependent variable, y axis) is monitored against time (independent variable, x axis). 
-
-For the most part, this time series can be predicted with a certain level of accuracy. After all, we are the ones using the cloud, we know when we are going to launch products, and we are the ones using a specific cloud provider (AWS, GC or whatnot). 
+For the most part, this time series can be predicted with a certain level of accuracy. After all, we are the ones using the cloud, we know when we are going to launch products, and we are the ones using a specific cloud provider (AWS, GC or whatnot).
 
 Nonetheless, there are various sources of uncertainty in this process. Some of them are:
 
-* **Unexpected traffic spikes.** A sudden increase in users, seasonal demand, or an unplanned marketing campaign can cause workloads (and thus costs) to surge beyond forecasts.
-* **Infrastructure misconfigurations**. A forgotten autoscaling rule, an oversized instance, or a misapplied storage class can quietly add costs. 
-* **Human error**. Engineers launching experimental clusters, data scientists forgetting to shut down GPUs, or simply misusing reserved instances can all introduce anomalies.
+- **Unexpected traffic spikes.** A sudden increase in users, seasonal demand, or an unplanned marketing campaign can cause workloads (and thus costs) to surge beyond forecasts.
+- **Infrastructure misconfigurations**. A forgotten autoscaling rule, an oversized instance, or a misapplied storage class can quietly add costs.
+- **Human error**. Engineers launching experimental clusters, data scientists forgetting to shut down GPUs, or simply misusing reserved instances can all introduce anomalies.
 
-And beyond these, countless other random events can lead to irregular cost behavior. In the language of time series, we call such unexpected deviations **anomalies**. These anomalies often manifest as sudden spikes in the cost time series. In most organizations, a dedicated team or monitoring system is responsible for identifying these anomalies early and triggering alerts when they appear. 
+And beyond these, countless other random events can lead to irregular cost behavior. In the language of time series, we call such unexpected deviations **anomalies**. These anomalies often manifest as sudden spikes in the cost time series. In most organizations, a dedicated team or monitoring system is responsible for identifying these anomalies early and triggering alerts when they appear.
 
-To help the monitoring team identify the anomalies, it is good practice to build an anomaly detection algorithm. This blog post wants to highlight how Nixtla can be used to develop such an algorithm. Let's dive in! 
-
+To help the monitoring team identify the anomalies, it is good practice to build an anomaly detection algorithm. This blog post wants to highlight how Nixtla can be used to develop such an algorithm. Let's dive in!
 
 ## Cloud Cost Model
-So where does the cloud cost time series come from? 
+
+So where does the cloud cost time series come from?
 
 We can think of the cloud cost as coming mainly from three sources:
 
-1. **The baseline infrastructure cost**: which represents the cost for your cloud infrastructure. This is usually a fixed value. 
-2. **The traffic cost**: every time someone makes a request, it represents a cost on our side. This is not constant and depends on the number of request at that given time 
+1. **The baseline infrastructure cost**: which represents the cost for your cloud infrastructure. This is usually a fixed value.
+2. **The traffic cost**: every time someone makes a request, it represents a cost on our side. This is not constant and depends on the number of request at that given time
 3. **The noise/random fluctuations**: small variations introduced by billing granularity, background services, data pipeline delays, or even provider-specific pricing quirks. These are not tied to business activity directly, but they add randomness to the time series.
 
 These three sources of costs sum to the total cloud cost.
 
 ![Anomaly Example](/images/anomaly_detection_monitoring/Cost.svg)
 
-The traffic itself has been modeled using the following assumptions: 
+The traffic itself has been modeled using the following assumptions:
 
-1. There is a linear trend over time: we can expect our cost to grow with the company 
-2. The weekends are busier than the weekdays: we can expect people to spend more time on our apps when they are less busy. 
-3. The noise is modeled using a random walk. 
+1. There is a linear trend over time: we can expect our cost to grow with the company
+2. The weekends are busier than the weekdays: we can expect people to spend more time on our apps when they are less busy.
+3. The noise is modeled using a random walk.
 
-In the traffic, there are sorts of "spikes" that should also be part of the model. In general, a **release of a product** leads to an increase of the cloud traffic.  For example, when a new version of an LLM is productionized and released to the public, you can expect a large increase in the usage.  Even without the release of a new product, a sudden increase in the promotion of old products can create the same effect. 
+In the traffic, there are sorts of "spikes" that should also be part of the model. In general, a **release of a product** leads to an increase of the cloud traffic. For example, when a new version of an LLM is productionized and released to the public, you can expect a large increase in the usage. Even without the release of a new product, a sudden increase in the promotion of old products can create the same effect.
 
 Regardless of the specific reason, these spikes are injected by business choices, and we have a good level of control over them.
 
 For this reason, they serve as a good test case for our time series **anomalies**: we know exactly when they happen, and we can check if our monitoring algorithms work in detecting them.
 
-
 ![Anomaly Example](/images/anomaly_detection_monitoring/Traffic.svg)
-
 
 All these assumptions are modelled using code. Let's start by importing the necessary libraries and setting up utility functions:
 
@@ -174,23 +171,21 @@ print(cloud_cost_df.head(3))
 print("Rows:", len(cloud_cost_df))
 ```
 
+|     | metric_id      | timestamp           |   value | traffic | promo_flag |
+| --: | :------------- | :------------------ | ------: | ------: | ---------: |
+|   0 | cloud_cost_usd | 2025-01-01 00:00:00 | 2797.55 | 1000609 |          0 |
+|   1 | cloud_cost_usd | 2025-01-02 00:00:00 |  2804.9 | 1000798 |          0 |
+|   2 | cloud_cost_usd | 2025-01-03 00:00:00 | 2801.09 | 1004575 |          0 |
 
-|    | metric_id      | timestamp           |   value |   traffic |   promo_flag |
-|---:|:---------------|:--------------------|--------:|----------:|-------------:|
-|  0 | cloud_cost_usd | 2025-01-01 00:00:00 | 2797.55 |   1000609 |            0 |
-|  1 | cloud_cost_usd | 2025-01-02 00:00:00 | 2804.9  |   1000798 |            0 |
-|  2 | cloud_cost_usd | 2025-01-03 00:00:00 | 2801.09 |   1004575 |            0 |
-
-If we display the time series using the following block we get this output: 
+If we display the time series using the following block we get this output:
 
 ![Anomaly Example](/images/anomaly_detection_monitoring/CloudCostTimeSeries.svg)
 
-A very important thing to notice is that, as stated above, this function does have **spikes** and an anomaly detection algorithm would typically detect them. Even though these anomalies are injected and they are the results of our business decision, we expect our monitoring algorithm to **detect them**. 
-
+A very important thing to notice is that, as stated above, this function does have **spikes** and an anomaly detection algorithm would typically detect them. Even though these anomalies are injected and they are the results of our business decision, we expect our monitoring algorithm to **detect them**.
 
 ## Anomaly Detection Algorithm using Nixtla
 
-The **anomaly detection algorithm** that we will be testing is the ```TimeGPT-1``` model, developed by the [Nixtla](https://www.nixtla.io/) team. The idea behind TimeGPT-1 is to use the **transformer** algorithm and conformal probabilities to get accurate predictions and uncertainty boundaries. You can read more about it in the original [paper](https://arxiv.org/abs/2310.03589), while another application of anomaly detection through TimeGPT-1 can be found in this [blogpost](https://www.nixtla.io/blog/anomaly_detection).
+The **anomaly detection algorithm** that we will be testing is the `TimeGPT-1` model, developed by the [Nixtla](https://www.nixtla.io/) team. The idea behind TimeGPT-1 is to use the **transformer** algorithm and conformal probabilities to get accurate predictions and uncertainty boundaries. You can read more about it in the original [paper](https://arxiv.org/abs/2310.03589), while another application of anomaly detection through TimeGPT-1 can be found in this [blogpost](https://www.nixtla.io/blog/anomaly_detection).
 
 We use Nixtla’s TimeGPT-1 to forecast tomorrow’s cloud cost and a 99% confidence band from our daily history. This prediction will be used to assess anomalies day by day. More precisely, we will follow this pipeline:
 
@@ -199,7 +194,7 @@ We use Nixtla’s TimeGPT-1 to forecast tomorrow’s cloud cost and a 99% confid
 3. **When tomorrow arrives, we evaluate the expected and real cloud cost**. If the real cost is outside the range and the difference is not tiny, we call it an anomaly. If it’s inside the range or only a hair off, we don’t.
 4. **We show a simple chart: recent costs, TimeGPT’s range, and a red mark when something’s off.** In a real world scenario, the data and the plot will be provided to the monitoring team.
 
-We can make it stricter or looser by changing how wide the range is and what “not tiny” means. (In general, it is good practice to define what we are willing to accept as "expected fluctuation" and what isn't). 
+We can make it stricter or looser by changing how wide the range is and what “not tiny” means. (In general, it is good practice to define what we are willing to accept as "expected fluctuation" and what isn't).
 
 Here's a chart to display the anomaly detection process:
 
@@ -211,7 +206,7 @@ Let's explore Nixtla's forecasting algorithm. In just a few lines, you can train
 
 To make things easier for you, I wrapped everything around a function named `plot_last_k_days_next_h_forecasts`. This function (and others) is included in the following GitHub Folder: [PieroPaialungaAI/AnomalyDetectionCloudCosts/](https://github.com/PieroPaialungaAI/AnomalyDetectionCloudCosts/tree/main)
 
->Note: You would need Nixtla's API Key. Follow the instructions [here](https://www.nixtla.io/docs/setup/setting_up_your_api_key).
+> Note: You would need Nixtla's API Key. Follow the instructions [here](https://www.nixtla.io/docs/setup/setting_up_your_api_key).
 
 ```python
 from simulate_timegpt_anomaly import *
@@ -241,9 +236,9 @@ This experiment leads us to two considerations:
 
 1. **Time GPT-1 forecasting algorithm clearly does a very good and reliable job**. The sinusoidal behavior is obviously represented in the forecasting time series with great accuracy
 
-2. **The monitoring algorithm can be reliably used.** The strategy of integrating one day at a time is promising and fairly straightforward to code. 
+2. **The monitoring algorithm can be reliably used.** The strategy of integrating one day at a time is promising and fairly straightforward to code.
 
-## Monitoring algorithm 
+## Monitoring algorithm
 
 This algorithm is implemented using the function `simulate_and_plot_last_k_next_day_anomalies`, which uses TimeGPT's [`detect_anomalies_online`](https://www.nixtla.io/docs/anomaly_detection/real-time/introduction) method for real-time monitoring.
 
@@ -264,29 +259,29 @@ This is what it looks like:
 
 ![Monitoring Example](/images/anomaly_detection_monitoring/MonitoringAlgorithm.svg)
 
-1. **The top plot** shows the full history of cloud costs over the last 30 days.  
-   - The **blue-green line** is the observed daily spend.  
-   - The **yellow line with shaded band** is TimeGPT-1’s predicted mean and the ±99% confidence interval.  
-   - The **yellow dots** are the realized (next-day) costs, which let us compare actuals with the forecast.  
-   - **Red X marks** highlight anomalies — days where actual costs fell well outside the expected range.  
+1. **The top plot** shows the full history of cloud costs over the last 30 days.
 
-2. **The bottom plot** is a zoomed-in view of the top plot. 
+   - The **blue-green line** is the observed daily spend.
+   - The **yellow line with shaded band** is TimeGPT-1’s predicted mean and the ±99% confidence interval.
+   - The **yellow dots** are the realized (next-day) costs, which let us compare actuals with the forecast.
+   - **Red X marks** highlight anomalies — days where actual costs fell well outside the expected range.
 
-As we can see, the "**product spike**" we injected is perfectly recognized by the algorithm as an "anomaly". While this spike is expected, this is a great way to show that the algorithm does find the anomaly in our time series. 
+2. **The bottom plot** is a zoomed-in view of the top plot.
 
-The team would monitor the detected anomaly (which happened the **2025-07-04** in our made up example) and assess whether or not an action is required for our system. 
+As we can see, the "**product spike**" we injected is perfectly recognized by the algorithm as an "anomaly". While this spike is expected, this is a great way to show that the algorithm does find the anomaly in our time series.
+
+The team would monitor the detected anomaly (which happened the **2025-07-04** in our made up example) and assess whether or not an action is required for our system.
 
 ## Conclusion
 
 Let’s recap what we covered in this post:
 
-- **We built a synthetic cloud cost dataset** that mimics real-world dynamics: baseline infrastructure costs, traffic-driven costs, and random noise. We also modeled expected spikes from promotions or product launches.  
-
+- **We built a synthetic cloud cost dataset** that mimics real-world dynamics: baseline infrastructure costs, traffic-driven costs, and random noise. We also modeled expected spikes from promotions or product launches.
 
 - **We explicitly detect spikes (and drifts/level shifts) as anomalies by design.** Since we know exactly when promotions or product launches occur, we can verify that the model detects anomalies at those points.
 
-- **We demonstrated a monitoring pipeline.** By forecasting one day ahead, then integrating the actual cost back into the training loop, we built a realistic monitoring system that adapts day by day.  
+- **We demonstrated a monitoring pipeline.** By forecasting one day ahead, then integrating the actual cost back into the training loop, we built a realistic monitoring system that adapts day by day.
 
-- **We validated the approach.** TimeGPT-1 successfully captured the seasonal patterns, trends, and cost fluctuations, while reliably flagging injected anomalies such as product spikes.  
+- **We validated the approach.** TimeGPT-1 successfully captured the seasonal patterns, trends, and cost fluctuations, while reliably flagging injected anomalies such as product spikes.
 
 Overall, this workflow shows how synthetic data, combined with Nixtla’s forecasting models, can provide a robust foundation for **cloud cost anomaly detection**—helping teams monitor spend, catch surprises early, and keep budgets under control.
