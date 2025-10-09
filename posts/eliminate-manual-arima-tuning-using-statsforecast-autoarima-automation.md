@@ -112,7 +112,7 @@ def manual_arima_approach(data, max_p=2, max_q=2, max_d=2, max_P=1, max_Q=1):
     return best_params, best_aic
 ```
 
-```text
+```bash
 Manual ARIMA parameter selection for electronics category:
 Testing parameter combinations manually...
 ==================================================
@@ -158,7 +158,7 @@ print(f"AutoARIMA (statsforecast):   {fair_execution_time:.2f}s for 144 combinat
 print(f"Algorithm efficiency gain:   {manual_execution_time/fair_execution_time:.1f}x faster")
 ```
 
-```text
+```bash
 Manual approach (statsmodels): 7.02s for 144 combinations
 AutoARIMA (statsforecast):   0.36s for 144 combinations
 Algorithm efficiency gain:   19.5x faster
@@ -202,7 +202,7 @@ sf_comparison.fit(train_data)
 print("All models fitted for comparison")
 ```
 
-```text
+```bash
 Training period: 2020-01-01 00:00:00 to 2023-03-01 00:00:00
 Test period: 2023-04-01 00:00:00 to 2023-12-01 00:00:00
 All models fitted for comparison
@@ -217,7 +217,7 @@ print(f"Forecast shape: {forecasts.shape}")
 forecasts.head()
 ```
 
-```text
+```bash
 Forecast shape: (35, 5)
 ```
 
@@ -260,7 +260,7 @@ forecasts_with_intervals = sf_auto.predict(
 print(f"Forecast columns: {forecasts_with_intervals.columns.tolist()}")
 ```
 
-```text
+```bash
 Forecast columns: ['unique_id', 'ds', 'AutoARIMA', 'AutoARIMA-lo-95', 'AutoARIMA-lo-90', 'AutoARIMA-lo-80', 'AutoARIMA-lo-50', 'AutoARIMA-hi-50', 'AutoARIMA-hi-80', 'AutoARIMA-hi-90', 'AutoARIMA-hi-95']
 ```
 
@@ -336,7 +336,7 @@ print(f"Cross-validation results shape: {cv_results.shape}")
 cv_results.head()
 ```
 
-```text
+```bash
 Cross-validation results shape: (120, 5)
 ```
 
@@ -364,7 +364,7 @@ print("AutoARIMA Cross-Validation Performance (MAPE):")
 print(cv_performance.sort_values("MAPE"))
 ```
 
-```text
+```bash
 AutoARIMA Cross-Validation Performance (MAPE):
      unique_id       MAPE
 4       sports   9.252036
@@ -395,7 +395,7 @@ print(f"Training data: {len(train_data)} observations")
 print(f"Training period: {train_data['ds'].min()} to {train_data['ds'].max()}")
 ```
 
-```text
+```bash
 Training data: 205 observations
 Training period: 2020-01-01 00:00:00 to 2023-05-01 00:00:00
 ```
@@ -431,7 +431,7 @@ forecasts = sf_production.predict(
 print(f"Final forecasts shape: {forecasts.shape}")
 ```
 
-```text
+```bash
 Final forecasts shape: (60, 7)
 ```
 
@@ -450,7 +450,7 @@ validation_mape = calculate_mape(
 print(f"Validation MAPE: {validation_mape:.2f}%")
 ```
 
-```text
+```bash
 Validation MAPE: 22.42%
 ```
 

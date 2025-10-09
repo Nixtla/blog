@@ -66,7 +66,7 @@ print(train_pl.head())
 
 Output:
 
-```text
+```bash
 Dataset shape: (373372, 3)
 shape: (5, 3)
 ┌───────────┬─────┬───────┐
@@ -114,7 +114,7 @@ print(demo_long.head())
 
 Output:
 
-```text
+```bash
 shape: (5, 3)
 ┌───────────┬─────────────────────┬──────┐
 │ unique_id ┆ ds                  ┆ y    │
@@ -194,7 +194,7 @@ print(f"Pandas: {pandas_time:.4f}s | Polars: {polars_time:.4f}s | Speedup: {pand
 
 Output:
 
-```text
+```bash
 Pandas: 0.0087s | Polars: 0.0027s | Speedup: 3.2x
 ```
 
@@ -216,7 +216,7 @@ print(f"Memory savings: {((pandas_memory - polars_memory) / pandas_memory * 100)
 
 Output:
 
-```text
+```bash
 Pandas DataFrame: 37.3 MB
 Polars DataFrame: 7.0 MB
 Memory savings: 81.1%
@@ -258,7 +258,7 @@ print(forecast_df.head())
 
 Output:
 
-```text
+```bash
 Generated 240 forecasts for 10 series
 
 shape: (5, 3)
@@ -297,7 +297,7 @@ The plot shows 8 different time series (H314, H188, H355, H390, H406, H414, H277
 - **Historical data** appears in cyan lines showing various seasonal and trend patterns
 - **Forecasts** extend into the future (bright green lines) with different prediction patterns for each series
 - **Time series separation** displays each `unique_id` in its own subplot for easy comparison
-- **Prediction accuracy**: TimeGPT accurately captures each series' unique patterns—seasonality, steady trends, and declines
+- **Prediction accuracy**: TimeGPT accurately captures each series' unique patterns, which includes seasonality, steady trends, and declines
 
 ## Adding Confidence Intervals
 
@@ -333,7 +333,7 @@ print(uncertainty_stats)
 
 Output:
 
-```text
+```bash
 Forecast Uncertainty Analysis:
 shape: (10, 4)
 ┌───────────┬─────────────────┬─────────────────┬─────────────────────┐
@@ -400,7 +400,7 @@ print(cv_results.head())
 
 Output:
 
-```text
+```bash
 ┌───────────┬─────────────────────┬─────────────────────┬──────┬───────────┐
 │ unique_id ┆ ds                  ┆ cutoff              ┆ y    ┆ TimeGPT   │
 │ ---       ┆ ---                 ┆ ---                 ┆ ---  ┆ ---       │
@@ -438,7 +438,7 @@ print(cv_performance)
 
 Output:
 
-```text
+```bash
 Cross-validation performance summary:
 shape: (10, 3)
 ┌───────────┬───────────┬────────────┐
@@ -469,6 +469,6 @@ The results show clear performance differences across series:
 
 Ready to scale your forecasting pipeline? Here are practical next steps:
 
-1. **Try the code examples** with your own data—start with 100 series and scale up
+1. **Try the code examples** with your own data, which starts with 100 series and scale up
 2. **Build production pipelines** using Polars for preprocessing and TimeGPT for forecasting
 3. **Monitor performance gains** by comparing your current pipeline against the Polars + TimeGPT combination

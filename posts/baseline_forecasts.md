@@ -139,7 +139,7 @@ Now that we've explored several baseline models, which one should you use? The t
 
 ## Easy Baseline Forecasts using the `statsforecast` package
 
-This section guides you through how to implement baseline forecasts using the [StatsForecast](https://nixtlaverse.nixtla.io/statsforecast/index.html) package — a fast and scalable library for statistical time series forecasting.
+This section guides you through how to implement baseline forecasts using the [StatsForecast](https://nixtlaverse.nixtla.io/statsforecast/index.html) package, a fast and scalable library for statistical time series forecasting.
 
 Install the `statsforecast` if you don't have it installed.
 
