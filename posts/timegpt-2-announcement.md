@@ -26,7 +26,7 @@ We are introducing **three models**, each designed to meet specific operational 
 
 - `timegpt-2-mini` – ideal for fast inference on resource constrained environments.
 - `timegpt-2` – the best balance between compute cost and accuracy.
-- `timegpt-2-pro` – the flagship model offering maximum accuracy across all benchmarks.
+- `timegpt-2-pro` – the flagship model offering maximum accuracy. It surpasses TimeGPT 1.0 by more than 60% across short and long horizons and multiple frequencies.
 
 This modular approach allows organizations to choose the model that best fits their operational constraints, without sacrificing accuracy or ease of deployment.
 
