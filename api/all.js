@@ -112,5 +112,11 @@ export default function handler(req, res) {
       content,
     };
   });
+  // Sort posts by publication_date (most recent first)
+  posts.sort((a, b) => {
+    if (!a.publication_date) return 1;
+    if (!b.publication_date) return -1;
+    return new Date(b.publication_date) - new Date(a.publication_date);
+  });
   res.json(posts);
 }
