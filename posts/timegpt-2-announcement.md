@@ -1,12 +1,12 @@
 ---
 title: "TimeGPT 2: The Next Generation of Foundation Models for Time Series Forecasting"
-description: "Replace hours of custom feature engineering code with MLforecast's automated lag features, rolling statistics, and target transformations for faster, more reliable time series forecasting."
+description: "Announcing the private preview of TimeGPT-2 Mini, TimeGPT-2, and TimeGPT-2 Pro—enterprise-grade foundation models with up to 60% accuracy improvement, built for mission-critical time series forecasting."
 categories: ["Time Series Forecasting"]
 tags:
-  - MLforecast
-  - automated feature engineering
-  - lag features
-  - target transformations
+  - TimeGPT-2
+  - foundation models
+  - enterprise forecasting
+  - private preview
 image: "/images/automated-time-series-feature-engineering-with-mlforecast/automated-feature-engineering-rolling-expanding-comparison.svg"
 author_name: Khuyen Tran
 author_image: "/images/authors/khuyen.jpeg"
@@ -14,7 +14,9 @@ author_position: Developer Advocate - Nixtla
 publication_date: 2025-08-26
 ---
 
-At Nixtla, we're committed to pushing the boundaries of time series forecasting and making state-of-the-art algorithms accessible to everyone. With **TimeGPT-1**, we proved for the first time that pre-trained foundation models were possible for time series. Now, we're excited to introduce **TimeGPT-2**, a modular, production-ready model family that sets a new standard in accuracy and scalability.
+At Nixtla, we're committed to pushing the boundaries of time series forecasting and making state-of-the-art algorithms accessible to everyone. With **TimeGPT-1**, we proved for the first time that pre-trained foundation models were possible for time series.
+
+Today we're announcing the **private preview of TimeGPT-2 Mini, TimeGPT-2, and TimeGPT-2 Pro**. These are the latest versions of our enterprise-grade models, built to reliably solve **mission-critical time-series problems**. The TimeGPT-2 family is optimized for enterprise needs, prioritizing accuracy and stability with a **privacy-first approach** and full support for self-hosted and on-premises deployments.
 
 ## Modular and Purpose-Built
 
@@ -26,9 +28,21 @@ We are introducing **three models**, each designed to meet specific operational 
 
 - `timegpt-2-mini` – ideal for fast inference on resource constrained environments.
 - `timegpt-2` – the best balance between compute cost and accuracy.
-- `timegpt-2-pro` – the flagship model offering maximum accuracy. It surpasses TimeGPT 1.0 by more than 60% across short and long horizons and multiple frequencies.
+- `timegpt-2-pro` – the flagship model offering maximum accuracy across short and long horizons and multiple frequencies.
 
 This modular approach allows organizations to choose the model that best fits their operational constraints, without sacrificing accuracy or ease of deployment.
+
+## Proven Performance
+
+**TimeGPT-2 marks a new milestone in time-series modeling.** After extensive testing across diverse enterprise use cases, the TimeGPT-2 family demonstrates up to **60% accuracy improvement** compared to the previous generation.
+
+We've also conducted exhaustive benchmarking against public baselines, with TimeGPT-2 consistently ranking in the **top 3** on industry-standard benchmarks including:
+
+- **GiftEval** – evaluating forecasting quality across multiple domains
+- **FEV** – measuring forecast error variance
+- **VN1** – assessing prediction accuracy
+
+Reproducible results are available upon request. This level of performance is already delivering real value for Fortune 1000 companies across retail, logistics, finance, energy, and IoT sectors.
 
 ## Enterprise-Ready for Production
 
@@ -43,3 +57,5 @@ This combination of accuracy, flexibility, and operational readiness makes TimeG
 ## Get Early Access
 
 We're currently launching pilot programs with selected organizations. If you'd like to be among the first to leverage TimeGPT-2 in production, [join our waitlist](https://dashboard.nixtla.io/waitlist) to request early access.
+
+**This announcement is the first of three releases rolling out in the coming weeks. Stay tuned for more updates.**
