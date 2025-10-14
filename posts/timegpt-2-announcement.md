@@ -11,7 +11,7 @@ image: "/images/automated-time-series-feature-engineering-with-mlforecast/automa
 author_name: Khuyen Tran
 author_image: "/images/authors/khuyen.jpeg"
 author_position: Developer Advocate - Nixtla
-publication_date: 2025-08-26
+publication_date: 2025-10-14
 ---
 
 At Nixtla, we're committed to pushing the boundaries of time series forecasting and making state-of-the-art algorithms accessible to everyone. With **TimeGPT-1**, we proved for the first time that pre-trained foundation models were possible for time series.
@@ -56,6 +56,6 @@ This combination of accuracy, flexibility, and operational readiness makes TimeG
 
 ## Get Early Access
 
-We're currently launching pilot programs with selected organizations. If you'd like to be among the first to leverage TimeGPT-2 in production, [join our waitlist](https://dashboard.nixtla.io/waitlist) to request early access.
+We're currently launching pilot programs with selected organizations. If you'd like to be among the first to leverage TimeGPT-2 in production, [join our waitlist](https://www.nixtla.io/timegpt-2-waitlist) to request early access.
 
 **This announcement is the first of three releases rolling out in the coming weeks. Stay tuned for more updates.**
