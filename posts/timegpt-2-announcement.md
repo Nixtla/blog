@@ -30,14 +30,6 @@ We are introducing **three models**, each designed to meet specific operational 
 
 This modular approach allows organizations to choose the model that best fits their operational constraints, without sacrificing accuracy or ease of deployment.
 
-## Unmatched Accuracy
-
-TimeGPT-2 sets a new benchmark for performance, **outperforming both foundation and classical models**. Its accuracy holds consistently across domains, frequencies, and applications, demonstrated through real-world use cases, internal evaluations, and public benchmarks, including **GIFT-EVAL** and **FEV-Bench**.
-
-- `timegpt-2-pro` achieves #1 MASE in Gift Eval (0.7021) and 2nd place skill score in FEV (0.455). In Nixtla’s internal benchmarks, it surpasses TimeGPT 1.0 by more than 60% across short and long horizons and multiple frequencies.
-- `timegpt-2` delivers top performance with a MASE of 0.715 in Gift Eval and a skill score of 0.430 in FEV.
-- `timegpt-2-mini` provides lightning fast inference while maintaining competitive accuracy.
-
 ## Enterprise-Ready for Production
 
 TimeGPT-2 is designed to deploy seamlessly into production.
