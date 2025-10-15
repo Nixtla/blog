@@ -56,6 +56,7 @@ This combination of accuracy, flexibility, and operational readiness makes TimeG
 
 ## Get Early Access
 
-We're currently launching pilot programs with selected organizations. If you'd like to be among the first to leverage TimeGPT-2 in production, [join our waitlist](https://www.nixtla.io/timegpt-2-waitlist) to request early access.
+We're currently launching pilot programs with selected organizations. If you'd like to be among the first to leverage TimeGPT-2 in production, [join our waitlist](https://www.nixtla.io/timegpt-2-waitlist?utm_campaign=timegpt2_announcement&utm_source=nixtla.io/blog&utm_medium=referral
+) to request early access.
 
 **This announcement is the first of three releases rolling out in the coming weeks. Stay tuned for more updates.**
