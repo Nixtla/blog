@@ -1,7 +1,7 @@
 ---
 title: "Damage Detection in Engineering Structures Using Nixtla"
 description: "Learn how to detect cracks and structural damage using Nixtla's Anomaly Detection pipeline while accounting for temperature-induced variations in sensor data."
-image: "/images/title_image.svg"
+image: "/images/damage_detection/title_image.svg"
 categories: ["TimeGPT Anomalies"]
 tags:
   - TimeGPT
@@ -16,7 +16,7 @@ tags:
 author_name: Piero Paialunga
 author_image: "/images/authors/piero.jpg"
 author_position: Data Scientist
-publication_date: 2025-01-12
+publication_date: 2025-10-15
 ---
 
 
@@ -89,7 +89,7 @@ plt.show()
 ```
 
 
-![Chirplet Signal](/images/chirplet.svg)
+![Chirplet Signal](/images/damage_detection/chirplet.svg)
 
 ### Full Signal
 
@@ -152,7 +152,7 @@ plt.savefig('images/random_signal.svg')
 plt.show()
 ```
 
-![Random Signal](/images/random_signal.svg)
+![Random Signal](/images/damage_detection/random_signal.svg)
 
 ### Full Dataset (Temperature Dependency)
 
@@ -279,7 +279,7 @@ def plot_random_temperatures(timeseries_data, temperature_values, n_temps=6, see
     plt.show()
 ```
 
-![Random Signal with temperatures](/images/random_temperatures.svg)
+![Random Signal with temperatures](/images/damage_detection/random_temperatures.svg)
 
 Now the question to answer is the following:
 
@@ -402,7 +402,7 @@ plt.savefig('images/anomaly_detection.svg')
 plt.show()
 ```
 
-![Dependency Types](/images/anomaly_detection_input.svg)
+![Dependency Types](/images/damage_detection/anomaly_detection_input.svg)
 
 
 Now that we have injected the anomaly, let's see if we are going to be able to detect it.
@@ -497,7 +497,7 @@ plt.grid(True, alpha=0.3)
 plt.show()
 ```
 
-![Detected Anomalies](/images/anomaly_detection.svg)
+![Detected Anomalies](/images/damage_detection/anomaly_detection.svg)
 
 There we go: **anomaly detected**!
 
@@ -514,7 +514,7 @@ plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
 ```
-![Detected Anomalies Time Series](/images/anomaly_detection_ts.svg)
+![Detected Anomalies Time Series](/images/damage_detection/anomaly_detection_ts.svg)
 
 
 As we can see, that point doesn't look like an anomaly *per se* but it is clearly an anomaly when we consider the temperature perspective: well done!
