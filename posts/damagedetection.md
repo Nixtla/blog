@@ -314,7 +314,7 @@ for i, time_step in enumerate(time_steps_to_show):
 plt.tight_layout()
 plt.show()
 ```
-![Dependency Types](/images/dependency_types.svg)
+![Dependency Types](/images/damage_detection/dependency_types.svg)
 
 
 Now, if at temperature = 1 you see -0.06 at time step = 0, then it is obviously not an anomaly, because it follows the linear trend. However, if you see the same value at time step = 22, there is obviously a problem.
