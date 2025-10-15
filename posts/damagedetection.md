@@ -19,14 +19,11 @@ author_position: Data Scientist
 publication_date: 2025-01-12
 ---
 
-# Introduction
 
 Every bridge, building, and critical infrastructure around us is constantly under stress.
 Wind loads, temperature fluctuations, traffic vibrations, and material aging all take their toll over time. The question that keeps structural engineers awake at night is simple yet profound: *How do we know when a structure is starting to fail before it becomes dangerous?*
 
 This is where **Structural Health Monitoring (SHM)** comes in. SHM is a field that combines civil engineering, sensor technology, and data science to continuously monitor the integrity of structures. By installing networks of sensors (accelerometers, strain gauges, temperature sensors) on bridges, buildings, tunnels, and other critical infrastructure, engineers can collect time series data that captures the structure's "heartbeat."
-
-
 
 As one can easily imagine, people who work in SHM deal with *a lot* of time series. Here is why time series are so much used in this field:
 
@@ -47,7 +44,7 @@ Here's our roadmap:
 
 Let's get started.
 
-# 1. The Scenario: Virtual Experiment Setup
+## The Scenario: Virtual Experiment Setup
 
 Imagine an aircraft panel, a critical part of the fuselage that keeps passengers safe at 30,000 feet. Over time, tiny cracks can form from stress, vibration, or material fatigue. If left undetected, a small crack can grow into a catastrophic failure. **We need to catch these cracks early, before they become dangerous.**
 
@@ -61,9 +58,9 @@ Even worse, the relationship isn't always simple. Sometimes the signal amplitude
 
 **This is exactly what we'll simulate**: sensor data where the temperature dependency randomly shifts between linear, polynomial, and sinusoidal relationships, mimicking the complex reality of structural monitoring.
 
-# 2. Data Generation
+## Data Generation
 
-## 2.1 Chirplet Wave
+### Chirplet Wave
 
 To simulate realistic SHM data, we need signals that look like what actual sensors measure. In the real world, when waves propagate through a structure, they create complex patterns. They have localized bursts of energy that decay over time. The mathematical name for these "wave packages" is **chirplet**. This is the function we will use:
 
@@ -94,9 +91,9 @@ plt.show()
 
 ![Chirplet Signal](/images/chirplet.svg)
 
-## 2.2 Full Signal
+### Full Signal
 
-A single chirplet is just the building block. In reality, when you send a wave through a structure, it doesn't just travel in a straight line. It bounces off edges, scatters at damage sites, and takes multiple paths to reach the sensor. The result is a complex signal made up of many overlapping chirplets arriving at different times with different amplitudes. Without boring you with the details, the main components are: the primary burst (direct signal), echoes and reflections from structural features, and multiple path arrivals, each one contributing to the overall time series we observe. 
+A single chirplet is just the building block. In reality, when you send a wave through a structure, it doesn't just travel in a straight line. It bounces off edges, scatters at damage sites, and takes multiple paths to reach the sensor. The result is a complex signal made up of many overlapping chirplets arriving at different times with different amplitudes. Without boring you with the details, the main components are: the primary burst (direct signal), echoes and reflections from structural features, and multiple path arrivals, each one contributing to the overall time series we observe.
 
 This is the function that we will use to model a signal:
 
@@ -157,13 +154,13 @@ plt.show()
 
 ![Random Signal](/images/random_signal.svg)
 
-## 2.3 Full Dataset (Temperature Dependency)
+### Full Dataset (Temperature Dependency)
 
 The random signal we just generated is our starting point: it represents what a sensor might record at a single, fixed temperature. But in the real world, structures operate across a range of temperatures. An aircraft panel might see -20°C on the tarmac in winter and +40°C in summer. **We need to understand how our sensor signal changes across this entire temperature range.**
 
 Here's what we'll do: imagine an engineer taking measurements at different temperatures in a climate-controlled lab. They set the temperature to 0°C, send a wave pulse, and record the signal. Then they increase it to 5°C, repeat the measurement, then 10°C, and so on up to 40°C. For each temperature, they get a slightly different signal amplitude and shape.
 
-In our simulation, we'll do exactly this, but virtually. For every single time point in our 600-sample signal (that's 0.6 seconds of data at 1000 Hz), we'll create a mathematical relationship that describes how that particular moment's amplitude varies with temperature. 
+In our simulation, we'll do exactly this, but virtually. For every single time point in our 600-sample signal (that's 0.6 seconds of data at 1000 Hz), we'll create a mathematical relationship that describes how that particular moment's amplitude varies with temperature.
 
 There are three random options for the variation that we will simulate:
 
@@ -185,52 +182,52 @@ def chirplet(t, tau, fc, alpha1, alpha2=0.0, beta=1.0, phi=0.0):
     return beta * env * np.cos(phase)
 
 
-def generate_mixed_dependency_timeseries(n_temperatures=100, temperature_range=(0, 1), 
+def generate_mixed_dependency_timeseries(n_temperatures=100, temperature_range=(0, 1),
                                         fs=1000, T=0.6, seed=42, change_probability=0.1):
 
     rng = np.random.default_rng(seed)
-    
+
     # Generate time array
     t = np.arange(int(T * fs)) / fs
     k = len(t)  # number of time steps
-    
+
     # Generate temperature values
     temperature_values = np.linspace(temperature_range[0], temperature_range[1], n_temperatures)
-    
+
     # Initialize arrays
     timeseries_data = np.zeros((k, n_temperatures))
     dependency_types = np.zeros(k, dtype=int)  # 0=linear, 1=polynomial, 2=sinusoidal
     dependency_names = ['linear', 'polynomial', 'sinusoidal']
-    
+
     # Generate column names
     column_names = [f"temp_{temp:.3f}" for temp in temperature_values]
-    
+
     # Generate base signal for reference
     base_t, base_y, base_df = generate_random_signal()
-    
+
     # Start with random dependency type
     current_dependency = rng.choice([0, 1, 2])
     dependency_types[0] = current_dependency
-    
-    
+
+
     # For each time step, create a mathematical relationship across temperatures
     for time_idx in range(k):
         base_value = base_y[time_idx]
-        
+
         # Check if we should change dependency type
         if time_idx > 0 and rng.random() < change_probability:
             current_dependency = rng.choice([0, 1, 2])
             print(f"Time step {time_idx}: {dependency_names[current_dependency]}")
-        
+
         dependency_types[time_idx] = current_dependency
-        
+
         if current_dependency == 0:  # Linear
             # Linear dependency: signal = a * temp + b
             a = rng.uniform(-0.05, 0.05)  # Random slope between 0.01 and 0.05
             b = base_value  # intercept
             for temp_idx, temp in enumerate(temperature_values):
                 timeseries_data[time_idx, temp_idx] = a * temp + b
-                
+
         elif current_dependency == 1:  # Polynomial
             # Polynomial dependency: signal = a * temp^2 + b * temp + c
             # Random coefficients within reasonable ranges
@@ -239,7 +236,7 @@ def generate_mixed_dependency_timeseries(n_temperatures=100, temperature_range=(
             c = base_value  # constant
             for temp_idx, temp in enumerate(temperature_values):
                 timeseries_data[time_idx, temp_idx] = a * temp**2 + b * temp + c
-                
+
         elif current_dependency == 2:  # Sinusoidal
             # Sinusoidal dependency: signal = amplitude * sin(freq * temp + phase) + offset
             amplitude = rng.uniform(-0.1, 0.1)  # Random amplitude
@@ -248,13 +245,13 @@ def generate_mixed_dependency_timeseries(n_temperatures=100, temperature_range=(
             offset = base_value  # offset
             for temp_idx, temp in enumerate(temperature_values):
                 timeseries_data[time_idx, temp_idx] = amplitude * np.sin(freq * temp + phase) + offset
-    
+
     # Add small amount of noise for realism
     noise_std = 0.0002  # Small but noticeable noise
     for time_idx in range(k):
         noise = rng.normal(0, noise_std, n_temperatures)
         timeseries_data[time_idx, :] += noise
-    
+
     return t, timeseries_data, temperature_values, column_names, dependency_types
 ```
 
@@ -265,11 +262,11 @@ def plot_random_temperatures(timeseries_data, temperature_values, n_temps=6, see
     """Plot n random temperature time series."""
     np.random.seed(seed)
     temp_indices = np.random.choice(len(temperature_values), n_temps, replace=False)
-    
+
     fig, axes = plt.subplots(2, 3, figsize=(15, 10))
     axes = axes.flatten()
     colors = ['#02FEFA']*6
-    
+
     for i, temp_idx in enumerate(temp_indices):
         ax = axes[i]
         ax.plot(timeseries_data[:, temp_idx], color=colors[i], linewidth=2)
@@ -277,7 +274,7 @@ def plot_random_temperatures(timeseries_data, temperature_values, n_temps=6, see
         ax.set_xlabel('Time Steps', fontsize=15)
         ax.set_ylabel('Signal Value', fontsize=15)
         ax.grid(True, alpha=0.3)
-    
+
     plt.tight_layout()
     plt.show()
 ```
@@ -302,14 +299,14 @@ for i, time_step in enumerate(time_steps_to_show):
     dep_type = dependency_types[time_step]
     dep_name = dependency_names[dep_type]
     color = dep_colors[dep_name]
-    
-    ax.plot(temperature_values, timeseries_mixed[time_step, :], 'o-', 
+
+    ax.plot(temperature_values, timeseries_mixed[time_step, :], 'o-',
            markersize=2, color=color, alpha=0.8)
     ax.set_xlabel('Temperature', fontsize=12)
-    ax.tick_params(axis='x', labelsize=14)  
-    ax.tick_params(axis='y', labelsize=14)  
-    ax.set_xlabel('Temperature', fontsize=14)  
-    ax.set_ylabel('Time Series Value', fontsize=14)  
+    ax.tick_params(axis='x', labelsize=14)
+    ax.tick_params(axis='y', labelsize=14)
+    ax.set_xlabel('Temperature', fontsize=14)
+    ax.set_ylabel('Time Series Value', fontsize=14)
 
     ax.set_title(f'Time Step {time_step} ({dep_name})', fontsize=20)
     ax.grid(True, alpha=0.3)
@@ -320,19 +317,19 @@ plt.show()
 ![Dependency Types](/images/dependency_types.svg)
 
 
-Now, if at temperature = 1 you see -0.06 at time step = 0, then it is obviously not an anomaly, because it follows the linear trend. However, if you see the same value at time step = 22, there is obviously a problem. 
+Now, if at temperature = 1 you see -0.06 at time step = 0, then it is obviously not an anomaly, because it follows the linear trend. However, if you see the same value at time step = 22, there is obviously a problem.
 
 This approach is crucial because in real-world monitoring, we can't control the temperature. A crack might form when the aircraft is at 15°C, but we're trying to detect it using measurements taken at 25°C. Without understanding the temperature dependency, we'd have no way to distinguish "the signal changed because of temperature" from "the signal changed because of damage." Our synthetic dataset, with its known temperature relationships, gives us the perfect test set to develop and validate detection algorithms that can make this distinction reliably.
 
-Perfect, so let's see how these anomalies will look like. 
+Perfect, so let's see how these anomalies will look like.
 
-# 3. Anomaly Creation
+## Anomaly Creation
 
-Now comes the interesting part: **injecting damage into our synthetic data**. We have a clean dataset showing normal structural behavior across different temperatures. To test our detection algorithms, we need to add controlled "anomalies". 
+Now comes the interesting part: **injecting damage into our synthetic data**. We have a clean dataset showing normal structural behavior across different temperatures. To test our detection algorithms, we need to add controlled "anomalies".
 
 In reality, damage/anomalies can manifest in many ways: gradual signal drift over time, sudden level shifts, or complex pattern changes. However, one of the most common and detectable signatures is a **spike anomaly**, a sudden, localized jump in amplitude at a specific time and temperature. This mimics what happens when a crack causes an unexpected wave reflection or scattering event.
 
-For simplicity, we'll focus on spike anomalies in this tutorial. The concept is straightforward: we pick a specific time step (say, index 30 out of our 600 samples) and a specific temperature (say, 0.5), and we add a sudden amplitude increase at that exact point in our data matrix. This creates a clear, detectable deviation from the expected temperature-dependent pattern. 
+For simplicity, we'll focus on spike anomalies in this tutorial. The concept is straightforward: we pick a specific time step (say, index 30 out of our 600 samples) and a specific temperature (say, 0.5), and we add a sudden amplitude increase at that exact point in our data matrix. This creates a clear, detectable deviation from the expected temperature-dependent pattern.
 
 This is the function we will use:
 
@@ -340,7 +337,7 @@ This is the function we will use:
 
 def add_anomaly(timeseries_data, time_step, temperature_value, spike_magnitude=0.1, temperature_values=None):
     data = timeseries_data.copy()
-    
+
     if temperature_values is not None:
         # Find closest temperature index
         temp_idx = np.argmin(np.abs(temperature_values - temperature_value))
@@ -349,15 +346,15 @@ def add_anomaly(timeseries_data, time_step, temperature_value, spike_magnitude=0
         # Assume temperature_value is already an index
         temp_idx = int(temperature_value * len(timeseries_data[0]))
         actual_temp = temperature_value
-    
+
     # Add spike anomaly
     data[time_step, temp_idx] += spike_magnitude
-    
+
     print(f"Added spike anomaly:")
     print(f"  Time step: {time_step}")
     print(f"  Temperature: {actual_temp:.3f} (index {temp_idx})")
     print(f"  Spike magnitude: {spike_magnitude}")
-    
+
     return data
 
 ```
@@ -368,21 +365,21 @@ Let's see how this looks:
 
 ```python
 t_mixed, timeseries_mixed, temperature_values, column_names, dependency_types = generate_mixed_dependency_timeseries(
-    n_temperatures=100, 
-    temperature_range=(0, 1), 
+    n_temperatures=100,
+    temperature_range=(0, 1),
     fs=1000,
     T=0.6,
     seed=42,
     change_probability=0.1  # 10% chance of changing dependency type at each time step
 )
 ```
-2. Adding the anomaly: 
+2. Adding the anomaly:
 ```python
 # Example: Add anomaly at time step 30, temperature 0.5
 timeseries_with_anomaly = add_anomaly(
-    timeseries_mixed, 
-    time_step=30, 
-    temperature_value=0.5, 
+    timeseries_mixed,
+    time_step=30,
+    temperature_value=0.5,
     spike_magnitude=0.01,
     temperature_values=temperature_values
 )
@@ -408,11 +405,11 @@ plt.show()
 ![Dependency Types](/images/anomaly_detection_input.svg)
 
 
-Now that we have injected the anomaly, let's see if we are going to be able to detect it. 
+Now that we have injected the anomaly, let's see if we are going to be able to detect it.
 
-# 4. Anomaly Detection through Nixtla
+## Anomaly Detection through Nixtla
 
-### 4.1 Anomaly Detection Algorithm
+### Anomaly Detection Algorithm
 
 The detection approach leverages **Nixtla's StatsForecast** library with an **AutoETS (Exponential Smoothing State Space)** model. The core idea is elegant: instead of trying to manually define what "normal" looks like at each temperature, we let a probabilistic forecasting model learn the expected pattern from the data itself. The model analyzes the time series across temperatures, fits to the underlying trends and relationships, and produces **prediction intervals**, essentially confidence bands that represent where we expect normal values to fall.
 
@@ -424,9 +421,9 @@ Here's the process for a given time step:
 
 This approach automatically accounts for complex temperature dependencies, and only raises "alarms" when values truly deviate from expected behavior.
 
-### 4.2 Algorithm implementation
+### Algorithm implementation
 
-It might sound complicated, but the implementation is extremely simple. 
+It might sound complicated, but the implementation is extremely simple.
 
 ```python
 from statsforecast import StatsForecast
@@ -502,9 +499,9 @@ plt.show()
 
 ![Detected Anomalies](/images/anomaly_detection.svg)
 
-There we go: **anomaly detected**! 
+There we go: **anomaly detected**!
 
-From a time series perspective, we can see the following plot. 
+From a time series perspective, we can see the following plot.
 
 ```python
 temperature_idx = np.argmin(np.abs(temperature_values-0.5))
@@ -522,7 +519,7 @@ plt.show()
 
 As we can see, that point doesn't look like an anomaly *per se* but it is clearly an anomaly when we consider the temperature perspective: well done!
 
-# Conclusion
+## Conclusion
 
 Let's recap what we covered in this post:
 
@@ -536,6 +533,4 @@ Let's recap what we covered in this post:
 
 - **We validated the approach**. The algorithm successfully captured the complex temperature patterns across our dataset while reliably detecting the injected spike anomaly at time step 30, temperature 0.5, which is exactly where we placed it.
 
-Overall, this workflow shows how synthetic data, combined with Nixtla's forecasting models, provides a robust foundation for damage detection in engineering structures. 
-
-
+Overall, this workflow shows how synthetic data, combined with Nixtla's forecasting models, provides a robust foundation for damage detection in engineering structures.
