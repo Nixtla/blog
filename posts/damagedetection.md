@@ -401,7 +401,7 @@ plt.show()
 
 Now that we have injected the anomaly, let's see if we are going to be able to detect it. 
 
-# 4. Anomaly Detection through Nixtla
+# 4. Anomaly Detection through StatsForecast
 
 ### 4.1 Anomaly Detection Algorithm
 
