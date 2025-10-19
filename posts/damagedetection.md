@@ -421,42 +421,41 @@ It might sound complicated, but the implementation is extremely simple.
 
 ```python
 from statsforecast import StatsForecast
-from statsforecast.models import AutoETS   # simple, fast probabilistic model
-# You could use AutoARIMA/MSTL/etc. too.
+from statsforecast.models import AutoETS
 
 def detect_anomalies(
     timeseries_data: np.ndarray,
-    temperature_values: pd.DatetimeIndex, timegpt_level: float = 0.90
+    temperature_values: pd.DatetimeIndex, 
+    timegpt_level: float = 0.90
 ) -> pd.DataFrame:
     y = np.asarray(timeseries_data, dtype=float)
     n = len(y)
     if len(temperature_values) != n:
         raise ValueError("temperature_values length must match timeseries_data length.")
-
-    # Build long-format df expected by StatsForecast
+    
+    # 1. Build long-format df expected by StatsForecast
     start = pd.Timestamp("2024-01-01")
     ds = pd.date_range(start, periods=n, freq="D")
     df = pd.DataFrame({"unique_id": 0, "ds": ds, "y": y})
-
-    # Model & forecaster
-    # AutoETS provides probabilistic insample/fitted intervals easily.
-    levels = [int(round(timegpt_level * 100))]  # e.g., 90 -> 90% PI
+    
+    # 2. Initialize the model
+    levels = [int(round(timegpt_level * 100))]
     sf = StatsForecast(models=[AutoETS(season_length=1)], freq="D", n_jobs=-1)
-
-    # Fit & get forecasts with fitted=True so we can retrieve INSAMPLE intervals
+    
+    # 3. Fit & get forecasts with fitted=True
     _ = sf.forecast(df=df, h=1, level=levels, fitted=True)
-
-    # Retrieve insample fitted values & intervals
-    insample = sf.forecast_fitted_values()  # columns: unique_id, ds, y, <model>, <model>-lo-XX, <model>-hi-XX
+    
+    # 4. Retrieve insample fitted values & intervals
+    insample = sf.forecast_fitted_values()
     model_name = [c for c in insample.columns if c not in ("unique_id", "ds", "y") and "-lo-" not in c and "-hi-" not in c][0]
     lo_col = f"{model_name}-lo-{levels[0]}"
     hi_col = f"{model_name}-hi-{levels[0]}"
-
-    # Flag anomalies: outside the interval
+    
+    # 5. Flag anomalies: outside the interval
     is_anom = ~insample["y"].between(insample[lo_col], insample[hi_col])
     is_anom = is_anom.astype(int).to_numpy()
-
-    # Assemble output to match your structure
+    
+    # 6. Assemble output
     out = pd.DataFrame({
         "ds": insample["ds"].values,
         "y": insample["y"].values,
@@ -464,7 +463,6 @@ def detect_anomalies(
         "is_anomaly": is_anom,
         "temperature_values": temperature_values,
     })
-    # Optional: stash columns for plotting convenience
     out["_fitted_mean"] = insample[model_name].values
     out["_lo"] = insample[lo_col].values
     out["_hi"] = insample[hi_col].values
@@ -472,10 +470,21 @@ def detect_anomalies(
     out.attrs["level"] = levels[0]
     return out
 
-
-
-df_out = detect_anomalies( timeseries_data=timeseries_with_anomaly[time_step,:], temperature_values=temperature_values)
+df_out = detect_anomalies(
+    timeseries_data=timeseries_with_anomaly[time_step,:], 
+    temperature_values=temperature_values
+)
 ```
+
+Let's break down what this function does:
+
+**Step 1: Build the DataFrame**. StatsForecast expects data in a specific format with `unique_id`, `ds` (datetime), and `y` (values). We transform our numpy array into this format.
+
+**Step 2: Initialize the Model** We use `AutoETS`, a probabilistic model that provides prediction intervals. Any point outside the expected range will be flagged as unusual. Read more about the model [here](https://nixtlaverse.nixtla.io/statsforecast/src/core/models.html#autoets-2).
+
+**Step 3: Fit the Model**. We fit the model with `fitted=True` to retrieve in-sample prediction intervals, showing what the model considers "normal" for each historical point.
+
+**Step 4: Detect Anomalies**. Any data point falling outside the prediction interval is flagged as an anomaly, and we assemble the final output with all relevant information.
 
 And we can see from the following plot that we are able to retrieve the anomaly very well!
 
