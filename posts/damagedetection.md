@@ -22,7 +22,11 @@ publication_date: 2025-01-12
 # Introduction
 
 Every bridge, building, and critical infrastructure around us is constantly under stress.
-Wind loads, temperature fluctuations, traffic vibrations, and material aging all take their toll over time. The question that keeps structural engineers awake at night is simple yet profound: *How do we know when a structure is starting to fail before it becomes dangerous?*
+Wind loads, temperature fluctuations, traffic vibrations, and material aging all take their toll over time. 
+When disasters strike, such as a bridge collapsing, a massive sinkhole opening in a street, or a pipe bursting, it's rarely due to a single crack that appeared overnight. Instead, cracks and corrosion gradually worsen over time until the critical failure occurs. 
+For this reason, the question that keeps structural engineers awake at night is simple yet profound: *How do we know when a structure is starting to fail before it becomes dangerous?*
+
+
 
 This is where **Structural Health Monitoring (SHM)** comes in. SHM is a field that combines civil engineering, sensor technology, and data science to continuously monitor the integrity of structures. By installing networks of sensors (accelerometers, strain gauges, temperature sensors) on bridges, buildings, tunnels, and other critical infrastructure, engineers can collect time series data that captures the structure's "heartbeat."
 
