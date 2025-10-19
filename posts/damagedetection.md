@@ -44,17 +44,11 @@ Let's get started.
 
 # 1. The Scenario: Virtual Experiment Setup
 
-Imagine an aircraft panel, a critical part of the fuselage that keeps passengers safe at 30,000 feet. Over time, tiny cracks can form from stress, vibration, or material fatigue. If left undetected, a small crack can grow into a catastrophic failure. **We need to catch these cracks early, before they become dangerous.**
+Consider an aircraft panel with sensors that continuously monitor its structural integrity. More specifically, these sensors generate time series signals that reflect the panel's condition. When a crack forms, it disrupts the signal pattern and we should be able to classify that as an anomaly. The challenge? **Temperature also changes the signals.** Materials expand when warm and contract when cold, creating pattern shifts that can look like damage but aren't. This means that when we see a change in the time series it is not necessarily due to the damage appearing in the structure.
 
-In SHM, sensors send waves through the panel (imagine tapping a wall to check if it's hollow, but automated and happening thousands of times per second). In a healthy panel, these waves travel smoothly and create a predictable pattern when they bounce back. **But when a crack appears, it disrupts the wave pattern**: the waves scatter differently, arrive at different times, or have different amplitudes. It's like the structure's "signature" changes.
+In the following part, **we'll describe exactly this scenario**: we will simulate sensor data with varying temperature relationships, and we will show how to detect actual damage despite the temperature effect.
 
-Our sensors record this signature as time series data, continuously tracking how the structure responds. By analyzing this data, we can detect the moment a crack starts forming, often long before it's visible to the naked eye.
-
-Here's the problem: **temperature changes everything**. When it's cold (5°C), materials contract. When it's warm (25°C), they expand. This simple physical change affects our sensor readings: the waves travel at different speeds, have different amplitudes, and create different patterns. A signal that looks alarming at one temperature might be completely normal at another. Without accounting for temperature, we'd be constantly crying wolf.
-
-Even worse, the relationship isn't always simple. Sometimes the signal amplitude changes linearly with temperature (thermal expansion). Other times it's polynomial (material stiffness shifts). And occasionally it's sinusoidal (thermal cycles creating periodic effects). In real SHM systems, you might see all three patterns depending on the operating conditions.
-
-**This is exactly what we'll simulate**: sensor data where the temperature dependency randomly shifts between linear, polynomial, and sinusoidal relationships, mimicking the complex reality of structural monitoring.
+Let's get started!
 
 # 2. Data Generation
 
