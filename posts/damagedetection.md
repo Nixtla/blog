@@ -69,8 +69,11 @@ To simulate realistic SHM data, we need signals that look like what actual senso
 
 
 ```python
-def chirplet(t, f0, f1, t0, sigma):
-    return np.exp(-((t - t0) / sigma) ** 2) * np.cos(2 * np.pi * (f0 * (t - t0) + f1 * (t - t0) ** 2))
+def chirplet(t, tau, fc, alpha1, alpha2=0.0, beta=1.0, phi=0.0):
+    u = t - tau
+    env = np.exp(-alpha1 * u**2)
+    phase = 2*np.pi*(fc*u) + alpha2*u**2 + phi
+    return beta * env * np.cos(phase)
 ```
 
 And this is how it looks:
@@ -78,16 +81,15 @@ And this is how it looks:
 
 
 ```python
+# Generate simple chirplet
 t = np.linspace(0, 1, 1000)
-y = chirplet(t, f0=10, f1=5, t0=0.5, sigma=0.1)
-set_dark_mode()
+y = chirplet(t, tau=0.5, fc=10, alpha1=50)
 plt.figure(figsize=(10, 6))
 plt.plot(t, y, color='#98FE09', linewidth=2)
 plt.title('Chirplet Signal', fontsize=16)
 plt.xlabel('Time')
 plt.ylabel('Amplitude')
 plt.grid(True, alpha=0.3)
-plt.savefig('images/chirplet.svg')
 plt.show()
 ```
 
