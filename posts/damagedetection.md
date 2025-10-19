@@ -31,16 +31,7 @@ For this reason, the question that keeps structural engineers awake at night is 
 This is where **Structural Health Monitoring (SHM)** comes in. SHM is a field that combines civil engineering, sensor technology, and data science to continuously monitor the integrity of structures. By installing networks of sensors (accelerometers, strain gauges, temperature sensors) on bridges, buildings, tunnels, and other critical infrastructure, engineers can collect time series data that captures the structure's "heartbeat."
 
 
-
-As one can easily imagine, people who work in SHM deal with *a lot* of time series. Here is why time series are so much used in this field:
-
-**1. Continuous Monitoring**: Unlike periodic inspections (checking a bridge once a year), time series captures every moment. A crack usually develops gradually, showing subtle changes in patterns over days, weeks, or months.
-
-**2. Pattern Recognition**: Healthy structures have characteristic "signatures" in their sensor data. A bridge vibrates at certain frequencies when trucks pass over it. When damage like a crack appears, these patterns shift. Time series help us detect these shifts early.
-
-**3. Environmental Context**: Here's the tricky part: structures naturally change with temperature. Steel expands in heat, concrete stiffness varies with weather, and thermal effects create their own patterns in the data. Time series let us track both the structure AND the environment, so we can separate normal temperature effects from actual damage.
-
-**In this blog post, we'll tackle point 3: how to build a damage detection system that accounts for temperature-induced variations in sensor data.**
+As one can easily imagine, people who work in SHM deal with *a lot* of time series. In this blog post, we'll explore the core challenge of detecting when something is genuinely wrong with a structure versus when the sensors are just picking up normal environmental variations. In particular, we'll build a complete **damage detection pipeline** that can identify structural damage even when **temperature effects** are present in the data.
 
 Here's our roadmap:
 
