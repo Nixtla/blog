@@ -21,19 +21,16 @@ publication_date: 2025-10-15
 
 
 Every bridge, building, and critical infrastructure around us is constantly under stress.
-Wind loads, temperature fluctuations, traffic vibrations, and material aging all take their toll over time. The question that keeps structural engineers awake at night is simple yet profound: *How do we know when a structure is starting to fail before it becomes dangerous?*
+Wind loads, temperature fluctuations, traffic vibrations, and material aging all take their toll over time. 
+When disasters strike, such as a bridge collapsing, a massive sinkhole opening in a street, or a pipe bursting, it's rarely due to a single crack that appeared overnight. Instead, cracks and corrosion gradually worsen over time until the critical failure occurs. 
+For this reason, the question that keeps structural engineers awake at night is simple yet profound: *How do we know when a structure is starting to fail before it becomes dangerous?*
+
+
 
 This is where **Structural Health Monitoring (SHM)** comes in. SHM is a field that combines civil engineering, sensor technology, and data science to continuously monitor the integrity of structures. By installing networks of sensors (accelerometers, strain gauges, temperature sensors) on bridges, buildings, tunnels, and other critical infrastructure, engineers can collect time series data that captures the structure's "heartbeat."
 
-As one can easily imagine, people who work in SHM deal with *a lot* of time series. Here is why time series are so much used in this field:
 
-**1. Continuous Monitoring**: Unlike periodic inspections (checking a bridge once a year), time series captures every moment. A crack usually develops gradually, showing subtle changes in patterns over days, weeks, or months.
-
-**2. Pattern Recognition**: Healthy structures have characteristic "signatures" in their sensor data. A bridge vibrates at certain frequencies when trucks pass over it. When damage like a crack appears, these patterns shift. Time series help us detect these shifts early.
-
-**3. Environmental Context**: Here's the tricky part: structures naturally change with temperature. Steel expands in heat, concrete stiffness varies with weather, and thermal effects create their own patterns in the data. Time series let us track both the structure AND the environment, so we can separate normal temperature effects from actual damage.
-
-**In this blog post, we'll tackle point 3: how to build a damage detection system that accounts for temperature-induced variations in sensor data.**
+As one can easily imagine, people who work in SHM deal with *a lot* of time series. In this blog post, we'll explore the core challenge of detecting when something is genuinely wrong with a structure versus when the sensors are just picking up normal environmental variations. In particular, we'll build a complete **damage detection pipeline** that can identify structural damage even when **temperature effects** are present in the data.
 
 Here's our roadmap:
 
@@ -46,19 +43,13 @@ Let's get started.
 
 ## The Scenario: Virtual Experiment Setup
 
-Imagine an aircraft panel, a critical part of the fuselage that keeps passengers safe at 30,000 feet. Over time, tiny cracks can form from stress, vibration, or material fatigue. If left undetected, a small crack can grow into a catastrophic failure. **We need to catch these cracks early, before they become dangerous.**
+Consider an aircraft panel with sensors that continuously monitor its structural integrity. More specifically, these sensors generate time series signals that reflect the panel's condition. When a crack forms, it disrupts the signal pattern and we should be able to classify that as an anomaly. The challenge? **Temperature also changes the signals.** Materials expand when warm and contract when cold, creating pattern shifts that can look like damage but aren't. This means that when we see a change in the time series it is not necessarily due to the damage appearing in the structure.
 
-In SHM, sensors send waves through the panel (imagine tapping a wall to check if it's hollow, but automated and happening thousands of times per second). In a healthy panel, these waves travel smoothly and create a predictable pattern when they bounce back. **But when a crack appears, it disrupts the wave pattern**: the waves scatter differently, arrive at different times, or have different amplitudes. It's like the structure's "signature" changes.
+In the following part, **we'll describe exactly this scenario**: we will simulate sensor data with varying temperature relationships, and we will show how to detect actual damage despite the temperature effect.
 
-Our sensors record this signature as time series data, continuously tracking how the structure responds. By analyzing this data, we can detect the moment a crack starts forming, often long before it's visible to the naked eye.
+Let's get started!
 
-Here's the problem: **temperature changes everything**. When it's cold (5°C), materials contract. When it's warm (25°C), they expand. This simple physical change affects our sensor readings: the waves travel at different speeds, have different amplitudes, and create different patterns. A signal that looks alarming at one temperature might be completely normal at another. Without accounting for temperature, we'd be constantly crying wolf.
-
-Even worse, the relationship isn't always simple. Sometimes the signal amplitude changes linearly with temperature (thermal expansion). Other times it's polynomial (material stiffness shifts). And occasionally it's sinusoidal (thermal cycles creating periodic effects). In real SHM systems, you might see all three patterns depending on the operating conditions.
-
-**This is exactly what we'll simulate**: sensor data where the temperature dependency randomly shifts between linear, polynomial, and sinusoidal relationships, mimicking the complex reality of structural monitoring.
-
-## Data Generation
+# 2. Data Generation
 
 ### Chirplet Wave
 
@@ -66,8 +57,11 @@ To simulate realistic SHM data, we need signals that look like what actual senso
 
 
 ```python
-def chirplet(t, f0, f1, t0, sigma):
-    return np.exp(-((t - t0) / sigma) ** 2) * np.cos(2 * np.pi * (f0 * (t - t0) + f1 * (t - t0) ** 2))
+def chirplet(t, tau, fc, alpha1, alpha2=0.0, beta=1.0, phi=0.0):
+    u = t - tau
+    env = np.exp(-alpha1 * u**2)
+    phase = 2*np.pi*(fc*u) + alpha2*u**2 + phi
+    return beta * env * np.cos(phase)
 ```
 
 And this is how it looks:
@@ -75,16 +69,15 @@ And this is how it looks:
 
 
 ```python
+# Generate simple chirplet
 t = np.linspace(0, 1, 1000)
-y = chirplet(t, f0=10, f1=5, t0=0.5, sigma=0.1)
-set_dark_mode()
+y = chirplet(t, tau=0.5, fc=10, alpha1=50)
 plt.figure(figsize=(10, 6))
 plt.plot(t, y, color='#98FE09', linewidth=2)
 plt.title('Chirplet Signal', fontsize=16)
 plt.xlabel('Time')
 plt.ylabel('Amplitude')
 plt.grid(True, alpha=0.3)
-plt.savefig('images/chirplet.svg')
 plt.show()
 ```
 
@@ -407,7 +400,7 @@ plt.show()
 
 Now that we have injected the anomaly, let's see if we are going to be able to detect it.
 
-## Anomaly Detection through Nixtla
+# 4. Anomaly Detection through StatsForecast
 
 ### Anomaly Detection Algorithm
 
@@ -427,42 +420,41 @@ It might sound complicated, but the implementation is extremely simple.
 
 ```python
 from statsforecast import StatsForecast
-from statsforecast.models import AutoETS   # simple, fast probabilistic model
-# You could use AutoARIMA/MSTL/etc. too.
+from statsforecast.models import AutoETS
 
 def detect_anomalies(
     timeseries_data: np.ndarray,
-    temperature_values: pd.DatetimeIndex, timegpt_level: float = 0.90
+    temperature_values: pd.DatetimeIndex, 
+    timegpt_level: float = 0.90
 ) -> pd.DataFrame:
     y = np.asarray(timeseries_data, dtype=float)
     n = len(y)
     if len(temperature_values) != n:
         raise ValueError("temperature_values length must match timeseries_data length.")
-
-    # Build long-format df expected by StatsForecast
+    
+    # 1. Build long-format df expected by StatsForecast
     start = pd.Timestamp("2024-01-01")
     ds = pd.date_range(start, periods=n, freq="D")
     df = pd.DataFrame({"unique_id": 0, "ds": ds, "y": y})
-
-    # Model & forecaster
-    # AutoETS provides probabilistic insample/fitted intervals easily.
-    levels = [int(round(timegpt_level * 100))]  # e.g., 90 -> 90% PI
+    
+    # 2. Initialize the model
+    levels = [int(round(timegpt_level * 100))]
     sf = StatsForecast(models=[AutoETS(season_length=1)], freq="D", n_jobs=-1)
-
-    # Fit & get forecasts with fitted=True so we can retrieve INSAMPLE intervals
+    
+    # 3. Fit & get forecasts with fitted=True
     _ = sf.forecast(df=df, h=1, level=levels, fitted=True)
-
-    # Retrieve insample fitted values & intervals
-    insample = sf.forecast_fitted_values()  # columns: unique_id, ds, y, <model>, <model>-lo-XX, <model>-hi-XX
+    
+    # 4. Retrieve insample fitted values & intervals
+    insample = sf.forecast_fitted_values()
     model_name = [c for c in insample.columns if c not in ("unique_id", "ds", "y") and "-lo-" not in c and "-hi-" not in c][0]
     lo_col = f"{model_name}-lo-{levels[0]}"
     hi_col = f"{model_name}-hi-{levels[0]}"
-
-    # Flag anomalies: outside the interval
+    
+    # 5. Flag anomalies: outside the interval
     is_anom = ~insample["y"].between(insample[lo_col], insample[hi_col])
     is_anom = is_anom.astype(int).to_numpy()
-
-    # Assemble output to match your structure
+    
+    # 6. Assemble output
     out = pd.DataFrame({
         "ds": insample["ds"].values,
         "y": insample["y"].values,
@@ -470,7 +462,6 @@ def detect_anomalies(
         "is_anomaly": is_anom,
         "temperature_values": temperature_values,
     })
-    # Optional: stash columns for plotting convenience
     out["_fitted_mean"] = insample[model_name].values
     out["_lo"] = insample[lo_col].values
     out["_hi"] = insample[hi_col].values
@@ -478,10 +469,21 @@ def detect_anomalies(
     out.attrs["level"] = levels[0]
     return out
 
-
-
-df_out = detect_anomalies( timeseries_data=timeseries_with_anomaly[time_step,:], temperature_values=temperature_values)
+df_out = detect_anomalies(
+    timeseries_data=timeseries_with_anomaly[time_step,:], 
+    temperature_values=temperature_values
+)
 ```
+
+Let's break down what this function does:
+
+**Step 1: Build the DataFrame**. StatsForecast expects data in a specific format with `unique_id`, `ds` (datetime), and `y` (values). We transform our numpy array into this format.
+
+**Step 2: Initialize the Model** We use `AutoETS`, a probabilistic model that provides prediction intervals. Any point outside the expected range will be flagged as unusual. Read more about the model [here](https://nixtlaverse.nixtla.io/statsforecast/src/core/models.html#autoets-2).
+
+**Step 3: Fit the Model**. We fit the model with `fitted=True` to retrieve in-sample prediction intervals, showing what the model considers "normal" for each historical point.
+
+**Step 4: Detect Anomalies**. Any data point falling outside the prediction interval is flagged as an anomaly, and we assemble the final output with all relevant information.
 
 And we can see from the following plot that we are able to retrieve the anomaly very well!
 
