@@ -16,7 +16,7 @@ tags:
 author_name: Piero Paialunga
 author_image: "/images/authors/piero.jpg"
 author_position: Data Scientist
-publication_date: 2025-10-15
+publication_date: 2025-10-23
 ---
 
 
