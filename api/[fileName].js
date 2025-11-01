@@ -79,7 +79,6 @@ function sanitizeFileName(fileName) {
   }
 
   let sanitized = fileName.replace(/\.md$/, "");
-  
 
   sanitized = sanitized
     .replace(/\\/g, '')
@@ -95,7 +94,6 @@ function sanitizeFileName(fileName) {
   
   return sanitized;
 }
-
 
 function isPathSafe(resolvedPath, baseDir) {
   const normalizedPath = path.normalize(resolvedPath);
@@ -153,7 +151,9 @@ function parseFrontmatter(raw) {
       if (value.startsWith("[") && value.endsWith("]")) {
         try {
           value = JSON.parse(value.replace(/'/g, '"'));
-        } catch {}
+        } catch {
+          // If JSON parsing fails, keep as string
+        }
       }
 
       frontmatter[key] = value;
@@ -164,10 +164,10 @@ function parseFrontmatter(raw) {
 }
 
 function extractCharts(content, postSlug) {
-  const hasCharts = content.includes('```chart-multiple') || content.includes('```chart');
+  // Check if there are any chart blocks
+  const hasCharts = content.includes('```chart');
   
   if (!hasCharts) {
-    console.log('No charts found in content');
     return { 
       contentWithPlaceholders: content, 
       charts: {} 
@@ -180,7 +180,7 @@ function extractCharts(content, postSlug) {
   const processChart = (match, chartJson, type) => {
     try {
       const chartData = JSON.parse(chartJson.trim());
-      const chartId = chartData.id || `${type}-${chartIndex}`;
+      const chartId = chartData.id || `${type}-${chartIndex++}`;
 
       if (chartData.dataSource) {
         try {
@@ -194,22 +194,25 @@ function extractCharts(content, postSlug) {
 
       chartData.type = type;
       charts[chartId] = chartData;
-      chartIndex++;
 
       return `{{CHART:${chartId}}}`;
     } catch (e) {
-      console.error(`Failed to parse ${type} JSON:`, e);
+      console.error(`Failed to parse ${type} JSON:`, e.message);
       return match;
     }
   };
 
-  let contentWithPlaceholders = content
-    .replace(/```chart-multiple\s*\n([\s\S]*?)\n```/g, (match, json) =>
-      processChart(match, json, "chart-multiple")
-    )
-    .replace(/```chart\s*\n([\s\S]*?)\n```/g, (match, json) =>
-      processChart(match, json, "chart")
-    );
+  // Process chart-multiple blocks first
+  let contentWithPlaceholders = content.replace(
+    /```chart-multiple\s*\n([\s\S]*?)\n```/g,
+    (match, json) => processChart(match, json, "chart-multiple")
+  );
+
+  // Then process regular chart blocks
+  contentWithPlaceholders = contentWithPlaceholders.replace(
+    /```chart\s*\n([\s\S]*?)\n```/g,
+    (match, json) => processChart(match, json, "chart")
+  );
 
   console.log(`Extracted ${Object.keys(charts).length} charts`);
 
@@ -231,7 +234,6 @@ function loadChartData(postSlug, dataSource) {
   }
 
   const csvContent = fs.readFileSync(csvPath, "utf-8");
-
   const result = Papa.parse(csvContent, papaparseOptions);
 
   if (result.errors.length > 0) {
