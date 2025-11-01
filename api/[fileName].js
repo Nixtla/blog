@@ -31,14 +31,11 @@ export default function handler(req, res) {
       return res.status(400).json({ error: "Missing fileName parameter" });
     }
 
-    // SECURITY: Validate and sanitize fileName
     const postSlug = sanitizeFileName(fileName);
-    
-    // Resolve the absolute path
+
     const postsDir = path.join(process.cwd(), "posts");
     const mdPath = path.join(postsDir, postSlug, `${postSlug}.md`);
-    
-    // SECURITY: Ensure the resolved path is within the posts directory
+
     if (!isPathSafe(mdPath, postsDir)) {
       return res.status(403).json({ 
         error: "Invalid file path" 
@@ -74,29 +71,22 @@ export default function handler(req, res) {
   }
 }
 
-// ============================================
 // HELPER FUNCTIONS
-// ============================================
 
-/**
- * Sanitize fileName to prevent path traversal attacks
- */
 function sanitizeFileName(fileName) {
   if (!fileName || typeof fileName !== 'string') {
     throw new Error('Invalid fileName parameter');
   }
 
-  // Remove .md extension if present
   let sanitized = fileName.replace(/\.md$/, "");
   
-  // Remove any path separators and traversal attempts
+
   sanitized = sanitized
-    .replace(/\\/g, '') // Remove backslashes
-    .replace(/\//g, '') // Remove forward slashes
-    .replace(/\.\./g, '') // Remove parent directory references
-    .replace(/^\.+/, ''); // Remove leading dots
+    .replace(/\\/g, '')
+    .replace(/\//g, '')
+    .replace(/\.\./g, '')
+    .replace(/^\.+/, '');
   
-  // Only allow alphanumeric, hyphens, and underscores
   sanitized = sanitized.replace(/[^a-zA-Z0-9_-]/g, '');
   
   if (!sanitized || sanitized.length === 0) {
@@ -106,38 +96,29 @@ function sanitizeFileName(fileName) {
   return sanitized;
 }
 
-/**
- * Verify that the resolved path is within the allowed directory
- */
+
 function isPathSafe(resolvedPath, baseDir) {
   const normalizedPath = path.normalize(resolvedPath);
   const normalizedBase = path.normalize(baseDir);
   
-  // Check if the resolved path starts with the base directory
   return normalizedPath.startsWith(normalizedBase + path.sep) || 
          normalizedPath === normalizedBase;
 }
 
-/**
- * Sanitize dataSource path for CSV files
- */
 function sanitizeDataSource(dataSource) {
   if (!dataSource || typeof dataSource !== 'string') {
     throw new Error('Invalid dataSource parameter');
   }
   
-  // Remove path traversal attempts
   let sanitized = dataSource
-    .replace(/\\/g, '/') // Normalize to forward slashes
-    .replace(/\.\.\/*/g, '') // Remove parent directory references
-    .replace(/^\/+/, ''); // Remove leading slashes
+    .replace(/\\/g, '/')
+    .replace(/\.\.\/*/g, '')
+    .replace(/^\/+/, '');
   
-  // Only allow safe characters for file paths
   if (!/^[a-zA-Z0-9_\-\/\.]+$/.test(sanitized)) {
     throw new Error('Invalid characters in dataSource');
   }
   
-  // Ensure it ends with .csv
   if (!sanitized.endsWith('.csv')) {
     throw new Error('dataSource must be a CSV file');
   }
@@ -162,7 +143,6 @@ function parseFrontmatter(raw) {
       let key = m[1].trim();
       let value = m[2].trim();
 
-      // Remove quotes
       if (
         (value.startsWith('"') && value.endsWith('"')) ||
         (value.startsWith("'") && value.endsWith("'"))
@@ -170,7 +150,6 @@ function parseFrontmatter(raw) {
         value = value.slice(1, -1);
       }
 
-      // Parse arrays
       if (value.startsWith("[") && value.endsWith("]")) {
         try {
           value = JSON.parse(value.replace(/'/g, '"'));
@@ -185,7 +164,6 @@ function parseFrontmatter(raw) {
 }
 
 function extractCharts(content, postSlug) {
-  // Early return if no chart blocks exist
   const hasCharts = content.includes('```chart-multiple') || content.includes('```chart');
   
   if (!hasCharts) {
