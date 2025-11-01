@@ -18,6 +18,75 @@ At Nixtla, we're committed to pushing the boundaries of time series forecasting 
 
 Today we're announcing the **private preview of TimeGPT-2 Mini, TimeGPT-2, and TimeGPT-2 Pro**. These are the latest versions of our enterprise-grade models, built to reliably solve **mission-critical time-series problems**. The TimeGPT-2 family is optimized for enterprise needs, prioritizing accuracy and stability with a **privacy-first approach** and full support for self-hosted and on-premises deployments.
 
+```chart
+{
+  "id": "peyton-manning",
+  "title": "Peyton Manning",
+  "dataSource": "peyton-manning.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Actual Data",
+      "type": "line"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "peyton-manning-gpt",
+  "title": "Peyton Manning with TimeGPT",
+  "dataSource": "peyton-manning-gpt.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Actual Data",
+      "type": "line",
+      "color": "blue-700",
+      "zIndex": 5
+    },
+    {
+      "column": "TimeGPT",
+      "name": "TimeGPT Forecast",
+      "type": "line",
+      "color": "cyan-400",
+      "zIndex": 4
+    },
+    {
+      "column": "TimeGPT-hi-99",
+      "name": "Upper Bound (99%)",
+      "type": "line",
+      "color": "zinc-500",
+      "zIndex": 3
+    },
+    {
+      "column": "TimeGPT-lo-99",
+      "name": "Lower Bound (99%)",
+      "type": "line",
+      "color": "zinc-500",
+      "zIndex": 3
+    }
+  ],
+  "anomalies": {
+    "column": "anomaly",
+    "seriesColumn": "y"
+  }
+}
+```
+
 ## Modular and Purpose-Built
 
 **TimeGPT 2 is not a single model, but a modular family designed for real world forecasting.**
