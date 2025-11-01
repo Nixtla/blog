@@ -67,9 +67,9 @@ export default function handler(req, res) {
 
 function findMarkdownFile(postSlug) {
   const possiblePaths = [
-    path.join(process.cwd(), "posts", postSlug, `${postSlug}.md`),
-    path.join(process.cwd(), "..", "posts", postSlug, `${postSlug}.md`),
-    path.join("/var/task/posts", postSlug, `${postSlug}.md`),
+    path.join(process.cwd(), "posts", `${postSlug}.md`),
+    path.join(process.cwd(), "..", "posts", `${postSlug}.md`),
+    path.join("/var/task/posts", `${postSlug}.md`),
   ];
 
   for (const filePath of possiblePaths) {
