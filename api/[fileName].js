@@ -1,11 +1,6 @@
 import fs from "fs";
 import path from "path";
 import Papa from "papaparse";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const papaparseOptions = {
   header: true,
@@ -38,31 +33,33 @@ export default function handler(req, res) {
 
     const postSlug = sanitizeFileName(fileName);
     
-    // Try multiple base paths
-    const possibleBasePaths = [
-      path.join(__dirname, '..'), // Go up from api folder
-      process.cwd(),
-      path.join(process.cwd(), '.vercel', 'path0'),
-    ];
-    
+    // Try to find posts directory
     let postsDir = null;
     let mdPath = null;
     
-    for (const basePath of possibleBasePaths) {
-      const testPostsDir = path.join(basePath, "posts");
+    const possiblePaths = [
+      path.join(process.cwd(), "posts"),
+      path.join(process.cwd(), "..", "posts"),
+      "/var/task/posts",
+    ];
+    
+    for (const testPostsDir of possiblePaths) {
       const testMdPath = path.join(testPostsDir, postSlug, `${postSlug}.md`);
-      
       if (fs.existsSync(testMdPath)) {
         postsDir = testPostsDir;
         mdPath = testMdPath;
-        console.log('Found markdown at:', mdPath);
+        console.log('✓ Found markdown at:', mdPath);
         break;
       }
     }
 
-    if (!mdPath || !fs.existsSync(mdPath)) {
+    if (!mdPath || !postsDir) {
       return res.status(404).json({ 
-        error: "Markdown file not found"
+        error: "Markdown file not found",
+        debug: {
+          cwd: process.cwd(),
+          triedPaths: possiblePaths
+        }
       });
     }
 
@@ -238,31 +235,43 @@ function extractCharts(content, postSlug, postsDir) {
 
 function loadChartData(postSlug, dataSource, postsDir) {
   const sanitizedDataSource = sanitizeDataSource(dataSource);
-  const dataDir = path.join(postsDir, postSlug, "data");
-  const csvPath = path.join(dataDir, sanitizedDataSource);
   
-  console.log('Loading CSV from:', csvPath);
+  // Try to find the CSV in multiple locations
+  const possibleCSVPaths = [
+    path.join(postsDir, postSlug, "data", sanitizedDataSource),
+    path.join(postsDir, postSlug, sanitizedDataSource), // Try without data folder
+  ];
   
-  if (!isPathSafe(csvPath, dataDir)) {
-    throw new Error('Invalid data source path');
+  let csvPath = null;
+  let dataDir = path.join(postsDir, postSlug, "data");
+  
+  for (const testPath of possibleCSVPaths) {
+    if (fs.existsSync(testPath)) {
+      csvPath = testPath;
+      console.log('✓ Found CSV at:', csvPath);
+      break;
+    }
   }
-
-  if (!fs.existsSync(csvPath)) {
-    console.error('CSV not found at:', csvPath);
+  
+  if (!csvPath) {
+    console.error('CSV not found. Tried:');
+    possibleCSVPaths.forEach(p => console.error('  -', p));
     
-    if (fs.existsSync(dataDir)) {
-      console.error('Files in data dir:', fs.readdirSync(dataDir));
-    } else {
-      console.error('Data directory does not exist:', dataDir);
+    // Show what actually exists
+    const postDir = path.join(postsDir, postSlug);
+    if (fs.existsSync(postDir)) {
+      console.error('Files in post directory:', fs.readdirSync(postDir));
       
-      // Check parent directory
-      const postDir = path.join(postsDir, postSlug);
-      if (fs.existsSync(postDir)) {
-        console.error('Files in post dir:', fs.readdirSync(postDir));
+      if (fs.existsSync(dataDir)) {
+        console.error('Files in data directory:', fs.readdirSync(dataDir));
       }
     }
     
-    throw new Error(`CSV file not found: posts/${postSlug}/data/${sanitizedDataSource}`);
+    throw new Error(`CSV file not found: ${sanitizedDataSource}`);
+  }
+  
+  if (!isPathSafe(csvPath, path.dirname(csvPath))) {
+    throw new Error('Invalid data source path');
   }
 
   const csvContent = fs.readFileSync(csvPath, "utf-8");
