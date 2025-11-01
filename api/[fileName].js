@@ -237,20 +237,20 @@ function loadChartData(postSlug, dataSource) {
   const sanitizedDataSource = sanitizeDataSource(dataSource);
   
   // Look in blogChart/{postSlug}/ directory at the root
-  const blogChartDir = path.join(process.cwd(), "blogChart", postSlug);
+  const blogChartDir = path.join(process.cwd(), "blogCharts", postSlug);
   const csvPath = path.join(blogChartDir, sanitizedDataSource);
   
   console.log('Looking for CSV at:', csvPath);
   
   if (!fs.existsSync(csvPath)) {
     // Debug logging
-    const blogChartRoot = path.join(process.cwd(), "blogChart");
+    const blogChartRoot = path.join(process.cwd(), "blogCharts");
     
     console.error('CSV not found at:', csvPath);
     console.error('process.cwd():', process.cwd());
     
     if (fs.existsSync(blogChartRoot)) {
-      console.error('Posts in blogChart/:', fs.readdirSync(blogChartRoot));
+      console.error('Posts in blogCharts/:', fs.readdirSync(blogChartRoot));
       
       if (fs.existsSync(blogChartDir)) {
         console.error(`Files in blogChart/${postSlug}/:`, fs.readdirSync(blogChartDir));

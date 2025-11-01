@@ -3,7 +3,7 @@
       "api/**/*.js": {
         "memory": 1024,
         "maxDuration": 10,
-        "includeFiles": "{posts/**,blogChart/**}"
+        "includeFiles": "{posts/**,blogCharts/**}"
       }
     }
 }
