@@ -1,0 +1,7 @@
+{
+    "functions": {
+      "api/**/*.js": {
+        "includeFiles": "posts/**/*.{md,csv}"
+      }
+    }
+}
