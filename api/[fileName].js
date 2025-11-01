@@ -71,7 +71,7 @@ export default function handler(req, res) {
 
     const raw = fs.readFileSync(mdPath, "utf-8");
     const { frontmatter, content } = parseFrontmatter(raw);
-    const { contentWithPlaceholders, charts } = extractCharts(content, postSlug, postsDir);
+    const { contentWithPlaceholders, charts } = extractCharts(content, postSlug);
 
     const response = {
       ...frontmatter,
@@ -182,7 +182,7 @@ function parseFrontmatter(raw) {
   return { frontmatter, content };
 }
 
-function extractCharts(content, postSlug, postsDir) {
+function extractCharts(content, postSlug) {
   const hasCharts = content.includes('```chart');
   
   if (!hasCharts) {
@@ -202,7 +202,7 @@ function extractCharts(content, postSlug, postsDir) {
 
       if (chartData.dataSource) {
         try {
-          chartData.data = loadChartData(postSlug, chartData.dataSource, postsDir);
+          chartData.data = loadChartData(postSlug, chartData.dataSource);
           console.log(`✓ Loaded ${chartData.data.length} rows for ${chartId}`);
         } catch (error) {
           console.error(`✗ Failed to load data for ${chartId}:`, error.message);
@@ -233,45 +233,35 @@ function extractCharts(content, postSlug, postsDir) {
   return { contentWithPlaceholders, charts };
 }
 
-function loadChartData(postSlug, dataSource, postsDir) {
+function loadChartData(postSlug, dataSource) {
   const sanitizedDataSource = sanitizeDataSource(dataSource);
   
-  // Try to find the CSV in multiple locations
-  const possibleCSVPaths = [
-    path.join(postsDir, postSlug, "data", sanitizedDataSource),
-    path.join(postsDir, postSlug, sanitizedDataSource), // Try without data folder
-  ];
+  // Look in blogChart/{postSlug}/ directory at the root
+  const blogChartDir = path.join(process.cwd(), "blogChart", postSlug);
+  const csvPath = path.join(blogChartDir, sanitizedDataSource);
   
-  let csvPath = null;
-  let dataDir = path.join(postsDir, postSlug, "data");
+  console.log('Looking for CSV at:', csvPath);
   
-  for (const testPath of possibleCSVPaths) {
-    if (fs.existsSync(testPath)) {
-      csvPath = testPath;
-      console.log('✓ Found CSV at:', csvPath);
-      break;
-    }
-  }
-  
-  if (!csvPath) {
-    console.error('CSV not found. Tried:');
-    possibleCSVPaths.forEach(p => console.error('  -', p));
+  if (!fs.existsSync(csvPath)) {
+    // Debug logging
+    const blogChartRoot = path.join(process.cwd(), "blogChart");
     
-    // Show what actually exists
-    const postDir = path.join(postsDir, postSlug);
-    if (fs.existsSync(postDir)) {
-      console.error('Files in post directory:', fs.readdirSync(postDir));
+    console.error('CSV not found at:', csvPath);
+    console.error('process.cwd():', process.cwd());
+    
+    if (fs.existsSync(blogChartRoot)) {
+      console.error('Posts in blogChart/:', fs.readdirSync(blogChartRoot));
       
-      if (fs.existsSync(dataDir)) {
-        console.error('Files in data directory:', fs.readdirSync(dataDir));
+      if (fs.existsSync(blogChartDir)) {
+        console.error(`Files in blogChart/${postSlug}/:`, fs.readdirSync(blogChartDir));
+      } else {
+        console.error(`Directory does not exist: blogChart/${postSlug}/`);
       }
+    } else {
+      console.error('blogChart directory does not exist at:', blogChartRoot);
     }
     
     throw new Error(`CSV file not found: ${sanitizedDataSource}`);
-  }
-  
-  if (!isPathSafe(csvPath, path.dirname(csvPath))) {
-    throw new Error('Invalid data source path');
   }
 
   const csvContent = fs.readFileSync(csvPath, "utf-8");
