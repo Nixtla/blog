@@ -1,6 +1,11 @@
 import fs from "fs";
 import path from "path";
 import Papa from "papaparse";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const papaparseOptions = {
   header: true,
@@ -32,8 +37,34 @@ export default function handler(req, res) {
     }
 
     const postSlug = sanitizeFileName(fileName);
-    const postsDir = path.join(process.cwd(), "posts");
-    const mdPath = path.join(postsDir, postSlug, `${postSlug}.md`);
+    
+    // Try multiple base paths
+    const possibleBasePaths = [
+      path.join(__dirname, '..'), // Go up from api folder
+      process.cwd(),
+      path.join(process.cwd(), '.vercel', 'path0'),
+    ];
+    
+    let postsDir = null;
+    let mdPath = null;
+    
+    for (const basePath of possibleBasePaths) {
+      const testPostsDir = path.join(basePath, "posts");
+      const testMdPath = path.join(testPostsDir, postSlug, `${postSlug}.md`);
+      
+      if (fs.existsSync(testMdPath)) {
+        postsDir = testPostsDir;
+        mdPath = testMdPath;
+        console.log('Found markdown at:', mdPath);
+        break;
+      }
+    }
+
+    if (!mdPath || !fs.existsSync(mdPath)) {
+      return res.status(404).json({ 
+        error: "Markdown file not found"
+      });
+    }
 
     if (!isPathSafe(mdPath, postsDir)) {
       return res.status(403).json({ 
@@ -41,15 +72,9 @@ export default function handler(req, res) {
       });
     }
 
-    if (!fs.existsSync(mdPath)) {
-      return res.status(404).json({ 
-        error: "Markdown file not found"
-      });
-    }
-
     const raw = fs.readFileSync(mdPath, "utf-8");
     const { frontmatter, content } = parseFrontmatter(raw);
-    const { contentWithPlaceholders, charts } = extractCharts(content, postSlug);
+    const { contentWithPlaceholders, charts } = extractCharts(content, postSlug, postsDir);
 
     const response = {
       ...frontmatter,
@@ -160,7 +185,7 @@ function parseFrontmatter(raw) {
   return { frontmatter, content };
 }
 
-function extractCharts(content, postSlug) {
+function extractCharts(content, postSlug, postsDir) {
   const hasCharts = content.includes('```chart');
   
   if (!hasCharts) {
@@ -180,7 +205,7 @@ function extractCharts(content, postSlug) {
 
       if (chartData.dataSource) {
         try {
-          chartData.data = loadChartData(postSlug, chartData.dataSource);
+          chartData.data = loadChartData(postSlug, chartData.dataSource, postsDir);
           console.log(`✓ Loaded ${chartData.data.length} rows for ${chartId}`);
         } catch (error) {
           console.error(`✗ Failed to load data for ${chartId}:`, error.message);
@@ -211,26 +236,30 @@ function extractCharts(content, postSlug) {
   return { contentWithPlaceholders, charts };
 }
 
-function loadChartData(postSlug, dataSource) {
+function loadChartData(postSlug, dataSource, postsDir) {
   const sanitizedDataSource = sanitizeDataSource(dataSource);
-  
-  // Use same structure as markdown path
-  const dataDir = path.join(process.cwd(), "posts", postSlug, "data");
+  const dataDir = path.join(postsDir, postSlug, "data");
   const csvPath = path.join(dataDir, sanitizedDataSource);
+  
+  console.log('Loading CSV from:', csvPath);
   
   if (!isPathSafe(csvPath, dataDir)) {
     throw new Error('Invalid data source path');
   }
 
   if (!fs.existsSync(csvPath)) {
-    // Debug: log what we're looking for and what exists
     console.error('CSV not found at:', csvPath);
-    console.error('process.cwd():', process.cwd());
     
     if (fs.existsSync(dataDir)) {
       console.error('Files in data dir:', fs.readdirSync(dataDir));
     } else {
       console.error('Data directory does not exist:', dataDir);
+      
+      // Check parent directory
+      const postDir = path.join(postsDir, postSlug);
+      if (fs.existsSync(postDir)) {
+        console.error('Files in post dir:', fs.readdirSync(postDir));
+      }
     }
     
     throw new Error(`CSV file not found: posts/${postSlug}/data/${sanitizedDataSource}`);
