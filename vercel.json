@@ -1,7 +1,9 @@
 {
     "functions": {
       "api/**/*.js": {
-        "includeFiles": "posts/**/*.{md,csv}"
+        "memory": 1024,
+        "maxDuration": 10,
+        "includeFiles": "{posts/**,blogChart/**}"
       }
     }
 }
