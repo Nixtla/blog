@@ -32,7 +32,6 @@ export default function handler(req, res) {
     }
 
     const postSlug = sanitizeFileName(fileName);
-
     const postsDir = path.join(process.cwd(), "posts");
     const mdPath = path.join(postsDir, postSlug, `${postSlug}.md`);
 
@@ -151,9 +150,7 @@ function parseFrontmatter(raw) {
       if (value.startsWith("[") && value.endsWith("]")) {
         try {
           value = JSON.parse(value.replace(/'/g, '"'));
-        } catch {
-          // If JSON parsing fails, keep as string
-        }
+        } catch {}
       }
 
       frontmatter[key] = value;
@@ -164,7 +161,6 @@ function parseFrontmatter(raw) {
 }
 
 function extractCharts(content, postSlug) {
-  // Check if there are any chart blocks
   const hasCharts = content.includes('```chart');
   
   if (!hasCharts) {
@@ -185,9 +181,9 @@ function extractCharts(content, postSlug) {
       if (chartData.dataSource) {
         try {
           chartData.data = loadChartData(postSlug, chartData.dataSource);
-          console.log(`Loaded ${chartData.data.length} rows for ${chartId}`);
+          console.log(`✓ Loaded ${chartData.data.length} rows for ${chartId}`);
         } catch (error) {
-          console.error(`Failed to load data for ${chartId}:`, error.message);
+          console.error(`✗ Failed to load data for ${chartId}:`, error.message);
           chartData.dataError = error.message;
         }
       }
@@ -197,22 +193,18 @@ function extractCharts(content, postSlug) {
 
       return `{{CHART:${chartId}}}`;
     } catch (e) {
-      console.error(`Failed to parse ${type} JSON:`, e.message);
+      console.error(`✗ Failed to parse ${type} JSON:`, e.message);
       return match;
     }
   };
 
-  // Process chart-multiple blocks first
-  let contentWithPlaceholders = content.replace(
-    /```chart-multiple\s*\n([\s\S]*?)\n```/g,
-    (match, json) => processChart(match, json, "chart-multiple")
-  );
-
-  // Then process regular chart blocks
-  contentWithPlaceholders = contentWithPlaceholders.replace(
-    /```chart\s*\n([\s\S]*?)\n```/g,
-    (match, json) => processChart(match, json, "chart")
-  );
+  let contentWithPlaceholders = content
+    .replace(/```chart-multiple\s*\n([\s\S]*?)\n```/g, (match, json) =>
+      processChart(match, json, "chart-multiple")
+    )
+    .replace(/```chart\s*\n([\s\S]*?)\n```/g, (match, json) =>
+      processChart(match, json, "chart")
+    );
 
   console.log(`Extracted ${Object.keys(charts).length} charts`);
 
@@ -222,6 +214,7 @@ function extractCharts(content, postSlug) {
 function loadChartData(postSlug, dataSource) {
   const sanitizedDataSource = sanitizeDataSource(dataSource);
   
+  // Use same structure as markdown path
   const dataDir = path.join(process.cwd(), "posts", postSlug, "data");
   const csvPath = path.join(dataDir, sanitizedDataSource);
   
@@ -230,6 +223,16 @@ function loadChartData(postSlug, dataSource) {
   }
 
   if (!fs.existsSync(csvPath)) {
+    // Debug: log what we're looking for and what exists
+    console.error('CSV not found at:', csvPath);
+    console.error('process.cwd():', process.cwd());
+    
+    if (fs.existsSync(dataDir)) {
+      console.error('Files in data dir:', fs.readdirSync(dataDir));
+    } else {
+      console.error('Data directory does not exist:', dataDir);
+    }
+    
     throw new Error(`CSV file not found: posts/${postSlug}/data/${sanitizedDataSource}`);
   }
 
