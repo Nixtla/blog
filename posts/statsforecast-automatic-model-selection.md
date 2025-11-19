@@ -15,16 +15,18 @@ author_position: Developer Advocate - Nixtla
 publication_date: 2025-11-18
 ---
 
-Forecasting time series requires testing multiple algorithms to find which works best for your data. The traditional approach means manually fitting ARIMA models, exponential smoothing, theta methods, and seasonal baselines separately, then comparing their performance across different evaluation metrics.
+Imagine you have multiple time series to forecast. Which model should you use for each one? ARIMA? ETS? Theta? Or just a simple Naive baseline?
 
-This manual model selection creates several problems:
+Using one model for all series is easy but sacrifices accuracy since each series has different patterns. However, manually testing different models for each series creates problems:
 
 - **Time consuming**: Hours spent fitting and comparing individual models
 - **Expertise required**: Each algorithm needs different parameter configurations
 - **Inconsistent evaluation**: Different validation approaches across models
 - **Doesn't scale**: Manual testing for hundreds or thousands of series is impractical
 
-The easy route is using one model for all series, but that sacrifices accuracy since each series has different patterns. StatsForecast solves this by automatically fitting multiple statistical models simultaneously, then using cross-validation to select the best performer for each time series.
+StatsForecast automates this process by fitting multiple statistical models simultaneously, then using cross-validation to select the best performer for each time series.
+
+This article demonstrates how to use StatsForecast's automatic model selection with the M4 hourly competition data.
 
 > The source code of this article can be found in the [interactive Jupyter notebook](https://github.com/Nixtla/nixtla_blog_examples/blob/main/notebooks/statsforecast-automatic-model-selection.ipynb).
 
