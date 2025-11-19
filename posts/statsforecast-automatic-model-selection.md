@@ -22,22 +22,24 @@ This manual model selection creates several problems:
 - **Time consuming**: Hours spent fitting and comparing individual models
 - **Expertise required**: Each algorithm needs different parameter configurations
 - **Inconsistent evaluation**: Different validation approaches across models
-- **No per-series optimization**: Using one model for all series when different models might work better
+- **Doesn't scale**: Manual testing for hundreds or thousands of series is impractical
 
-StatsForecast eliminates this complexity by automatically fitting multiple statistical models simultaneously, then using cross-validation to select the best performer for each time series.
+The easy route is using one model for all series, but that sacrifices accuracy since each series has different patterns. StatsForecast solves this by automatically fitting multiple statistical models simultaneously, then using cross-validation to select the best performer for each time series.
 
 > The source code of this article can be found in the [interactive Jupyter notebook](https://github.com/Nixtla/nixtla_blog_examples/blob/main/notebooks/statsforecast-automatic-model-selection.ipynb).
 
 ## Introduction to StatsForecast
 
-[StatsForecast](https://nixtlaverse.nixtla.io/statsforecast/) is Nixtla's library for fast statistical forecasting that provides:
+[StatsForecast](https://nixtlaverse.nixtla.io/statsforecast/) is an open-source Python library for statistical forecasting. It's one of the most widely used forecasting libraries, with over 20 million downloads and more than 4,400 GitHub stars.
 
+Key features:
+
+- **Lightning fast**: Uses Numba (JIT compiler) - 20x faster than pmdarima, 1.5x faster than R, 500x faster than Prophet
 - **Automatic parameter selection**: AutoARIMA, AutoETS, AutoCES, AutoTheta optimize parameters automatically
-- **Unified interface**: Fit multiple models with a single API call
-- **Built-in cross-validation**: Time series-aware validation that respects temporal order
-- **Fast implementation**: Optimized algorithms that process series in parallel
+- **Scalable**: Parallel execution compatible with Spark, Ray, and Dask
+- **Familiar API**: Follows scikit-learn's `.fit()` and `.predict()` pattern
 
-You configure multiple models through simple parameters while StatsForecast handles the optimization and comparison.
+StatsForecast is built on R's forecast package, the industry's gold standard for statistical forecasting, providing 9 model families with over 35 methods.
 
 To install StatsForecast, run:
 
@@ -114,12 +116,14 @@ plot_series(df_train, df_test.rename(columns={"y": "actual"}), max_ids=4)
 
 ![Selected Time Series](/images/statsforecast-automatic-model-selection/selected-series.svg)
 
+Each series shows different patterns. Some have strong daily cycles, others trend up or down over time, and some are quite volatile. These diverse patterns make model selection important.
+
 ## Baseline Models - Naive and SeasonalNaive
 
-Before testing sophisticated models, establish baselines using two simple forecasting methods:
+Before diving into complex models, start with simple baselines:
 
-- **Naive model**: Predicts the last observed value for all future periods
-- **SeasonalNaive model**: Predicts each point will repeat the value from one season ago (24 hours for hourly data)
+- **Naive**: Uses the last observed value as the forecast
+- **SeasonalNaive**: Captures seasonal patterns by repeating values from the previous cycle (24 hours ago for hourly data)
 
 These baselines provide a performance floor. Any sophisticated model should beat these simple approaches.
 
@@ -147,6 +151,8 @@ plot_series(df_train, eval_base, max_ids=4, max_insample_length=5*24)
 
 ![Baseline Forecasts](/images/statsforecast-automatic-model-selection/baseline-forecasts.svg)
 
+The plot shows 5 days of historical data followed by 48-hour forecasts. The cyan line shows SeasonalNaive following the daily rhythm, while the pink Naive line stays flat at the last value.
+
 Evaluate baseline performance:
 
 ```{python}
@@ -169,14 +175,14 @@ metrics_base
 
 The SeasonalNaive model performs significantly better than Naive, achieving MASE close to 1.0. This suggests strong seasonal patterns in the hourly data that repeating values from 24 hours ago captures effectively.
 
-## StatsForecast Automatic Models
+## Advanced Statistical Models
 
-StatsForecast provides automatic implementations of classical statistical models that estimate optimal parameters for each series:
+Move beyond baselines with more sophisticated models:
 
-- **AutoARIMA**: Captures autocorrelation patterns and adjusts for trend and seasonality through differencing
-- **AutoETS**: Exponential smoothing that automatically selects additive or multiplicative components
-- **AutoCES**: Complex exponential smoothing with flexible cyclical components
-- **AutoTheta**: Fast, robust method derived from the Theta forecasting model
+- **AutoARIMA**: Handles autocorrelation, trends, and seasonality
+- **AutoETS**: Auto-selects exponential smoothing components
+- **AutoCES**: Offers flexible cyclical pattern modeling
+- **AutoTheta**: Fast, robust forecasting that often wins competitions
 
 These automatic models eliminate manual parameter tuning while maintaining statistical rigor.
 
@@ -220,6 +226,8 @@ plot_series(df_train, eval_sf_models, max_ids=4, max_insample_length=5*24)
 
 ![StatsForecast Model Predictions](/images/statsforecast-automatic-model-selection/statsforecast-predictions.svg)
 
+Unlike the simple baselines, these models adapt to the data's complexity and follow the actual patterns much more closely.
+
 Evaluate performance across all models:
 
 ```{python}
@@ -252,18 +260,21 @@ plot_metric_bar_multi(dfs=[metrics_sf_models, metrics_base])
 
 ![Model Comparison](/images/statsforecast-automatic-model-selection/model-comparison-bar-chart.svg)
 
+This bar chart shows MASE (Mean Absolute Scaled Error), which measures how each model performs compared to SeasonalNaive. When MASE is less than 1, the model beats the baseline. Naive performs worst with MASE of 8.03. AutoTheta and AutoETS have MASE above 1, meaning they don't beat SeasonalNaive. However, AutoCES and AutoARIMA both achieve MASE below 1, outperforming the baseline.
+
 ## Cross-Validation for Model Selection
 
 While AutoCES performs best on average, different models might work better for individual series. Cross-validation helps identify the optimal model for each time series.
 
+Traditional cross-validation uses random splits, which doesn't work for time series. Randomly shuffling would let the model peek into the future, creating data leakage. StatsForecast fixes this by ensuring models only train on historical data, never future values.
+
 [Time series cross-validation](https://nixtlaverse.nixtla.io/statsforecast/src/core/core.html#cross-validation) uses a rolling window approach:
 
-1. Start with an initial training window and forecast the next h steps
-2. Slide the window forward by step_size and repeat
-3. Compute error metrics for each window and model
-4. Select the model with lowest average error for each series
-
-This approach respects temporal order and provides robust performance estimates across different time periods.
+1. Train all models on initial window (yellow in the visualization below)
+2. Forecast the next period (red region) and evaluate forecast accuracy
+3. Slide the window forward in time and add new data to training set
+4. Repeat: train, forecast, evaluate
+5. Compare models across all windows and select the best for each series
 
 ![Rolling-window cross-validation](https://raw.githubusercontent.com/Nixtla/statsforecast/main/nbs/imgs/ChainedWindows.gif)
 
@@ -273,8 +284,8 @@ Run cross-validation with rolling windows:
 # Cross-validation with 2 rolling windows
 cv_df = sf.cross_validation(
     df=df_train,
-    h=24,          # 24-hour forecast horizon
-    step_size=24,  # Move window forward by 24 hours
+    h=24,          # Forecast next 24 hours
+    step_size=24,  # Step forward 24 hours
     n_windows=2    # 2 evaluation windows
 )
 
@@ -328,7 +339,7 @@ plot_series(df_train, eval_best_sf, level=[90], max_insample_length=5*24, max_id
 
 ![Best Model Forecasts with Intervals](/images/statsforecast-automatic-model-selection/best-model-forecasts.svg)
 
-The shaded bands represent 90% prediction intervals, showing the range where future values are likely to fall. These intervals quantify forecast uncertainty based on each model's residuals.
+These are the forecasts from the best model for each series. The shaded bands represent 90% prediction intervals. The interval widths vary across series - tighter bands mean more confidence, wider bands mean more uncertainty.
 
 Evaluate the best model ensemble:
 
@@ -360,6 +371,8 @@ plot_metric_bar_multi(dfs=[metrics_sf_models, metrics_base, metrics_sf_best])
 ```
 
 ![Complete Model Comparison](/images/statsforecast-automatic-model-selection/complete-comparison.svg)
+
+The green bar, which represents the best model selection, has the lowest MASE. By selecting the best model for each series, we get stronger performance than applying a single model to every time series.
 
 ## Conclusion
 
