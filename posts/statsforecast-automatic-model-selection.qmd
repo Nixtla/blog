@@ -263,7 +263,11 @@ plot_metric_bar_multi(dfs=[metrics_sf_models, metrics_base])
 
 ![Model Comparison](/images/statsforecast-automatic-model-selection/model-comparison-bar-chart.svg)
 
-This bar chart shows MASE (Mean Absolute Scaled Error), which measures how each model performs compared to SeasonalNaive. When MASE is less than 1, the model beats the baseline. Naive performs worst with MASE of 8.03. AutoTheta and AutoETS have MASE above 1, meaning they don't beat SeasonalNaive. However, AutoCES and AutoARIMA both achieve MASE below 1, outperforming the baseline.
+This bar chart shows MASE (Mean Absolute Scaled Error), where values below 1.0 beat the baseline and values above 1.0 perform worse:
+
+- **Naive (MASE 8.03)**: Performs worst, far below the seasonal baseline
+- **AutoTheta (MASE 1.87) and AutoETS (MASE 1.33)**: Above 1.0, don't beat SeasonalNaive
+- **AutoARIMA (MASE 0.80) and AutoCES (MASE 0.73)**: Below 1.0, successfully outperform the baseline
 
 ## Cross-Validation for Model Selection
 
