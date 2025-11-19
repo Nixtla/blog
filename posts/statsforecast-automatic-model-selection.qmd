@@ -92,12 +92,16 @@ print(f"Training observations: {len(df_train)}")
 print(f"Test observations: {len(df_test)}")
 ```
 
-```bash
-Training observations: 5600
+```
+Training observations: 6640
 Test observations: 384
 ```
 
 Define evaluation metrics with hourly seasonality:
+
+- **MASE (Mean Absolute Scaled Error)**: Scaled error vs seasonal baseline (< 1.0 = beats baseline, = 1.0 = matches baseline, > 1.0 = worse than baseline)
+- **RMSE (Root Mean Squared Error)**: Measures the magnitude of prediction errors
+- **SMAPE (Symmetric Mean Absolute Percentage Error)**: Calculates percentage-based accuracy
 
 ```{python}
 # Define error metrics with 24-hour seasonality
@@ -176,7 +180,7 @@ The SeasonalNaive model performs significantly better than Naive, achieving MASE
 
 ## Advanced Statistical Models
 
-Move beyond baselines with more sophisticated models:
+Let's move beyond baselines with more sophisticated models:
 
 - **AutoARIMA**: Handles autocorrelation, trends, and seasonality
 - **AutoETS**: Auto-selects exponential smoothing components
