@@ -67,7 +67,7 @@ from utilsforecast.evaluation import evaluate
 from utilsforecast.losses import mae, rmse, smape, mase
 ```
 
-Load the M4 hourly benchmark dataset:
+Load the M4 hourly benchmark dataset, which contains 414 hourly time series ranging from 700 to 960 observations each:
 
 ```{python}
 # Load M4 hourly competition data
@@ -115,7 +115,7 @@ plot_series(df_train, df_test.rename(columns={"y": "actual"}), max_ids=4)
 
 ![Selected Time Series](/images/statsforecast-automatic-model-selection/selected-series.svg)
 
-Each series shows different patterns. Some have strong daily cycles, others trend up or down over time, and some are quite volatile. These diverse patterns make model selection important.
+Each series shows different patterns. Some have strong daily cycles, others trend up or down over time, and some are quite volatile. This variety is why selecting the right model for each series matters.
 
 ## Baseline Models - Naive and SeasonalNaive
 
