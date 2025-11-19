@@ -32,16 +32,13 @@ This article demonstrates how to use StatsForecast's automatic model selection w
 
 ## Introduction to StatsForecast
 
-[StatsForecast](https://nixtlaverse.nixtla.io/statsforecast/) is an open-source Python library for statistical forecasting. It's one of the most widely used forecasting libraries, with over 20 million downloads and more than 4,400 GitHub stars.
+[StatsForecast](https://nixtlaverse.nixtla.io/statsforecast/) is an open-source Python library that automates statistical forecasting through:
 
-Key features:
+- **Automatic model selection**: AutoARIMA, AutoETS, AutoCES, and AutoTheta optimize parameters automatically
+- **Speed**: 20x faster than pmdarima, leveraging Numba for performance
+- **Scale**: Handles hundreds or thousands of series with parallel processing
 
-- **Lightning fast**: Uses Numba (JIT compiler) - 20x faster than pmdarima, 1.5x faster than R, 500x faster than Prophet
-- **Automatic parameter selection**: AutoARIMA, AutoETS, AutoCES, AutoTheta optimize parameters automatically
-- **Scalable**: Parallel execution compatible with Spark, Ray, and Dask
-- **Familiar API**: Follows scikit-learn's `.fit()` and `.predict()` pattern
-
-StatsForecast is built on R's forecast package, the industry's gold standard for statistical forecasting, providing 9 model families with over 35 methods.
+The library follows scikit-learn's familiar `.fit()` and `.predict()` API pattern.
 
 To install StatsForecast, run:
 
