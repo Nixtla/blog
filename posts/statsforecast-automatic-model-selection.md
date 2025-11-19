@@ -15,7 +15,7 @@ author_position: Developer Advocate - Nixtla
 publication_date: 2025-11-18
 ---
 
-Forecasting time series requires testing multiple algorithms to find which works best for your data. The traditional approach means manually fitting ARIMA models, exponential smoothing, theta methods, and seasonal baselines separately—then comparing their performance across different evaluation metrics.
+Forecasting time series requires testing multiple algorithms to find which works best for your data. The traditional approach means manually fitting ARIMA models, exponential smoothing, theta methods, and seasonal baselines separately, then comparing their performance across different evaluation metrics.
 
 This manual model selection creates several problems:
 
@@ -121,7 +121,7 @@ Before testing sophisticated models, establish baselines using two simple foreca
 - **Naive model**: Predicts the last observed value for all future periods
 - **SeasonalNaive model**: Predicts each point will repeat the value from one season ago (24 hours for hourly data)
 
-These baselines provide a performance floor—any sophisticated model should beat these simple approaches.
+These baselines provide a performance floor. Any sophisticated model should beat these simple approaches.
 
 ```{python}
 # Configure baseline models
@@ -209,7 +209,7 @@ fcst_sf_models = sf.forecast(df=df_train, h=48, level=[90])
 eval_sf_models = df_test.merge(fcst_sf_models, on=['unique_id', 'ds'])
 ```
 
-The `forecast()` method automatically fits each model to every series, optimizes parameters, and generates predictions with uncertainty intervals—all in a single function call.
+The `forecast()` method automatically fits each model to every series, optimizes parameters, and generates predictions with uncertainty intervals in a single function call.
 
 Visualize predictions from all models:
 
