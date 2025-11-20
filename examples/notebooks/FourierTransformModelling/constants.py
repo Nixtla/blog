@@ -1,0 +1,4 @@
+TIME_SERIES_LENGTH = 3140
+X_MIN = 0
+X_MAX = 100*3.14
+IMAGE_PATH = 'images/'
