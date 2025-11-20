@@ -12,7 +12,7 @@ image: "/images/statsforecast-automatic-model-selection/model-comparison-feature
 author_name: Khuyen Tran
 author_image: "/images/authors/khuyen.jpeg"
 author_position: Developer Advocate - Nixtla
-publication_date: 2025-11-18
+publication_date: 2025-11-20
 ---
 
 Imagine you have multiple time series to forecast. Which model should you use for each one? ARIMA? ETS? Theta? Or just a simple Naive baseline?
@@ -56,7 +56,7 @@ pip install pandas numpy
 
 Import the necessary libraries:
 
-```{python}
+```python
 import numpy as np
 import pandas as pd
 
@@ -69,7 +69,7 @@ from utilsforecast.losses import mae, rmse, smape, mase
 
 Load the M4 hourly benchmark dataset, which contains 414 hourly time series ranging from 700 to 960 observations each:
 
-```{python}
+```python
 # Load M4 hourly competition data
 Y_train_df = pd.read_csv('https://auto-arima-results.s3.amazonaws.com/M4-Hourly.csv')
 Y_test_df = pd.read_csv('https://auto-arima-results.s3.amazonaws.com/M4-Hourly-test.csv')
@@ -81,7 +81,7 @@ Y_test_df['ds'] = pd.to_datetime('2024-01-01') + pd.to_timedelta(Y_test_df['ds']
 
 Sample 8 series for demonstration:
 
-```{python}
+```python
 # Randomly select 8 series
 n_series = 8
 uids = Y_train_df['unique_id'].drop_duplicates().sample(8, random_state=23).values
@@ -103,7 +103,7 @@ Define evaluation metrics with hourly seasonality:
 - **RMSE (Root Mean Squared Error)**: Measures the magnitude of prediction errors
 - **SMAPE (Symmetric Mean Absolute Percentage Error)**: Calculates percentage-based accuracy
 
-```{python}
+```python
 # Define error metrics with 24-hour seasonality
 from functools import partial
 hourly_mase = partial(mase, seasonality=24)
@@ -112,7 +112,7 @@ metrics = [hourly_mase, rmse, smape]
 
 Visualize the selected time series:
 
-```{python}
+```python
 # Plot the selected series
 plot_series(df_train, df_test.rename(columns={"y": "actual"}), max_ids=4)
 ```
@@ -130,7 +130,7 @@ Before diving into complex models, start with simple baselines:
 
 These baselines provide a performance floor. Any sophisticated model should beat these simple approaches.
 
-```{python}
+```python
 # Configure baseline models
 sf_base = StatsForecast(
     models=[Naive(), SeasonalNaive(season_length=24)],
@@ -147,7 +147,7 @@ eval_base = df_test.merge(fcst_base, on=['unique_id', 'ds'])
 
 Visualize baseline predictions:
 
-```{python}
+```python
 # Plot baseline forecasts
 plot_series(df_train, eval_base, max_ids=4, max_insample_length=5*24)
 ```
@@ -158,7 +158,7 @@ The plot shows 5 days of historical data followed by 48-hour forecasts. The cyan
 
 Evaluate baseline performance:
 
-```{python}
+```python
 # Calculate metrics for baseline models
 metrics_base = evaluate(
     df=eval_base,
@@ -187,11 +187,11 @@ Let's move beyond baselines with more sophisticated models:
 - **AutoCES**: Offers flexible cyclical pattern modeling
 - **AutoTheta**: Fast, robust forecasting that often wins competitions
 
-These automatic models eliminate manual parameter tuning while maintaining statistical rigor.
+These automatic models eliminate manual parameter tuning while ensuring forecasts meet statistical standards for accuracy and reliability.
 
 Configure the automatic models:
 
-```{python}
+```python
 # Define automatic statistical models
 models = [
     AutoARIMA(season_length=24),
@@ -203,7 +203,7 @@ models = [
 
 Fit all models and generate forecasts in one step:
 
-```{python}
+```python
 # Initialize StatsForecast with all models
 sf = StatsForecast(
     models=models,
@@ -222,7 +222,7 @@ The `forecast()` method automatically fits each model to every series, optimizes
 
 Visualize predictions from all models:
 
-```{python}
+```python
 # Plot forecasts from all automatic models
 plot_series(df_train, eval_sf_models, max_ids=4, max_insample_length=5*24)
 ```
@@ -233,7 +233,7 @@ Unlike the simple baselines, these models adapt to the data's complexity and fol
 
 Evaluate performance across all models:
 
-```{python}
+```python
 # Calculate metrics for automatic models
 metrics_sf_models = evaluate(
     df=eval_sf_models,
@@ -255,7 +255,7 @@ AutoCES achieves the lowest MASE (0.73) and RMSE (60.98), outperforming both Aut
 
 Compare all models visually:
 
-```{python}
+```python
 # Compare baseline and automatic models
 from utils import plot_metric_bar_multi
 plot_metric_bar_multi(dfs=[metrics_sf_models, metrics_base])
@@ -287,7 +287,7 @@ Traditional cross-validation uses random splits, which doesn't work for time ser
 
 Run cross-validation with rolling windows:
 
-```{python}
+```python
 # Cross-validation with 2 rolling windows
 cv_df = sf.cross_validation(
     df=df_train,
@@ -312,7 +312,7 @@ Cross-validation results: (384, 11)
 
 Evaluate model performance and select the best for each series:
 
-```{python}
+```python
 # Evaluate models using MAE across cross-validation windows
 from utils import evaluate_cv, get_best_model_forecast
 
@@ -335,7 +335,7 @@ AutoARIMA was selected as the best model for 3 out of 8 series, while AutoETS an
 
 After selecting the best model for each series, generate final forecasts with uncertainty intervals:
 
-```{python}
+```python
 # Extract forecasts from the best model for each series
 best_fcst_sf = get_best_model_forecast(fcst_sf_models, evaluation_df)
 eval_best_sf = df_test.merge(best_fcst_sf, on=['unique_id', 'ds'])
@@ -350,7 +350,7 @@ These are the forecasts from the best model for each series. The shaded bands re
 
 Evaluate the best model ensemble:
 
-```{python}
+```python
 # Calculate metrics for best model selection
 metrics_sf_best = evaluate(
     df=eval_best_sf,
@@ -372,7 +372,7 @@ Selecting the best model for each series improves MASE from 0.73 (best single mo
 
 Compare all approaches:
 
-```{python}
+```python
 # Compare baseline, individual models, and best selection
 plot_metric_bar_multi(dfs=[metrics_sf_models, metrics_base, metrics_sf_best])
 ```
@@ -395,7 +395,7 @@ Why TimeGPT?
 
 Initialize the TimeGPT client using an API key:
 
-```{python}
+```python
 # Import necessary packages
 import os
 from dotenv import load_dotenv
@@ -415,7 +415,7 @@ This connects to Nixtla's cloud service where the foundation model runs. The set
 
 Generate forecasts without any fine-tuning, using the pre-trained model as-is:
 
-```{python}
+```python
 # Simple zero-shot TimeGPT forecast
 fcst_timegpt = nixtla_client.forecast(
     df=df_train,
@@ -431,7 +431,7 @@ The API handles everything automatically. We request 48-hour forecasts with both
 
 Add fine-tuning to adapt the pre-trained model to our specific data:
 
-```{python}
+```python
 # Add finetune steps to make it more accurate
 fcst_timegpt_ft = nixtla_client.forecast(
     df=df_train,
@@ -448,7 +448,7 @@ With 10 fine-tuning steps, TimeGPT adjusts its parameters based on our 8 series.
 
 Compare zero-shot and fine-tuned TimeGPT variants:
 
-```{python}
+```python
 # Evaluate both TimeGPT variants
 metrics_tgpt = evaluate(
     df=df_test
@@ -472,7 +472,7 @@ Both TimeGPT variants achieve excellent performance. Zero-shot gets MASE of 1.12
 
 Visualize TimeGPT predictions:
 
-```{python}
+```python
 # Plot TimeGPT forecasts
 eval_tgpt_ft = df_test.merge(fcst_timegpt_ft, on=['unique_id', 'ds'])
 nixtla_client.plot(df_train, eval_tgpt_ft, level=['80', '90'], max_insample_length=5*24, max_ids=4)
@@ -486,7 +486,7 @@ The TimeGPT forecasts show smooth, reasonable predictions that capture the under
 
 Compare all approaches including TimeGPT:
 
-```{python}
+```python
 # Compare all models including TimeGPT
 plot_metric_bar_multi(dfs=[metrics_base, metrics_sf_best, metrics_tgpt])
 ```
