@@ -258,7 +258,7 @@ Compare all models visually:
 ```python
 # Compare baseline and automatic models
 from utils import plot_metric_bar_multi
-plot_metric_bar_multi(dfs=[metrics_sf_models, metrics_base])
+plot_metric_bar_multi(dfs=[metrics_sf_models, metrics_base], metric='mase')
 ```
 
 ![Model Comparison](/images/statsforecast-automatic-model-selection/model-comparison-bar-chart.svg)
@@ -333,7 +333,7 @@ AutoARIMA was selected as the best model for 3 out of 8 series, while AutoETS an
 
 ## Best Model Forecasts with Prediction Intervals
 
-After selecting the best model for each series, generate final forecasts with uncertainty intervals:
+After selecting the best model for each series, let's generate final forecasts with uncertainty intervals:
 
 ```python
 # Extract forecasts from the best model for each series
@@ -346,9 +346,12 @@ plot_series(df_train, eval_best_sf, level=[90], max_insample_length=5*24, max_id
 
 ![Best Model Forecasts with Intervals](/images/statsforecast-automatic-model-selection/best-model-forecasts.svg)
 
-These are the forecasts from the best model for each series. The shaded bands represent 90% prediction intervals. The interval widths vary across series - tighter bands mean more confidence, wider bands mean more uncertainty.
+These are the forecasts from the best model for each series. The shaded bands represent 90% prediction intervals:
 
-Evaluate the best model ensemble:
+- **Tighter bands**: More confidence in the forecast
+- **Wider bands**: More uncertainty in the forecast
+
+Calculate metrics for the best model selection approach:
 
 ```python
 # Calculate metrics for best model selection
@@ -358,23 +361,13 @@ metrics_sf_best = evaluate(
     metrics=metrics,
     agg_fn='mean',
 ).set_index('metric')
-
-metrics_sf_best
 ```
 
-|       | best_statsforecast_model |
-|-------|--------------------------|
-| mase  | 0.710028                 |
-| rmse  | 66.165369                |
-| smape | 0.057053                 |
-
-Selecting the best model for each series improves MASE from 0.73 (best single model) to 0.71, and reduces SMAPE to 0.057. This per-series optimization delivers measurable accuracy gains.
-
-Compare all approaches:
+Compare baseline, individual models, and best model selection:
 
 ```python
 # Compare baseline, individual models, and best selection
-plot_metric_bar_multi(dfs=[metrics_sf_models, metrics_base, metrics_sf_best])
+plot_metric_bar_multi(dfs=[metrics_sf_models, metrics_base, metrics_sf_best], metric='mase')
 ```
 
 ![Complete Model Comparison](/images/statsforecast-automatic-model-selection/complete-comparison.svg)
@@ -393,6 +386,12 @@ Why TimeGPT?
 
 ### Setup TimeGPT Client
 
+First, install the Nixtla package:
+
+```bash
+pip install nixtla
+```
+
 Initialize the TimeGPT client using an API key:
 
 ```python
@@ -409,11 +408,14 @@ api_key = os.getenv("NIXTLA_API_KEY")
 nixtla_client = NixtlaClient(api_key=api_key)
 ```
 
-This connects to Nixtla's cloud service where the foundation model runs. The setup is simple - just import and authenticate.
+This connects to Nixtla's cloud service where the foundation model runs. The setup is simple: just import and authenticate.
 
 ### Zero-Shot Forecast with TimeGPT
 
-Generate forecasts without any fine-tuning, using the pre-trained model as-is:
+Zero-shot forecasting means using the pre-trained model directly without any training on your specific data. This approach saves time by eliminating the training step while still leveraging patterns learned from millions of diverse time series.
+
+The code below generates 48-hour forecasts with 80% and 90% prediction intervals in a single API call:
+
 
 ```python
 # Simple zero-shot TimeGPT forecast
@@ -423,13 +425,23 @@ fcst_timegpt = nixtla_client.forecast(
     freq='H',     # hourly frequency
     level=['80', '90']
 )
+fcst_timegpt.head()
 ```
 
-The API handles everything automatically. We request 48-hour forecasts with both 80% and 90% prediction intervals.
+|   | unique_id | ds                  | TimeGPT    | TimeGPT-hi-80 | TimeGPT-hi-90 | TimeGPT-lo-80 | TimeGPT-lo-90 |
+|---|-----------|---------------------|------------|---------------|---------------|---------------|---------------|
+| 0 | H165      | 2024-01-30 05:00:00 | 20.847889  | 26.581411     | 27.379568     | 15.114367     | 14.316211     |
+| 1 | H165      | 2024-01-30 06:00:00 | 25.407340  | 34.487167     | 34.707325     | 16.327513     | 16.107355     |
+| 2 | H165      | 2024-01-30 07:00:00 | 49.702620  | 75.707430     | 79.375336     | 23.697813     | 20.029905     |
+| 3 | H165      | 2024-01-30 08:00:00 | 134.175630 | 152.434750    | 153.382050    | 115.916504    | 114.969210    |
+| 4 | H165      | 2024-01-30 09:00:00 | 366.113680 | 379.054170    | 381.407230    | 353.173200    | 350.820130    |
+
 
 ### Fine-Tuned Forecast with TimeGPT
 
-Add fine-tuning to adapt the pre-trained model to our specific data:
+Fine-tuning adapts the pre-trained model to your specific data patterns by running additional training steps on your dataset. This often improves accuracy for domain-specific patterns that differ from the general patterns TimeGPT learned during pre-training.
+
+To fine-tune TimeGPT, simply add the `finetune_steps` parameter. Here we use 10 finetune steps:
 
 ```python
 # Add finetune steps to make it more accurate
@@ -442,18 +454,61 @@ fcst_timegpt_ft = nixtla_client.forecast(
 )
 ```
 
-With 10 fine-tuning steps, TimeGPT adjusts its parameters based on our 8 series. This often improves accuracy on domain-specific data.
 
-### Evaluate TimeGPT Performance
+### TimeGPT-2 - The Latest Foundation Model
 
-Compare zero-shot and fine-tuned TimeGPT variants:
+[TimeGPT-2](https://www.nixtla.io/blog/timegpt-2-announcement), Nixtla's latest foundation model, brings enhanced forecasting accuracy and performance improvements. The model is currently available by invitation only.
+
+To use TimeGPT-2, initialize the client with the preview API endpoint:
 
 ```python
-# Evaluate both TimeGPT variants
+# Initialize client with TimeGPT-2 credentials
+nixtla_client = NixtlaClient(
+    api_key=api_key,
+    base_url='https://api-preview.nixtla.io'
+)
+```
+
+To use TimeGPT-2, simply add the `model='timegpt-2'` parameter to the API call:
+
+```python
+# Forecast with TimeGPT-2
+fcst_timegpt_2 = nixtla_client.forecast(
+    df=df_train,
+    h=48,
+    freq='H',
+    level=['80', '90'],
+    model='timegpt-2'
+)
+
+# Merge with test data
+eval_tgpt_2 = df_test.merge(fcst_timegpt_2, on=['unique_id', 'ds'])
+```
+
+Visualize TimeGPT-2 predictions:
+
+```python
+# Plot TimeGPT-2 forecasts
+fig = nixtla_client.plot(
+    df_train,
+    eval_tgpt_2,
+    level=['80', '90'],
+    max_insample_length=5*24,
+    max_ids=4
+)
+```
+
+![TimeGPT-2 Forecasts](/images/statsforecast-automatic-model-selection/timegpt-2-forecasts.svg)
+
+Compare the performance of the different TimeGPT variants:
+
+```python
+# Evaluate all three TimeGPT variants
 metrics_tgpt = evaluate(
     df=df_test
         .merge(fcst_timegpt.rename(columns={'TimeGPT': 'TimeGPT_zero_shot'}), on=['unique_id', 'ds'])
-        .merge(fcst_timegpt_ft.rename(columns={'TimeGPT': 'TimeGPT_finetuned'}), on=['unique_id', 'ds']),
+        .merge(fcst_timegpt_ft.rename(columns={'TimeGPT': 'TimeGPT_finetuned'}), on=['unique_id', 'ds'])
+        .merge(fcst_timegpt_2.rename(columns={'TimeGPT': 'TimeGPT_2'}), on=['unique_id', 'ds']),
     train_df=df_train,
     metrics=metrics,
     agg_fn='mean',
@@ -462,52 +517,70 @@ metrics_tgpt = evaluate(
 metrics_tgpt
 ```
 
-|       | TimeGPT_zero_shot | TimeGPT_finetuned |
-|-------|-------------------|-------------------|
-| mase  | 1.119019          | 0.831670          |
-| rmse  | 53.228989         | 53.755869         |
-| smape | 0.056423          | 0.064954          |
+|       | TimeGPT_zero_shot | TimeGPT_finetuned | TimeGPT_2 |
+|-------|-------------------|-------------------|-----------|
+| mase  | 1.119019          | 0.831670          | 0.428494  |
+| rmse  | 53.228989         | 53.755869         | 27.029288 |
+| smape | 0.056423          | 0.064954          | 0.035599  |
 
-Both TimeGPT variants achieve excellent performance. Zero-shot gets MASE of 1.12, and fine-tuning improves it to 0.83. These results are competitive with the best StatsForecast models.
+The progression shows dramatic improvements:
 
-Visualize TimeGPT predictions:
-
-```python
-# Plot TimeGPT forecasts
-eval_tgpt_ft = df_test.merge(fcst_timegpt_ft, on=['unique_id', 'ds'])
-nixtla_client.plot(df_train, eval_tgpt_ft, level=['80', '90'], max_insample_length=5*24, max_ids=4)
-```
-
-![TimeGPT Forecasts](/images/statsforecast-automatic-model-selection/timegpt-forecasts.svg)
-
-The TimeGPT forecasts show smooth, reasonable predictions that capture the underlying patterns. The nested prediction intervals (80% inside 90%) show increasing uncertainty further into the future.
+- **Zero-shot baseline**: TimeGPT-1 achieves MASE of 1.12
+- **Fine-tuning benefit**: Reduces error to 0.83 (26% improvement)
+- **TimeGPT-2 breakthrough**: Achieves 0.43 (48% better than fine-tuned)
+- **No tuning required**: TimeGPT-2 delivers superior accuracy out-of-the-box
 
 ### Final Model Comparison
 
-Compare all approaches including TimeGPT:
+Compare all approaches including statistical models and TimeGPT-2:
 
 ```python
-# Compare all models including TimeGPT
-plot_metric_bar_multi(dfs=[metrics_base, metrics_sf_best, metrics_tgpt])
+# Compare all models including TimeGPT-2
+plot_metric_bar_multi(dfs=[metrics_base, metrics_sf_best, metrics_tgpt], metric='mase')
 ```
 
 ![Final Comparison with TimeGPT](/images/statsforecast-automatic-model-selection/final-comparison-timegpt.svg)
 
-TimeGPT fine-tuned (MASE 0.83) comes close to the best StatsForecast model selection (MASE 0.71). Even simple SeasonalNaive (MASE 0.99) beats Naive significantly (MASE 8.03). Model choice matters enormously - the right model can reduce errors by over 10x.
+The results show both accuracy and computational performance:
+
+| Model | MASE | Inference Time |
+|-------|------|----------------|
+| TimeGPT-2 | 0.43 | 2.5 s |
+| Best StatsForecast | 0.71 | 180 s |
+| TimeGPT-1 (10 finetune steps) | 0.83 | 1.7 s |
+| SeasonalNaive | 0.99 | - |
+| Naive | 8.03 | - |
+
+**Key findings:**
+
+- **TimeGPT-2 dominates**: Best accuracy (MASE 0.43) while being 72x faster than StatsForecast
+- **StatsForecast trades time for interpretability**: Strong results (MASE 0.71) with transparent statistical models
+- **Fine-tuning is efficient**: Improves TimeGPT-1 from 1.12 to 0.83 with only 0.5 seconds overhead
+- **Model choice matters**: Proper selection reduces errors by 18x compared to Naive baseline
 
 ## Conclusion
 
-StatsForecast's automatic model selection eliminates hours of manual model testing and parameter tuning. By fitting multiple statistical models simultaneously and using cross-validation to select the best performer for each series, you get:
+This article demonstrated two powerful approaches to automatic forecasting:
 
-- **Automatic parameter optimization** across ARIMA, ETS, CES, and Theta models
-- **Per-series model selection** through time series cross-validation
-- **Consistent evaluation** with proper temporal splitting
-- **Prediction intervals** for uncertainty quantification
+| Aspect | TimeGPT | StatsForecast |
+|--------|---------|---------------|
+| **Type** | Foundation model | Classical statistical models |
+| **Speed** | Fast, no training required: zero-shot or fine-tuning via API | Medium, requires fitting models locally or in batch |
+| **Scalability** | Handles thousands of series instantly via API, no need for local compute | Scales efficiently with local compute using parallel processing (n_jobs, ray) |
+| **Accuracy** | High accuracy result from strong generalization, especially for complex, noisy, or non-seasonal data | Accurate for structured, seasonal, or stable patterns |
 
-Stop testing statistical models manually. With StatsForecast, you can evaluate multiple algorithms, identify the best performer for each time series, and generate reliable forecasts with confidence intervals.
+**Choose TimeGPT when you:**
+- Need instant forecasts with minimal setup
+- Want to leverage foundation model intelligence for complex patterns
+- Prefer API-based forecasting without local infrastructure
+
+**Choose StatsForecast when you:**
+- Prefer interpretable statistical methods
+- Need full control over model selection
+- Want to run everything locally with transparent optimization
 
 ## Related Resources
 
-For foundation model approaches that eliminate parameter tuning entirely, explore [TimeGPT's zero-shot forecasting capabilities](https://nixtla.github.io/web/blog/timegpt_in_snowflake) that achieve strong accuracy without cross-validation.
+For SQL-native forecasting in Snowflake, see [TimeGPT in Snowflake](https://www.nixtla.io/blog/timegpt_in_snowflake) to generate forecasts directly in your data warehouse without Python or ML infrastructure.
 
-When working with machine learning methods, our [automated feature engineering guide with MLforecast](https://nixtla.github.io/web/blog/automated-time-series-feature-engineering-with-mlforecast) complements StatsForecast's statistical models with gradient boosting approaches.
+For automated feature engineering and gradient boosting methods, see our [MLforecast guide](https://www.nixtla.io/blog/automated-time-series-feature-engineering-with-mlforecast) which complements the statistical modeling approaches covered in this article.
