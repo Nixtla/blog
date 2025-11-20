@@ -49,7 +49,7 @@ In the following part, **we'll describe exactly this scenario**: we will simulat
 
 Let's get started!
 
-# 2. Data Generation
+## Data Generation
 
 ### Chirplet Wave
 
@@ -400,7 +400,7 @@ plt.show()
 
 Now that we have injected the anomaly, let's see if we are going to be able to detect it.
 
-# 4. Anomaly Detection through StatsForecast
+## Anomaly Detection through StatsForecast
 
 ### Anomaly Detection Algorithm
 
