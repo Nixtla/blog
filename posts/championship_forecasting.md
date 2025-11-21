@@ -18,22 +18,26 @@ publication_date: 2025-01-12
 
 ## Introduction
   
-If you follow any championship-based sport (like football, soccer, or basketball), you know that the end of the season is an extremely intense moment. Teams spend their entire season preparing for the final push, and it often happens that an entirely different tournament emerges in the last few matches. Some teams maintain their winning streak, others unexpectedly surge to the top, while some teams collapse and either give away championships or face relegation.
+In the real world, we often face forecasting problems in environments where several teams, departments, or companies are competing and building up their performance over time. Think about how sales branches stack up revenue throughout the year, how factories compare production outputs, or how bids play out during a procurement cycle. In all these settings, we’re not just interested in the numbers themselves, but in how each competitor measures up against the rest as the results accumulate.
 
-However, the end of the championship is rarely completely unexpected if you look at the bigger picture of the entire tournament. Typically, teams establish their **own patterns** throughout the season: some **consistently strong**, others **consistently struggling**. These patterns can be observed and analyzed from the **cumulative data** of the championship.
+**Championship tournaments** provide an excellent case study for this pattern. Unlike simple time series where we forecast a single variable in isolation, championship-style data creates unique challenges:
 
-In this blog post, we'll explore how to use **Nixtla's forecasting algorithms** to predict the final matches of a championship by analyzing the **cumulative points time series** for each team. This approach allows us to leverage the **entire season's performance data** to forecast how teams will perform in their remaining matches.
+- **Panel structure**: Multiple entities (teams, plants, branches) tracked simultaneously
+- **Cumulative metrics**: Performance compounds over time (points, sales, production)
+- **Fixed horizon**: A predetermined endpoint where final rankings matter
+- **Historical patterns**: Entities establish consistent performance trajectories
+
+These characteristics appear across industries. In manufacturing, production lines accumulate defect rates or output volumes over quarters. In finance, regional offices accumulate sales targets. In logistics, distribution centers accumulate delivery performance metrics. Understanding how to forecast these **cumulative, competitive time series** has broad applications beyond sports.
+
+In this blog post, we'll use a championship tournament as our example system to demonstrate how **Nixtla's forecasting algorithms** can predict final outcomes by analyzing **cumulative performance time series**. The same methodology applies whenever you need to forecast how multiple entities will perform relative to each other over a defined period.
 
 To accomplish this, we'll follow a systematic approach:
 
-1. **Setup Championship**: Define teams and match structure
-2. **Generate Championship Schedule**: Create a complete tournament calendar
-3. **Simulate Results**: Generate match outcomes with team strengths
-4. **Track Results over Championship**: Monitor cumulative points across all matches
-5. **Hold Out Last N Matches**: Keep final matches for evaluation
-6. **Train Forecast Model**: Fit the model on matches 1 to T−N using **StatsForecast** and **AutoARIMA**
-7. **Predict Last N Outcomes**: Generate forecasts for the remaining matches
-8. **Evaluate and Visualize Results**: Compare predictions with actual outcomes and assess forecast accuracy
+1. **Prepare the Data**: Generate a simulated championship with cumulative points time series for each team
+2. **Hold Out Last N Matches**: Keep final matches for evaluation
+3. **Train Forecast Model**: Fit the model on matches 1 to T−N using **StatsForecast** and **AutoARIMA**
+4. **Predict Last N Outcomes**: Generate forecasts for the remaining matches
+5. **Evaluate and Visualize Results**: Compare predictions with actual outcomes and assess forecast accuracy
 
 The setup is summarized in the following chart:
 
