@@ -176,129 +176,16 @@ forecast_raw = sf.predict(h=forecast_horizon, level=[95])
 
 ### 5. Evaluate the Results
 
+The championship forecast outputs are stored in `forecast_raw`. To properly evaluate and visualize our predictions, we need two key steps:
 
-The championship forecast outputs are stored in `forecast_raw`. Let's use the following helpers to display the quality of our predictions.
+**Step 1: Round forecasts to valid integer points**
 
+Since championship points can only be integers (0, 1, or 3 per match), we need to round all forecast values:
 
 ```python
-import matplotlib.pyplot as plt
-import pandas as pd
-from typing import Optional, Sequence
-
-def _conform_forecast_df(
-    fcst: pd.DataFrame,
-    team: str,
-    ds_col: str = "ds",
-    mean_col: Optional[str] = None,
-    lo_col: Optional[str] = None,
-    hi_col: Optional[str] = None,
-    model_name: Optional[str] = None,
-    level: Optional[int] = None,
-) -> pd.DataFrame:
-    """
-    Normalize a forecast frame to columns: ds, yhat, yhat_lo, yhat_hi for a single team.
-
-    Works with:
-      - Generic frames already named: 'yhat', 'yhat_lo', 'yhat_hi'
-      - StatsForecast output (wide): columns like ['AutoARIMA', 'AutoARIMA-lo-80', 'AutoARIMA-hi-80']
-      - Any custom naming if you pass mean_col/lo_col/hi_col explicitly.
-    """
-    g = fcst[fcst["unique_id"] == team].copy()
-
-    # If user specified columns, use them.
-    if mean_col:
-        g = g.rename(columns={mean_col: "yhat"})
-        if lo_col: g = g.rename(columns={lo_col: "yhat_lo"})
-        if hi_col: g = g.rename(columns={hi_col: "yhat_hi"})
-    else:
-        # Try common names
-        if "yhat" in g.columns:
-            pass
-        else:
-            # StatsForecast wide format
-            # Guess model name if not provided: take the first non-id/ds column
-            if model_name is None:
-                candidate_cols = [c for c in g.columns if c not in {"unique_id", ds_col}]
-                model_name = candidate_cols[0] if candidate_cols else None
-            # Guess level if not provided: prefer 95, fall back to 80
-            if level is None:
-                level = 95 if f"{model_name}-lo-95" in g.columns else (80 if f"{model_name}-lo-80" in g.columns else None)
-
-            mapping = {}
-            if model_name and model_name in g.columns:
-                mapping[model_name] = "yhat"
-            if model_name and level is not None:
-                lo_name = f"{model_name}-lo-{level}"
-                hi_name = f"{model_name}-hi-{level}"
-                if lo_name in g.columns: mapping[lo_name] = "yhat_lo"
-                if hi_name in g.columns: mapping[hi_name] = "yhat_hi"
-            g = g.rename(columns=mapping)
-
-    keep = ["unique_id", ds_col, "yhat"] + [c for c in ["yhat_lo", "yhat_hi"] if c in g.columns]
-    g = g[keep].rename(columns={ds_col: "ds"})
-    return g
-
-def plot_team_cumpoints_with_forecast(
-    ts_df: pd.DataFrame,
-    team: str,
-    fcst_df: Optional[pd.DataFrame] = None,
-    *,
-    ds_col: str = "ds",
-    y_col: str = "y",
-    mean_col: Optional[str] = None,
-    lo_col: Optional[str] = None,
-    hi_col: Optional[str] = None,
-    model_name: Optional[str] = None,
-    level: Optional[int] = None,
-    title: Optional[str] = None,
-    show: bool = True,
-):
-    # Actuals (all available ds for the team)
-    act = ts_df.loc[ts_df["unique_id"] == team, [ds_col, y_col]].sort_values(ds_col).rename(
-        columns={ds_col: "ds", y_col: "y"}
-    )
-
-    fig, ax = plt.subplots(figsize=(8, 4.5))
-    ax.plot(act["ds"].values, act["y"].values, marker="o", linewidth=1.5, label="Actual cum. points")
-
-    # Optional forecast
-    if fcst_df is not None and len(fcst_df):
-        g = _conform_forecast_df(
-            fcst_df, team,
-            ds_col=ds_col, mean_col=mean_col, lo_col=lo_col, hi_col=hi_col,
-            model_name=model_name, level=level
-        )
-        # Shade interval if present
-        if {"yhat_lo", "yhat_hi"}.issubset(g.columns):
-            ax.fill_between(g["ds"].values, g["yhat_lo"].values, g["yhat_hi"].values, alpha=0.2, label="Prediction interval", color = 'lime')
-
-        ax.plot(g["ds"].values, g["yhat"].values, linestyle="--", linewidth=1.8, label="Forecast mean", color = 'lime')
-
-        # Draw a vertical line at the last observed ds (split point)
-        if len(act):
-            split = 36
-            ax.axvline(split, linestyle=":", alpha=0.6)
-            ax.text(split, ax.get_ylim()[1], " Train/Forecast Split", va="top", ha="left", fontsize=9)
-
-    ax.set_xlabel("Match Day Number", fontsize = 15)
-    ax.set_ylabel("Championship Points", fontsize = 15)
-    ax.set_title(title or f"{team}: Championship Points & Forecast", fontsize = 15)
-    ax.grid(True, alpha=0.25)
-    ax.legend(loc="best", fontsize = 15)
-    if show:
-        plt.savefig('/Users/pieropaialunga/Desktop/blog/images/championship_forecasting/title-image.svg')
-        plt.show()
-    return fig, ax
-
-
 def round_forecast_to_valid_points(forecast_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Round forecast values to integers since football points must be whole numbers.
-    
-    In football, you can only earn 0, 1 (draw), or 3 (win) points per match.
-    Therefore, cumulative points must always be integers.
-    
-    This function rounds all forecast columns (mean, lower/upper bounds) to the nearest integer.
+    Round forecast values to integers since points must be whole numbers.
     """
     df = forecast_df.copy()
     for col in df.columns:
@@ -306,6 +193,16 @@ def round_forecast_to_valid_points(forecast_df: pd.DataFrame) -> pd.DataFrame:
             df[col] = df[col].round().astype(int)
     return df
 ```
+
+**Step 2: Visualize forecasts with actual results**
+
+For visualization, we'll use helper functions that plot cumulative points over time with prediction intervals. The plotting logic handles:
+- Extracting team-specific data from panel forecasts
+- Overlaying actual vs. predicted cumulative points
+- Displaying 95% prediction intervals
+- Marking the train/test split point
+
+> **Plotting utilities**: For the complete plotting functions (`plot_team_cumpoints_with_forecast` and helpers), see the [championship_forecasting.ipynb notebook](../examples/notebooks/championship_forecasting.ipynb).
 
 And display the results using the following block of code:
 
@@ -375,14 +272,14 @@ Thanks to the power of StatsForecast and AutoARIMA, we are able to predict the f
 
 Let's recap what we covered in this post:
 
-- **We built a synthetic championship simulation** that mimics real-world tournament dynamics: teams with different strength levels, a complete double round-robin schedule, and match results generated using a Poisson model that accounts for team strengths and home advantage.
+- **Panel time series forecasting enables multi-entity predictions**: By structuring our data as a panel (multiple entities tracked over time), we can forecast outcomes for all teams simultaneously using a single modeling pipeline. This approach scales efficiently to hundreds of entities—whether teams, branches, plants, or regions.
 
-- **We transformed match results into cumulative points time series** for each team. By tracking cumulative points across matchdays, we created a panel dataset where each team's performance evolves over time, perfect for time series forecasting.
+- **Cumulative metrics create predictable patterns**: When performance accumulates over time (points, sales, production output), historical trajectories become informative for future outcomes. Teams that establish strong early-season patterns tend to maintain them, making cumulative time series particularly suitable for forecasting competitive rankings.
 
-- **We trained a forecasting model on historical performance** by holding out the final 3 matchdays from our 38-match season. This allowed us to use matches 1-35 for training and evaluate our predictions on the actual final results.
+- **AutoARIMA automates model selection**: Rather than manually tuning ARIMA parameters for each entity, StatsForecast's AutoARIMA automatically identifies the optimal model configuration per team. This automation is crucial when forecasting across many entities simultaneously, saving time while maintaining forecast accuracy.
 
-- **We leveraged StatsForecast and AutoARIMA** to automatically select and fit the best ARIMA model for each team's cumulative points trajectory. The model generated point forecasts along with 95% prediction intervals, giving us both expected outcomes and uncertainty ranges.
+- **Prediction intervals quantify uncertainty**: The 95% prediction intervals generated by our model provide not just point forecasts but also confidence ranges. This is essential for decision-making—knowing that a team will finish with 85-90 points is more actionable than a single-point estimate of 87 points.
 
-- **We validated the approach** by comparing predictions with actual results. The forecasts captured team performance patterns well, with most predictions within 1-2 points of the actual final standings, demonstrating that cumulative points follow predictable time series patterns throughout a championship.
+- **Historical holdout validation demonstrates practical performance**: By training on matchdays 1-35 and predicting the final 3 matchdays, we simulated a realistic forecasting scenario, validating that this approach works when you need to forecast competitive outcomes before a period ends.
 
-Overall, this workflow shows how synthetic championship data, combined with Nixtla's forecasting models, can provide accurate predictions for the final matches of a tournament. By analyzing the cumulative points time series, we can forecast not just individual match outcomes, but the entire final standings, helping teams and fans understand where their championship race is heading before the final whistle.
+This forecasting methodology extends beyond sports to any scenario where multiple entities compete on cumulative metrics over a fixed horizon: quarterly sales targets across regions, monthly production goals across facilities, or seasonal performance metrics across departments. The combination of panel data structure, cumulative metric tracking, and automated model selection with StatsForecast provides a powerful framework for forecasting competitive, multi-entity systems in any industry.
