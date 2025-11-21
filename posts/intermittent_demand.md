@@ -89,6 +89,27 @@ To understand the demand patterns, we plot the time series data.
 
 ![](/images/intermittent_demand/sales_plot.svg)
 
+```chart
+{
+  "id": "chart-1",
+  "title": "Intermittent Demand",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target (y)"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Data",
+      "type": "line"
+    }
+  ]
+}
+```
+
 The plot reveals the intermittent nature of the demand, with many periods showing zero sales.
 
 ## Transforming the Data
@@ -142,6 +163,32 @@ ax
 ```
 
 ![](/images/intermittent_demand/compared_plot.svg)
+
+```chart
+{
+  "id": "chart-2",
+  "title": "Original vs Log-Transformed Comparison",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target (y)"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Original Sales",
+      "type": "line"
+    },
+    {
+      "column": "series_type",
+      "name": "Transformed Sales",
+      "type": "line"
+    }
+  ]
+}
+```
 
 The plot shows a clear distinction between the original and log-transformed sales series for FOODS_1_001. The original data has sharp peaks and frequent zero values, indicating highly volatile demand.
 

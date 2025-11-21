@@ -351,6 +351,33 @@ The table below shows the MAPE for all forecast methods. Lower MAPE values indic
 
 ![forecast_accuracy_mape_by_model](/images/timegpt_in_snowflake/forecast_accuracy_mape_by_model.svg)
 
+```chart
+{
+  "id": "chart-1",
+  "title": "Forecast Accuracy (MAPE) by Model",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "model"
+  },
+  "yAxis": {
+    "label": "MAPE"
+  },
+  "series": [
+    {
+      "column": "mape",
+      "type": "bar",
+      "name": "MAPE",
+      "color": "chart-muted",
+      "highlight": {
+        "column": "isHighlight",
+        "color": "chart-3"
+      }
+    }
+  ],
+  "showLabels": true
+}
+```
+
 We can see that:
 
 - TimeGPT Long Horizon with fine-tuning achieves the best accuracy at 7.8% MAPE
@@ -371,6 +398,33 @@ We also measured how long each method took to train and forecast across 10 time 
 | Snowflake Fast        | 1340       |
 
 ![runtime_performance_by_model](/images/timegpt_in_snowflake/runtime_performance_by_model.svg)
+
+```chart
+{
+  "id": "chart-2",
+  "title": "Runtime Performance by Model",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "model"
+  },
+  "yAxis": {
+    "label": "Time (seconds)"
+  },
+  "series": [
+    {
+      "column": "time_sec",
+      "type": "bar",
+      "name": "MAPE",
+      "color": "chart-muted",
+      "highlight": {
+        "column": "isHighlight",
+        "color": "chart-3"
+      }
+    }
+  ],
+  "showLabels": true
+}
+```
 
 The table shows that:
 

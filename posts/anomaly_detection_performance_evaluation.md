@@ -145,6 +145,34 @@ plot_normal_and_anomalous_signal(anomaly_data['normal_signal'], anomaly_data['an
 
 ![Anomaly Example](/images/anomaly_detection_performance_evaluation/temp_22_0.svg)
 
+```chart
+{
+  "id": "chart-1",
+  "title": "Normal vs Anomalous Signal Comparison",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Temperature [y]"
+  },
+  "series": [
+    {
+      "column": "normal_signal",
+      "name": "Non anomalous signal",
+      "type": "line",
+      "zIndex": 5
+    },
+    {
+      "column": "anomalous_signal",
+      "name": "Anomalous signal",
+      "type": "line",
+      "zIndex": 3
+    }
+  ]
+}
+```
+
 The plot shows the use of the anomaly injector function:
 
 - The top subplot shows a clean time series (white) and the same time series with a synthetic anomaly injected (lime). The two timeseries are completely superimposed except for the sharp spike added around time index 500, clearly standing out from the regular pattern.
@@ -205,6 +233,49 @@ anomaly_calibrator.plot_anomaly_detection()
 ```
 
 ![Anomaly Example](/images/anomaly_detection_performance_evaluation/temp_30_0.svg)
+
+```chart
+{
+  "id": "chart-3",
+  "title": "Time Series with TimeGPT Predictions and Anomalies",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Actual Data",
+      "type": "line",
+      "color": "blue-700",
+      "zIndex": 4
+    },
+    {
+      "column": "TimeGPT",
+      "name": "TimeGPT Prediction",
+      "type": "line",
+      "color": "cyan-400",
+      "zIndex": 5,
+      "strokeDashArray": "5,5"
+    },
+    {
+      "type": "area",
+      "columns": {
+        "high": "TimeGPT-hi-99",
+        "low": "TimeGPT-lo-99"
+      },
+      "name": "99% Confidence Interval"
+    }
+  ],
+  "anomalies": {
+    "column": "anomaly",
+    "seriesColumn": "y"
+  }
+}
+```
 
 The plot shows the results of TimeGPT’s anomaly detection:
 

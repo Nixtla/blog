@@ -7,9 +7,23 @@ const PAPAPARSE_CONFIG = {
   dynamicTyping: true,
   skipEmptyLines: true,
   transformHeader: (header) => header.trim(),
-  transform: (value) => {
-    if (value === "true") return true;
-    if (value === "false") return false;
+  transform: (value, header) => {
+    // Trim whitespace
+    if (typeof value === "string") {
+      value = value.trim();
+    }
+
+    // List your actual boolean columns here
+    const booleanColumns = ["anomaly", "is_anomaly", "threshold"];
+
+    // Only convert to boolean for specific columns
+    if (booleanColumns.includes(header)) {
+      const lowerValue =
+        typeof value === "string" ? value.toLowerCase() : String(value);
+      if (lowerValue === "true" || lowerValue === "1") return true;
+      if (lowerValue === "false" || lowerValue === "0") return false;
+    }
+
     return value;
   },
 };
@@ -45,7 +59,10 @@ export default function handler(req, res) {
 
     const markdownContent = fs.readFileSync(mdPath, "utf-8");
     const { frontmatter, content } = parseFrontmatter(markdownContent);
-    const { contentWithPlaceholders, charts } = extractCharts(content, postSlug);
+    const { contentWithPlaceholders, charts } = extractCharts(
+      content,
+      postSlug
+    );
 
     const response = {
       ...frontmatter,
@@ -208,7 +225,12 @@ function extractCharts(content, postSlug) {
 
 function loadChartData(postSlug, dataSource) {
   const sanitizedDataSource = sanitizeDataSource(dataSource);
-  const csvPath = path.join(process.cwd(), "blogCharts", postSlug, sanitizedDataSource);
+  const csvPath = path.join(
+    process.cwd(),
+    "blogCharts",
+    postSlug,
+    sanitizedDataSource
+  );
 
   if (!fs.existsSync(csvPath)) {
     throw new Error(`CSV file not found: ${sanitizedDataSource}`);
@@ -218,7 +240,10 @@ function loadChartData(postSlug, dataSource) {
   const result = Papa.parse(csvContent, PAPAPARSE_CONFIG);
 
   if (result.errors.length > 0) {
-    console.warn(`CSV parsing warnings for ${sanitizedDataSource}:`, result.errors);
+    console.warn(
+      `CSV parsing warnings for ${sanitizedDataSource}:`,
+      result.errors
+    );
   }
 
   return result.data;
