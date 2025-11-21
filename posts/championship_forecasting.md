@@ -47,193 +47,30 @@ It seems like we have a lot to cover. Let's get to it!
 
 ### 1. Setup Championship Teams and Matches
 
-The first thing we need to do is define a "Team" in our Python environment. Here's what we will do:
+To generate realistic championship data, we need to model teams with different strengths and simulate match outcomes. The key concepts are:
 
-1. We will build the `TeamRow` class that will keep track of the team statistics (goals scored, goals given, points, etc.).
-2. Each team will have a strength parameter. The number of goals that a team will score in a match is related to that parameter.
-3. We are giving a slight advantage to the home team versus the away team (usually, that is the case for real-life championships). 
+1. **Team strength parameters**: Each team gets a strength value that influences their scoring ability
+2. **Poisson match model**: Goals are generated using a Poisson distribution based on team strengths
+3. **Home advantage**: Home teams get a slight boost in expected goals
 
-This is the code implementation of the Teams and Matches:
+The core logic uses a Poisson process where expected goals depend on:
+- Team strength differential
+- Home advantage (typically ~0.3 goals)
+- Base scoring rate (~1.35 goals per team)
 
-```python
-from dataclasses import dataclass
-from typing import List, Dict, Tuple
-import random
-import numpy as np
-
-@dataclass
-class TeamRow:
-    pts: int = 0
-    gf: int = 0
-    ga: int = 0
-    gd: int = 0
-    w: int = 0
-    d: int = 0
-    l: int = 0
-
-
-# ----------------------------
-# Strengths helpers
-# ----------------------------
-def make_tiered_strengths(teams: List[str]) -> Dict[str, float]:
-    """
-    Simple, reproducible strengths:
-    - Strong top 6, solid next 6, average next 4, weaker bottom 4.
-    Values are on a free scale; 0 = league-average.
-    """
-    # Customize to taste
-    tiers = (
-        +0.55, +0.45, +0.35, +0.30, +0.25, +0.20,   # top 6
-        +0.10, +0.08, +0.06, +0.04, +0.02,  0.00,   # next 6
-        -0.02, -0.04, -0.06,                       # next 4
-        -0.20, -0.30, -0.45, -0.55                 # bottom 4
-    )
-    tiers = tiers if len(tiers) >= len(teams) else np.linspace(0.6, -0.6, len(teams))
-    strengths = {t: float(tiers[i]) for i, t in enumerate(teams)}
-    return strengths
-
-# ----------------------------
-# Poisson match model
-# ----------------------------
-def _poisson(rng: random.Random, lam: float) -> int:
-    # Knuth's algorithm (fine for this use)
-    L = np.exp(-lam)
-    k, p = 0, 1.0
-    while p > L:
-        k += 1
-        p *= rng.random()
-    return k - 1
-
-def simulate_match(home: str, away: str, strengths: Dict[str, float],
-                   base_rate: float = 1.35, home_adv: float = 0.30,
-                   rng: random.Random = None) -> Tuple[int, int, int, int]:
-    """
-    Returns (home_pts, away_pts, gh, ga)
-    """
-    if rng is None:
-        rng = random.Random()
-    s_h = strengths[home]
-    s_a = strengths[away]
-    xg_h = base_rate * np.exp(home_adv + (s_h - s_a))
-    xg_a = base_rate * np.exp(0.0      + (s_a - s_h))
-    gh = _poisson(rng, xg_h)
-    ga = _poisson(rng, xg_a)
-
-    if gh > ga:
-        return 3, 0, gh, ga
-    elif ga > gh:
-        return 0, 3, gh, ga
-    else:
-        return 1, 1, gh, ga
-```
+Match outcomes translate to points: **Win = 3 points**, **Draw = 1 point**, **Loss = 0 points**.
 
 ### 2. Generate Championship Schedule
 
-Now that we have the matches, we need to build the calendar. This is more straightforward:
-1. We are generating random matches between teams.
-2. We are making sure that if you play away on match number X, you are going to play home in match number X+1 (and vice versa).
-3. Each team needs to play against all the other teams twice.
+For a valid championship, each team must play every other team exactly twice (once home, once away). We use the **circle method** algorithm:
 
-```python
-from dataclasses import dataclass
-from typing import List, Dict
-import random
-from collections import Counter
+1. First half of season: N-1 rounds with rotating pairings
+2. Second half: Mirror of first half (swap home/away)
+3. Validation: Each team plays N-1 home games and N-1 away games
 
-@dataclass(frozen=True)
-class Match:
-    home: str
-    away: str
+For 20 teams, this creates **38 matchdays** with **380 total matches**.
 
-def generate_calendar(teams: List[str], seed: int = 42, shuffle_rounds: bool = True) -> List[List[Match]]:
-    """
-    Circle method (even N):
-    - First half: N-1 rounds; in each round i, pair arr[j] vs arr[-1-j].
-    - Rotate all except the first team: arr = [arr[0], arr[-1], arr[1], ..., arr[-2]]
-    - Second half: mirror (swap home/away) of first half.
-    Guarantees: one match/team/round; 19 home + 19 away per team.
-    """
-    assert len(teams) % 2 == 0, "Number of teams must be even."
-    rng = random.Random(seed)
-    arr = teams[:]
-    rng.shuffle(arr)
-    n = len(arr)
-    half = n // 2
-
-    rounds_first_half: List[List[Match]] = []
-    for r in range(n - 1):
-        # Pair fronts with backs
-        round_pairs = []
-        for j in range(half):
-            a = arr[j]
-            b = arr[-1 - j]
-            # Alternate home/away by round and by pair index to help balance
-            if (r + j) % 2 == 0:
-                round_pairs.append(Match(home=a, away=b))
-            else:
-                round_pairs.append(Match(home=b, away=a))
-        rounds_first_half.append(round_pairs)
-
-        # Rotate all but the first item: [A, B, C, ..., Y, Z] -> [A, Z, B, C, ..., Y]
-        if n > 2:
-            arr = [arr[0]] + [arr[-1]] + arr[1:-1]
-
-    # Mirror for second half (swap home/away)
-    rounds_second_half = [[Match(home=m.away, away=m.home) for m in rnd] for rnd in rounds_first_half]
-
-    # Optionally shuffle within halves to randomize matchday order (keeps validity)
-    if shuffle_rounds:
-        rng.shuffle(rounds_first_half)
-        rng.shuffle(rounds_second_half)
-
-    season = rounds_first_half + rounds_second_half
-    _validate_calendar(season, teams)
-    return season
-
-def _validate_calendar(season: List[List[Match]], teams: List[str]) -> None:
-    n = len(teams)
-    assert len(season) == 2*(n-1), f"Expected {2*(n-1)} rounds, got {len(season)}."
-    # Each round: every team appears once
-    teamset = set(teams)
-    for i, rnd in enumerate(season, 1):
-        seen = set()
-        for m in rnd:
-            assert m.home in teamset and m.away in teamset and m.home != m.away
-            assert m.home not in seen and m.away not in seen, f"Team plays twice in round {i}"
-            seen.add(m.home); seen.add(m.away)
-        assert len(seen) == n, f"Missing teams in round {i}"
-
-    # Home/away exactly n-1 each; each ordered pair exactly once
-    home_counts = Counter()
-    away_counts = Counter()
-    pair_counts = Counter()
-    for rnd in season:
-        for m in rnd:
-            home_counts[m.home] += 1
-            away_counts[m.away] += 1
-            pair_counts[(m.home, m.away)] += 1
-
-    for t in teams:
-        assert home_counts[t] == (n-1), f"{t} home games: {home_counts[t]} != {n-1}"
-        assert away_counts[t] == (n-1), f"{t} away games: {away_counts[t]} != {n-1}"
-
-    for a in teams:
-        for b in teams:
-            if a == b: continue
-            assert pair_counts[(a,b)] == 1, f"Pair {a} vs {b} appears {pair_counts[(a,b)]} times"
-```
-
-Let's give it a quick test:
-
-```python
-teams = [f"Team{i:02d}" for i in range(1, 21)]
-season = generate_calendar(teams, seed = 2,shuffle_rounds=True)
-print(f"Rounds: {len(season)}; Matches total: {sum(len(r) for r in season)} (should be 38 & 380)")
-for md in range(2):
-    print(f"\nMatchday {md+1}")
-    for m in season[md]:
-        print(f"{m.home} vs {m.away}")
-```
+**Sample Output:**
 
 ```
 Rounds: 38; Matches total: 380 (should be 38 & 380)
@@ -244,209 +81,24 @@ Team19 vs Team06
 Team17 vs Team03
 Team02 vs Team13
 Team11 vs Team07
-Team18 vs Team05
-Team15 vs Team09
-Team20 vs Team10
-Team04 vs Team16
-Team14 vs Team01
-
-Matchday 2
-Team08 vs Team19
-Team12 vs Team03
-Team02 vs Team06
-Team17 vs Team07
-Team18 vs Team13
-Team11 vs Team09
-Team20 vs Team05
-Team15 vs Team16
-Team14 vs Team10
-Team04 vs Team01
+...
 ```
 
-### 3. Simulate Results
+### 3. Simulate Results and Build Time Series
 
-To simulate the results, we will use the following helper functions. 
+Now we put everything together: simulate matches, track cumulative statistics, and transform the data into a **panel time series** ready for forecasting.
 
-> *Note!* These functions implement the simulation logic we've already described. They don't introduce any new concepts, just put together the pieces we've already built (teams, matches, strengths, and the Poisson model).
+The key transformation is converting match-by-match results into a **cumulative points time series** for each team:
 
-```python
-import pandas as pd
-import numpy as np
-from typing import List, Dict, Tuple
-from collections import defaultdict
+- **Panel structure**: `unique_id` (team), `ds` (matchday), `y` (cumulative points)
+- **Cumulative metrics**: Points, goals for/against, wins/draws/losses accumulate over time
+- **Train/test split**: Hold out final matchdays for evaluation
 
-# ---------- Run a season AND keep detailed logs ----------
-def simulate_season_with_logs(
-    teams: List[str],
-    season: List[List[Match]],
-    strengths: Dict[str, float],
-    base_rate: float = 1.35,
-    home_adv: float = 0.30,
-    seed: int = 7
-) -> Tuple[Dict[str, TeamRow], List[dict]]:
-    """
-    Returns:
-      - table: final TeamRow per team
-      - logs: list of dicts, one per match, including matchday & per-team stats
-    """
-    rng = random.Random(seed)
-    table: Dict[str, TeamRow] = {t: TeamRow() for t in teams}
-    logs: List[dict] = []
+This structure is exactly what Nixtla's forecasting libraries expect and is analogous to tracking cumulative sales across branches, production output across facilities, or any competitive metric across entities.
 
-    for md, rnd in enumerate(season, 1):
-        for m in rnd:
-            p_h, p_a, gh, ga = simulate_match(m.home, m.away, strengths, base_rate, home_adv, rng)
+> **Full implementation**: For the complete code covering team setup, calendar generation, match simulation, and data transformation, see the [championship_forecasting.ipynb notebook](../examples/notebooks/championship_forecasting.ipynb).
 
-            # update table
-            table[m.home].pts += p_h
-            table[m.away].pts += p_a
-            table[m.home].gf  += gh; table[m.home].ga += ga
-            table[m.away].gf  += ga; table[m.away].ga += gh
-            if p_h == 3:
-                table[m.home].w += 1; table[m.away].l += 1
-            elif p_a == 3:
-                table[m.away].w += 1; table[m.home].l += 1
-            else:
-                table[m.home].d += 1; table[m.away].d += 1
-
-            # match-level logs (both perspectives)
-            logs.append({
-                "matchday": md, "home": m.home, "away": m.away,
-                "gh": gh, "ga": ga,
-                "pts_home": p_h, "pts_away": p_a
-            })
-
-    for t in teams:
-        table[t].gd = table[t].gf - table[t].ga
-
-    return table, logs
-
-# ---------- Build tidy dataframes ----------
-def build_match_df(logs: List[dict]) -> pd.DataFrame:
-    """
-    One row per match with basic info and result labels.
-    """
-    df = pd.DataFrame(logs).sort_values(["matchday", "home"])
-    def result(gh, ga):
-        if gh > ga: return "H"
-        if ga > gh: return "A"
-        return "D"
-    df["result"] = np.where(df["gh"] > df["ga"], "H", np.where(df["ga"] > df["gh"], "A", "D"))
-    return df
-
-def build_team_timeseries_df(teams: List[str], match_df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Panel time series for forecasting.
-    Returns columns:
-      unique_id (team), ds (matchday 1..38), y (cumulative points),
-      pts (points gained that round), gf, ga, gd (cumulative),
-      w,d,l (cumulative), opponent, ha ('H'/'A'), goals_for, goals_against, result
-    """
-    rows = []
-    # Expand to team perspective
-    for _, r in match_df.iterrows():
-        # Home row
-        rows.append({
-            "matchday": r.matchday, "team": r.home, "opponent": r.away, "ha": "H",
-            "goals_for": r.gh, "goals_against": r.ga,
-            "pts": 3 if r.gh > r.ga else (1 if r.gh == r.ga else 0),
-            "result": "W" if r.gh > r.ga else ("D" if r.gh == r.ga else "L")
-        })
-        # Away row
-        rows.append({
-            "matchday": r.matchday, "team": r.away, "opponent": r.home, "ha": "A",
-            "goals_for": r.ga, "goals_against": r.gh,
-            "pts": 3 if r.ga > r.gh else (1 if r.ga == r.gh else 0),
-            "result": "W" if r.ga > r.gh else ("D" if r.ga == r.gh else "L")
-        })
-
-    td = pd.DataFrame(rows).sort_values(["team", "matchday"])
-    # Cumulative aggregates per team
-    td["cum_pts"] = td.groupby("team")["pts"].cumsum()
-    td["cum_gf"]  = td.groupby("team")["goals_for"].cumsum()
-    td["cum_ga"]  = td.groupby("team")["goals_against"].cumsum()
-    td["cum_gd"]  = td["cum_gf"] - td["cum_ga"]
-
-    # Cumulative W/D/L (nice features if needed)
-    td["w1"] = (td["result"] == "W").astype(int)
-    td["d1"] = (td["result"] == "D").astype(int)
-    td["l1"] = (td["result"] == "L").astype(int)
-    td["cum_w"] = td.groupby("team")["w1"].cumsum()
-    td["cum_d"] = td.groupby("team")["d1"].cumsum()
-    td["cum_l"] = td.groupby("team")["l1"].cumsum()
-    td.drop(columns=["w1","d1","l1"], inplace=True)
-
-    # StatsForecast/TimeGPT-ready view
-    ts = td.rename(columns={
-        "team": "unique_id",
-        "matchday": "ds",
-        "cum_pts": "y"
-    })[[
-        "unique_id", "ds", "y",                 # <-- required for many Nixtla pipelines
-        "pts", "opponent", "ha",
-        "goals_for", "goals_against", "result",
-        "cum_gf", "cum_ga", "cum_gd", "cum_w", "cum_d", "cum_l"
-    ]]
-    ts["ds"] = ts["ds"].astype(int)
-    return ts, td
-
-def build_standings_by_round(td: pd.DataFrame) -> pd.DataFrame:
-    """
-    Returns a tidy standings table for every matchday:
-    columns: matchday, pos, team, pts, gd, gf
-    """
-    # pick cumulative metrics at each round
-    snap = td[["matchday", "team", "cum_pts", "cum_gd", "cum_gf"]].copy()
-    snap = snap.rename(columns={"cum_pts":"pts", "cum_gd":"gd", "cum_gf":"gf"})
-    # rank within each round
-    snap["pos"] = snap.groupby("matchday") \
-                      .apply(lambda g: g.sort_values(["pts","gd","gf"], ascending=False)
-                                      .assign(pos=lambda x: np.arange(1, len(x)+1))) \
-                      .reset_index(level=0, drop=True)["pos"]
-    return snap.sort_values(["matchday", "pos"]).reset_index(drop=True)
-
-# ---------- One-shot convenience wrapper ----------
-def prepare_forecasting_data(
-    teams: List[str],
-    season: List[List[Match]],
-    strengths: Dict[str, float],
-    base_rate: float = 1.35,
-    home_adv: float = 0.30,
-    seed: int = 7,
-    cutoff_matchday: int = None
-):
-    """
-    Simulate a season and return:
-      - matches_df: one row per match with scores and results
-      - ts_df: timeseries dataframe ready for forecasting (columns: unique_id, ds, y, ...)
-      - standings_df: positions for every team at every matchday
-    If cutoff_matchday is provided (e.g., 20), trims the data to 1..cutoff_matchday (for training)
-    and returns 'h' = remaining matchdays (38 - cutoff_matchday) as the forecast horizon.
-    """
-    final_table, logs = simulate_season_with_logs(
-        teams, season, strengths, base_rate=base_rate, home_adv=home_adv, seed=seed
-    )
-    matches_df = build_match_df(logs)
-    ts_df, team_detail_df = build_team_timeseries_df(teams, matches_df)
-    standings_df = build_standings_by_round(team_detail_df)
-
-    h = None
-    if cutoff_matchday is not None:
-        ts_df = ts_df[ts_df["ds"] <= cutoff_matchday].copy()
-        standings_df = standings_df[standings_df["matchday"] <= cutoff_matchday].copy()
-        h = 38 - int(cutoff_matchday)
-
-    return {
-        "matches_df": matches_df,      # match results (one row per match)
-        "ts_df": ts_df,                # timeseries for forecasting: unique_id, ds, y (cumulative points)
-        "standings_df": standings_df,  # team rankings at each matchday
-        "h": h                         # forecast horizon (remaining matchdays) if cutoff was used
-    }
-```
-  
-
-
-Now that we have all the ingredients, we can easily simulate the whole championship in a few lines. This is how we run the full simulation: 
+**Running the simulation:** 
 
 
 ```python
