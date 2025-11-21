@@ -65,7 +65,15 @@ export default function handler(req, res) {
     );
 
     const response = {
-      ...frontmatter,
+      title: frontmatter.title || null,
+      author_name: frontmatter.author_name || null,
+      author_image: frontmatter.author_image || null,
+      author_position: frontmatter.author_position || null,
+      publication_date: frontmatter.publication_date || null,
+      description: frontmatter.description || null,
+      image: frontmatter.image || null,
+      categories: frontmatter.categories || null,
+      tags: frontmatter.tags || null,
       fileName: postSlug,
       readTimeMinutes: calculateReadTime(content),
       content: contentWithPlaceholders,
