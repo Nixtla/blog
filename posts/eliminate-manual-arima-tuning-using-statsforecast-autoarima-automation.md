@@ -315,7 +315,7 @@ plot_forecasts_with_intervals("electronics")
 
 ![autoarima-forecast-confidence-intervals](/images/eliminate-manual-arima-tuning-using-statsforecast-autoarima-automation/autoarima-forecast-confidence-intervals.svg)
 
-````chart
+```chart
 {
   "id": "chart-1",
   "title": "Electronics Sales Forecast with Confidence Intervals",
@@ -377,7 +377,7 @@ cv_results = sf_auto.cross_validation(
 
 print(f"Cross-validation results shape: {cv_results.shape}")
 cv_results.head()
-````
+```
 
 ```bash
 Cross-validation results shape: (120, 5)
