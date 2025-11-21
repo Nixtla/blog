@@ -90,6 +90,27 @@ nixtla_client.plot(wikipedia)
 
 ![](/images/anomaly_detection/wikipedia_plot.svg)
 
+```chart
+{
+  "id": "chart-1",
+  "title": "Daily Website Traffic with Anomalies",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Actual Data",
+      "type": "line"
+    }
+  ]
+}
+```
+
 The time series spans several years and shows clear seasonal spikes, likely tied to NFL events, alongside irregular, sharp peaks. These mixed patterns make it hard to judge by eye which spikes are expected and which are truly unusual, making TimeGPT essential for accurate anomaly detection.
 
 ## Detect Anomalies with TimeGPT
@@ -127,6 +148,54 @@ nixtla_client.plot(wikipedia, anomalies_df)
 
 ![](/images/anomaly_detection/anomaly_plot.svg)
 
+```chart
+{
+  "id": "chart-2",
+  "title": "Daily Website Traffic with Anomalies",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Actual Data",
+      "type": "line",
+      "color": "blue-700",
+      "zIndex": 5
+    },
+    {
+      "column": "TimeGPT",
+      "name": "TimeGPT Forecast",
+      "type": "line",
+      "color": "cyan-400",
+      "zIndex": 4
+    },
+    {
+      "column": "TimeGPT-hi-99",
+      "name": "Upper Bound (99%)",
+      "type": "line",
+      "color": "zinc-500",
+      "zIndex": 3
+    },
+    {
+      "column": "TimeGPT-lo-99",
+      "name": "Lower Bound (99%)",
+      "type": "line",
+      "color": "zinc-500",
+      "zIndex": 3
+    }
+  ],
+  "anomalies": {
+    "column": "anomaly",
+    "seriesColumn": "y"
+  }
+}
+```
+
 The plot reveals several key insights:
 
 - While many anomalies occur during seasonal peaks, only a few are flagged with green dots, showing that TimeGPT can distinguish expected fluctuations from true outliers.
@@ -158,6 +227,28 @@ nixtla_client.weights_x.plot.barh(
 ```
 
 ![](/images/anomaly_detection/feature_plot.svg)
+
+```chart
+{
+  "id": "chart-3",
+  "title": "Feature Importance Weights",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "weights"
+  },
+  "yAxis": {
+    "label": "Features"
+  },
+  "series": [
+    {
+      "column": "weights",
+      "type": "bar",
+      "color": "bg-rose-500",
+      "horizontal": true
+    }
+  ]
+}
+```
 
 In this plot:
 

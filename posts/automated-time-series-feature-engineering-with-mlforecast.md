@@ -283,6 +283,37 @@ plt.show()
 
 ![Rolling vs Expanding Mean Patterns](/images/stop-manual-feature-engineering-mlforecast/rolling-vs-expanding-patterns.svg)
 
+```chart
+{
+  "id": "chart-1",
+  "title": "Rolling Mean vs Expanding Mean Comparison",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Sales Units"
+  },
+  "series": [
+    {
+      "column": "original_sales",
+      "name": "Original Sales",
+      "type": "line"
+    },
+    {
+      "column": "rolling_7_mean",
+      "name": "7 Day Rolling Mean",
+      "type": "line"
+    },
+    {
+      "column": "expanding_mean",
+      "name": "Expanding Mean",
+      "type": "line"
+    }
+  ]
+}
+```
+
 The visualization shows how each transform reveals different patterns:
 
 - **Original sales** (white): Shows all daily fluctuations and noise
@@ -525,6 +556,37 @@ plt.show()
 ```
 
 ![MLforecast Predictions vs Actual Sales](/images/stop-manual-feature-engineering-mlforecast/automated-predictions-vs-actual.svg)
+
+```chart
+{
+  "id": "chart-2",
+  "title": "MLforecast Predictions vs Actual Sales",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": ""
+  },
+  "series": [
+    {
+      "column": "actual_sales",
+      "name": "Actual Sales",
+      "type": "line"
+    },
+    {
+      "column": "mlforecast_predictions",
+      "name": "MLforecast Predictions",
+      "type": "line"
+    }
+  ],
+  "thresholds": {
+    "enabled": true,
+    "column": "threshold",
+    "label": "Anomaly Time Step"
+  }
+}
+```
 
 The visualization shows how MLforecast's automated predictions align with actual sales patterns. The model successfully captures trends and seasonality using only the automatically generated features.
 

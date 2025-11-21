@@ -1,0 +1,5 @@
+model,time_sec,isHighlight
+TimeGPT LH: 0 Shot,19,true
+TimeGPT LH: Finetuned,26,true
+Snowflake Fast,1340,false
+Snowflake Best,2499,false

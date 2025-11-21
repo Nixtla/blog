@@ -99,6 +99,48 @@ data.plot_target_and_baseline()
 
 ![png](/images/optimal_baseline/OBS_Notebook_5_0.svg)
 
+```chart
+{
+  "id": "chart-1",
+  "title": "Target Segment City = Los Angeles, Segment Class = day, Segment Index = 377",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "hour"
+  },
+  "yAxis": {
+    "label": "Temperature (K)"
+  },
+  "series": [
+    {
+      "column": "target_curve",
+      "name": "Target Time Series",
+      "type": "line"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-2",
+  "title": "Remaining Part of the Time Series",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "hour"
+  },
+  "yAxis": {
+    "label": "Temperature (K)"
+  },
+  "series": [
+    {
+      "column": "datetime",
+      "name": "Data",
+      "type": "line"
+    }
+  ]
+}
+```
+
 This plot shows how OBS identifies anomalies by comparing a target segment to historical data:
 
 - The top subplot shows the target day for Los Angeles. There's a noticeable dip followed by a sharp rise in temperature, which may indicate an unusual event.
@@ -158,6 +200,53 @@ data.plot_target_and_optimal_baseline()
 
 ![png](/images/optimal_baseline/OBS_Notebook_13_0.svg)
 
+```chart
+{
+  "id": "chart-3",
+  "title": "Optimal Baseline And Target",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "hour"
+  },
+  "yAxis": {
+    "label": "Temperature (K)"
+  },
+  "series": [
+    {
+      "column": "target_curve",
+      "name": "Target Time Series",
+      "type": "line"
+    },
+    {
+      "column": "optimal_baseline",
+      "name": "Optimal Baseline",
+      "type": "line"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-4",
+  "title": "Scaled Optimal Baseline Difference",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "hour"
+  },
+  "yAxis": {
+    "label": "Temperature (K)"
+  },
+  "series": [
+    {
+      "column": "residual",
+      "name": "Residual",
+      "type": "line"
+    }
+  ]
+}
+```
+
 The plot shows the comparison between the target curve and the optimal baseline:
 
 - The top plot shows the target curve (lime) and the optimal baseline (cyan). The two curves track each other closely overall, but diverge slightly around the middle of the day.
@@ -172,6 +261,37 @@ data.run_anomaly_detection(threshold=0.007, plot = True)
 ```
 
 ![png](/images/optimal_baseline/OBS_Notebook_15_1.svg)
+
+```chart
+{
+  "id": "chart-5",
+  "title": "Anomaly Detection Results",
+  "dataSource": "chart-4.csv",
+  "xAxis": {
+    "key": "hour"
+  },
+  "yAxis": {
+    "label": "Scale Residual (K)"
+  },
+  "series": [
+    {
+      "column": "residual",
+      "name": "Residual",
+      "type": "line"
+    },
+    {
+      "column": "threshold",
+      "name": "Threshold = 0.007",
+      "type": "line",
+      "strokeDashArray": "5,5"
+    }
+  ],
+  "anomalies": {
+    "column": "is_anomaly",
+    "seriesColumn": "residual"
+  }
+}
+```
 
 The plot explains how to use the residual time series to flag anomalies. The residual curve is shown in white, with a threshold line at 0.007 (cyan). Two points exceed the threshold and are flagged as anomalies (lime dots). This method detects the earlier deviation we saw around hour 15 as an anomaly.
 
@@ -216,6 +336,32 @@ plt.legend()
 ```
 
 ![png](/images/optimal_baseline/OBS_Notebook_20_1.svg)
+
+```chart
+{
+  "id": "chart-6",
+  "title": "Target Before and After OBS Cleaning",
+  "dataSource": "chart-5.csv",
+  "xAxis": {
+    "key": "hour"
+  },
+  "yAxis": {
+    "label": "Temperature (K)"
+  },
+  "series": [
+    {
+      "column": "target_original",
+      "name": "Target Time Series",
+      "type": "line"
+    },
+    {
+      "column": "target_after_obs",
+      "name": "Target Time Series after OBS",
+      "type": "line"
+    }
+  ]
+}
+```
 
 As we can see here, the OBS method smooths out the anomaly area by replacing the original values (green) with those from the optimal baseline, producing a "corrected" time series result (cyan). The corrected curve now follows a more consistent pattern, which helps reduce noise and improve downstream forecasting models.
 
