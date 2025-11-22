@@ -351,7 +351,7 @@ This is what it looks like:
 ```chart
 {
   "id": "chart-4",
-  "title": "Cloud Cost — next-day anomalies (last 30 days)",
+  "title": "Cloud Cost — next-day anomalies (last 30 daysss)",
   "dataSource": "chart-4.csv",
   "xAxis": {
     "key": "ds"
@@ -360,14 +360,6 @@ This is what it looks like:
     "label": "y"
   },
   "series": [
-    {
-      "type": "area",
-      "columns": {
-        "high": "forecast_hi",
-        "low": "forecast_lo"
-      },
-      "name": "± 99% interval"
-    },
     {
       "column": "actual",
       "type": "line",
@@ -378,6 +370,14 @@ This is what it looks like:
       "type": "line",
       "name": "Forecast mean",
       "showDots": true
+    },
+    {
+      "type": "area",
+      "columns": {
+        "high": "forecast_hi",
+        "low": "forecast_lo"
+      },
+      "name": "± 99% interval"
     }
   ],
   "anomalies": {

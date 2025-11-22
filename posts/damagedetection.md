@@ -163,7 +163,7 @@ plt.show()
 ```chart
 {
   "id": "chart-3",
-  "title": "Random Temperatures",
+  "title": "Simulated Sensor Signal",
   "dataSource": "chart-3.csv",
   "xAxis": {
     "key": "t"
@@ -308,6 +308,55 @@ def plot_random_temperatures(timeseries_data, temperature_values, n_temps=6, see
 
 ![Random Signal with temperatures](/images/damage_detection/random_temperatures.svg)
 
+```chart-multiple
+{
+  "id": "chart-multiple-1",
+  "title": "Random Temperatures",
+  "dataSource": "chart-2.csv",
+  "columns": 3,
+  "xAxis": { "key": "time_step" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "temp_0.838", "name": "temp_0.838", "type": "line", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "temp_0.535", "name": "temp_0.535", "type": "line", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "temp_0.707", "name": "temp_0.707", "type": "line", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-4",
+      "series": [
+        { "column": "temp_0.455", "name": "temp_0.455", "type": "line", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-5",
+      "series": [
+        { "column": "temp_0.444", "name": "temp_0.444", "type": "line", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-6",
+      "series": [
+        { "column": "temp_0.394", "name": "temp_0.394", "type": "line", "strokeWidth": 1 }
+      ]
+    }
+  ]
+}
+```
+
 Now the question to answer is the following:
 
 _At what index, and what temperature, does the signal matrix present an anomaly?_
@@ -343,6 +392,37 @@ plt.show()
 ```
 
 ![Dependency Types](/images/damage_detection/dependency_types.svg)
+
+```chart-multiple
+{
+  "id": "chart-multiple-2",
+  "title": "Dependency Types Visualization",
+  "dataSource": "chart-4.csv",
+  "columns": 3,
+  "xAxis": { "key": "temperature" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "time_step_0_linear", "name": "time_step_0_linear", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "time_step_10_sinusoidal", "name": "time_step_10_sinusoidal", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "time_step_22_polynomial", "name": "time_step_22_polynomial", "type": "line" }
+      ]
+    }
+  ]
+}
+```
 
 Now, if at temperature = 1 you see -0.06 at time step = 0, then it is obviously not an anomaly, because it follows the linear trend. However, if you see the same value at time step = 22, there is obviously a problem.
 

@@ -18,6 +18,27 @@ Imagine that you're tracking daily website traffic. Some days show spikes in vis
 
 ![](/images/anomaly_detection/daily_website_traffic.svg)
 
+```chart
+{
+  "id": "chart-1",
+  "title": "Daily Website Traffic with Potential Anomalies",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Actual Data",
+      "type": "line"
+    }
+  ]
+}
+```
+
 This is where anomaly detection becomes essential. Instead of relying on manual inspection or guesswork, a model like TimeGPT provides consistent, automated detection of unusual behavior based on the page's historical trends and known patterns.
 
 This tutorial walks through using TimeGPT from Nixtla to detect anomalies in daily visits to Peyton Manning's Wikipedia page.
@@ -92,8 +113,8 @@ nixtla_client.plot(wikipedia)
 
 ```chart
 {
-  "id": "chart-1",
-  "title": "Daily Website Traffic with Anomalies",
+  "id": "chart-2",
+  "title": "Raw Wikipedia Page Views",
   "dataSource": "chart-1.csv",
   "xAxis": {
     "key": "ds"
@@ -150,43 +171,39 @@ nixtla_client.plot(wikipedia, anomalies_df)
 
 ```chart
 {
-  "id": "chart-2",
+  "id": "chart-3",
   "title": "Daily Website Traffic with Anomalies",
   "dataSource": "chart-2.csv",
   "xAxis": {
     "key": "ds"
   },
   "yAxis": {
-    "label": "Target [y]"
+    "label": "Target (y)"
   },
   "series": [
+    {
+      "type": "area",
+      "columns": {
+        "high": "TimeGPT-hi-99",
+        "low": "TimeGPT-lo-99"
+      },
+      "name": "TimeGPT Level 99",
+      "zIndex": 3,
+      "color": "chart-muted"
+    },
     {
       "column": "y",
       "name": "Actual Data",
       "type": "line",
       "color": "blue-700",
-      "zIndex": 5
+      "zIndex": 4
     },
     {
       "column": "TimeGPT",
       "name": "TimeGPT Forecast",
       "type": "line",
       "color": "cyan-400",
-      "zIndex": 4
-    },
-    {
-      "column": "TimeGPT-hi-99",
-      "name": "Upper Bound (99%)",
-      "type": "line",
-      "color": "zinc-500",
-      "zIndex": 3
-    },
-    {
-      "column": "TimeGPT-lo-99",
-      "name": "Lower Bound (99%)",
-      "type": "line",
-      "color": "zinc-500",
-      "zIndex": 3
+      "zIndex": 5
     }
   ],
   "anomalies": {
@@ -230,7 +247,7 @@ nixtla_client.weights_x.plot.barh(
 
 ```chart
 {
-  "id": "chart-3",
+  "id": "chart-4",
   "title": "Feature Importance Weights",
   "dataSource": "chart-3.csv",
   "xAxis": {
@@ -243,7 +260,6 @@ nixtla_client.weights_x.plot.barh(
     {
       "column": "weights",
       "type": "bar",
-      "color": "bg-rose-500",
       "horizontal": true
     }
   ]

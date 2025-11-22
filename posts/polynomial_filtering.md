@@ -429,6 +429,68 @@ A brief description of the plot is shown below:
 
 ![png](/images/Polynomial_Filtering/TimeGPT_Prediction_vs_noisy.svg)
 
+```chart
+{
+  "id": "chart-7",
+  "title": "TimeGPT Predictions vs Noisy Input",
+  "dataSource": "chart-5.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Amplitude"
+  },
+  "series": [
+    {
+      "column": "measured_signal",
+      "name": "Measured Signal",
+      "type": "line"
+    },
+    {
+      "column": "timegpt_cleaned",
+      "name": "TimeGPT Prediction Cleaned",
+      "type": "line"
+    },
+    {
+      "column": "timegpt_noisy",
+      "name": "TimeGPT Prediction Noisy",
+      "type": "line"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-8",
+  "title": "TimeGPT Predictions vs Noisy Input (zoom)",
+  "dataSource": "chart-6.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Amplitude"
+  },
+  "series": [
+    {
+      "column": "measured_signal",
+      "name": "Measured Signal",
+      "type": "line"
+    },
+    {
+      "column": "timegpt_cleaned",
+      "name": "TimeGPT Prediction Cleaned",
+      "type": "line"
+    },
+    {
+      "column": "timegpt_noisy",
+      "name": "TimeGPT Prediction Noisy",
+      "type": "line"
+    }
+  ]
+}
+```
+
 As we can see, the cyan predictions, on the cleaned input, are much more in line with the green signal. This is because the cyan predictions are generated on a preprocessed cleaned signal, while the white predictions are generated on a noisy non cleaned input one.
 
 ## Conclusions

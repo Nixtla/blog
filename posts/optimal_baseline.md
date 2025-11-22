@@ -124,16 +124,16 @@ data.plot_target_and_baseline()
 {
   "id": "chart-2",
   "title": "Remaining Part of the Time Series",
-  "dataSource": "chart-1.csv",
+  "dataSource": "chart-1-2.csv",
   "xAxis": {
-    "key": "hour"
+    "key": "ds"
   },
   "yAxis": {
     "label": "Temperature (K)"
   },
   "series": [
     {
-      "column": "datetime",
+      "column": "y",
       "name": "Data",
       "type": "line"
     }
@@ -164,6 +164,75 @@ data.plot_target_and_candidates()
 ```
 
 ![png](/images/optimal_baseline/OBS_Notebook_9_0.svg)
+
+```chart-multiple
+{
+  "id": "chart-multiple-1",
+  "title": "Target and Candidate Baselines",
+  "dataSource": "chart-2.csv",
+  "columns": 4,
+  "xAxis": { "key": "hour" },
+  "yAxis": { "label": "Temperature (K)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_3", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_4", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_5", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-4",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_6", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-5",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_7", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-6",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_8", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-7",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_9", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-8",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_10", "name": "Possible Candidate", "type": "line" }
+      ]
+    }
+  ]
+}
+```
 
 As we can see above, each subplot compares the target curve (lime) with a possible candidate (blue). Some candidates match the target candidate closely, while others show very different patterns. This highlights how some segments are good matches and others are not.
 

@@ -173,6 +173,27 @@ plot_normal_and_anomalous_signal(anomaly_data['normal_signal'], anomaly_data['an
 }
 ```
 
+```chart
+{
+  "id": "chart-1-2",
+  "title": "Normal vs Anomalous Signal Comparison",
+  "dataSource": "chart-1-2.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Temperature [y]"
+  },
+  "series": [
+    {
+      "column": "difference",
+      "name": "Difference",
+      "type": "line"
+    }
+  ]
+}
+```
+
 The plot shows the use of the anomaly injector function:
 
 - The top subplot shows a clean time series (white) and the same time series with a synthetic anomaly injected (lime). The two timeseries are completely superimposed except for the sharp spike added around time index 500, clearly standing out from the regular pattern.
@@ -188,6 +209,27 @@ anomaly_calibrator.plot_anomalous_dataset()
 ```
 
 ![Anomaly Example](/images/anomaly_detection_performance_evaluation/temp_24_0.svg)
+
+```chart
+{
+  "id": "chart-2",
+  "title": "Multiple Anomalous Signals",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "time_step"
+  },
+  "yAxis": {
+    "label": "Temperature [y]"
+  },
+  "series": [
+    {
+      "column": "signal_1",
+      "name": "Signal",
+      "type": "line"
+    }
+  ]
+}
+```
 
 The plot shows multiple time series (cyan), each with an anomaly of the same size injected at a different location. All series are superimposed to visualize the variety of injection points, so you don't really see the difference **except** the visible spikes scattered across the timeline, clearly illustrating how the same anomaly size can manifest differently depending on where it occurs in the time series.
 
@@ -250,7 +292,7 @@ anomaly_calibrator.plot_anomaly_detection()
       "column": "y",
       "name": "Actual Data",
       "type": "line",
-      "color": "blue-700",
+      "color": "zinc-100",
       "zIndex": 4
     },
     {
@@ -267,7 +309,8 @@ anomaly_calibrator.plot_anomaly_detection()
         "high": "TimeGPT-hi-99",
         "low": "TimeGPT-lo-99"
       },
-      "name": "99% Confidence Interval"
+      "name": "99% Confidence Interval",
+      "color": "cyan-600"
     }
   ],
   "anomalies": {

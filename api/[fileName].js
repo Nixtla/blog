@@ -59,7 +59,7 @@ export default function handler(req, res) {
 
     const markdownContent = fs.readFileSync(mdPath, "utf-8");
     const { frontmatter, content } = parseFrontmatter(markdownContent);
-    const { contentWithPlaceholders, charts } = extractCharts(
+    const { contentWithPlaceholders, charts, chartMultiples } = extractCharts(
       content,
       postSlug
     );
@@ -78,6 +78,7 @@ export default function handler(req, res) {
       readTimeMinutes: calculateReadTime(content),
       content: contentWithPlaceholders,
       charts,
+      chartMultiples,
     };
 
     return res.json(response);
@@ -195,40 +196,55 @@ function parseArrayValue(value) {
 
 function extractCharts(content, postSlug) {
   if (!content.includes("```chart")) {
-    return { contentWithPlaceholders: content, charts: {} };
+    return { contentWithPlaceholders: content, charts: {}, chartMultiples: {} };
   }
 
   const charts = {};
+  const chartMultiples = {};
   let chartIndex = 0;
+  let chartMultipleIndex = 0;
 
-  const processChart = (match, chartJson, type) => {
+  const processChart = (match, chartJson) => {
     try {
       const chartData = JSON.parse(chartJson.trim());
-      const chartId = chartData.id || `${type}-${chartIndex++}`;
+      const chartId = chartData.id || `chart-${chartIndex++}`;
 
       if (chartData.dataSource) {
         chartData.data = loadChartData(postSlug, chartData.dataSource);
       }
 
-      chartData.type = type;
       charts[chartId] = chartData;
 
       return `{{CHART:${chartId}}}`;
     } catch (error) {
-      console.error(`Failed to process ${type}:`, error.message);
+      console.error(`Failed to process chart:`, error.message);
+      return match;
+    }
+  };
+
+  const processChartMultiple = (match, chartJson) => {
+    try {
+      const chartData = JSON.parse(chartJson.trim());
+      const chartId = chartData.id || `chart-multiple-${chartMultipleIndex++}`;
+
+      if (chartData.dataSource) {
+        chartData.data = loadChartData(postSlug, chartData.dataSource);
+      }
+
+      chartMultiples[chartId] = chartData;
+
+      return `{{CHART_MULTIPLE:${chartId}}}`;
+    } catch (error) {
+      console.error(`Failed to process chart-multiple:`, error.message);
       return match;
     }
   };
 
   let contentWithPlaceholders = content
-    .replace(/```chart-multiple\s*\n([\s\S]*?)\n```/g, (match, json) =>
-      processChart(match, json, "chart-multiple")
-    )
-    .replace(/```chart\s*\n([\s\S]*?)\n```/g, (match, json) =>
-      processChart(match, json, "chart")
-    );
+    .replace(/```chart-multiple\s*\n([\s\S]*?)\n```/g, processChartMultiple)
+    .replace(/```chart\s*\n([\s\S]*?)\n```/g, processChart);
 
-  return { contentWithPlaceholders, charts };
+  return { contentWithPlaceholders, charts, chartMultiples };
 }
 
 function loadChartData(postSlug, dataSource) {
