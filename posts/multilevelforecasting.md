@@ -54,8 +54,6 @@ data = pd.read_csv('data/euro_conversion_data.csv')
 plot_timeseries(data)
 ```
 
-![image](/images/MultiLevelForecasting/raw_timeseries_plot.svg)
-
 ```chart
 {
   "id": "chart-1",
@@ -129,8 +127,6 @@ print(x_full.shape)
 
 And it looks like this:
 
-![image](/images/MultiLevelForecasting/year_averaged_data.svg)
-
 ```chart
 {
   "id": "chart-2",
@@ -199,8 +195,6 @@ plt.plot(x_full[train_index+val_index-1:], y[train_index+val_index-1:], label='T
 plt.plot(x_full, y_full_pred, color = 'cyan', label = 'Model Prediction')
 ```
 
-![image](/images/MultiLevelForecasting/year_prediction.svg)
-
 ```chart
 {
   "id": "chart-3",
@@ -246,8 +240,6 @@ print(x_full.shape)
 ```
 
 And it looks like this:
-
-![image](/images/MultiLevelForecasting/month_averaged_data.svg)
 
 ```chart
 {
@@ -351,8 +343,6 @@ plt.legend()
 plt.savefig('/images/MultiLevelForecasting/month_prediction.svg')
 ```
 
-![image](/images/MultiLevelForecasting/month_prediction.svg)
-
 ```chart
 {
   "id": "chart-5",
@@ -399,8 +389,6 @@ x_full = np.arange(0, len(df)).reshape(-1, 1)
 print(x_full.shape)
 (6723, 1)
 ```
-
-![image](/images/MultiLevelForecasting/day_averaged_data.svg)
 
 ```chart
 {
@@ -473,8 +461,6 @@ And this is how it looks like:
 - **In cyan**, we plot the TimeGPT-1 forecast for the next few days.
 
 - The **cyan shaded area** represents the 75% confidence interval produced by TimeGPT-1, capturing the model's uncertainty in its predictions.
-
-![image](/images/MultiLevelForecasting/day_prediction.svg)
 
 ```chart
 {

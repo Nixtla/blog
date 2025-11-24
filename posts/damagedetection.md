@@ -74,8 +74,6 @@ plt.grid(True, alpha=0.3)
 plt.show()
 ```
 
-![Chirplet Signal](/images/damage_detection/chirplet.svg)
-
 ```chart
 {
   "id": "chart-1",
@@ -157,8 +155,6 @@ plt.grid(True, alpha=0.3)
 plt.savefig('images/random_signal.svg')
 plt.show()
 ```
-
-![Random Signal](/images/damage_detection/random_signal.svg)
 
 ```chart
 {
@@ -306,8 +302,6 @@ def plot_random_temperatures(timeseries_data, temperature_values, n_temps=6, see
     plt.show()
 ```
 
-![Random Signal with temperatures](/images/damage_detection/random_temperatures.svg)
-
 ```chart-multiple
 {
   "id": "chart-multiple-1",
@@ -390,8 +384,6 @@ for i, time_step in enumerate(time_steps_to_show):
 plt.tight_layout()
 plt.show()
 ```
-
-![Dependency Types](/images/damage_detection/dependency_types.svg)
 
 ```chart-multiple
 {
@@ -511,8 +503,6 @@ plt.grid(True, alpha=0.3)
 plt.savefig('images/anomaly_detection.svg')
 plt.show()
 ```
-
-![Dependency Types](/images/damage_detection/anomaly_detection_input.svg)
 
 ```chart
 {
@@ -646,8 +636,6 @@ plt.grid(True, alpha=0.3)
 plt.show()
 ```
 
-![Detected Anomalies](/images/damage_detection/anomaly_detection.svg)
-
 ```chart
 {
   "id": "chart-6",
@@ -688,8 +676,6 @@ plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
 ```
-
-![Detected Anomalies Time Series](/images/damage_detection/anomaly_detection_ts.svg)
 
 ```chart
 {

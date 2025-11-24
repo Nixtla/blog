@@ -16,75 +16,6 @@ publication_date: 2025-08-26
 
 Imagine that you're tracking daily website traffic. Some days show spikes in visits, but it's hard to tell which ones reflect real behavioral changes versus normal fluctuations. Manually spotting anomalies is time-consuming, unreliable, and impractical as your traffic data becomes more complex.
 
-```chart
-{
-  "id": "peyton-manning",
-  "title": "Peyton Manning",
-  "dataSource": "peyton-manning.csv",
-  "xAxis": {
-    "key": "ds"
-  },
-  "yAxis": {
-    "label": "Target [y]"
-  },
-  "series": [
-    {
-      "column": "y",
-      "name": "Actual Data",
-      "type": "line"
-    }
-  ]
-}
-```
-
-```chart
-{
-  "id": "peyton-manning-gpt",
-  "title": "Peyton Manning with TimeGPT",
-  "dataSource": "peyton-manning-gpt.csv",
-  "xAxis": {
-    "key": "ds"
-  },
-  "yAxis": {
-    "label": "Target [y]"
-  },
-  "series": [
-    {
-      "column": "y",
-      "name": "Actual Data",
-      "type": "line",
-      "color": "blue-700",
-      "zIndex": 5
-    },
-    {
-      "column": "TimeGPT",
-      "name": "TimeGPT Forecast",
-      "type": "line",
-      "color": "cyan-400",
-      "zIndex": 4
-    },
-    {
-      "column": "TimeGPT-hi-99",
-      "name": "Upper Bound (99%)",
-      "type": "line",
-      "color": "zinc-500",
-      "zIndex": 3
-    },
-    {
-      "column": "TimeGPT-lo-99",
-      "name": "Lower Bound (99%)",
-      "type": "line",
-      "color": "zinc-500",
-      "zIndex": 3
-    }
-  ],
-  "anomalies": {
-    "column": "anomaly",
-    "seriesColumn": "y"
-  }
-}
-```
-
 This is where anomaly detection becomes essential. Instead of relying on manual inspection or guesswork, a model like TimeGPT provides consistent, automated detection of unusual behavior based on the page's historical trends and known patterns.
 
 This tutorial walks through using TimeGPT from Nixtla to detect anomalies in daily visits to Peyton Manning's Wikipedia page.
@@ -155,37 +86,6 @@ Visualize the time series using the `plot` method:
 nixtla_client.plot(wikipedia)
 ```
 
-```chart
-{
-  "id": "wikipedia-plot",
-  "title": "Wikipedia Page Views - Peyton Manning",
-  "dataSource": "wikipedia-pageviews.csv",
-  "xAxis": {
-    "key": "ds"
-  },
-  "yAxis": {
-    "label": "Log Page Views"
-  },
-  "series": [
-    {
-      "column": "y",
-      "type": "line",
-      "name": "Page Views"
-    },
-    {
-      "column": "z",
-      "type": "line",
-      "name": "Page Hits"
-    }
-  ],
-  "thresholds": {
-    "enabled": true,
-    "column": "threshold",
-    "label": "Anomaly Time Step"
-  }
-}
-```
-
 The time series spans several years and shows clear seasonal spikes, likely tied to NFL events, alongside irregular, sharp peaks. These mixed patterns make it hard to judge by eye which spikes are expected and which are truly unusual, making TimeGPT essential for accurate anomaly detection.
 
 ## Detect Anomalies with TimeGPT
@@ -219,90 +119,6 @@ Plot the anomalies using the `plot` method:
 
 ```python
 nixtla_client.plot(wikipedia, anomalies_df)
-```
-
-```chart
-{
-  "id": "anomaly-plot",
-  "title": "Anomaly Detection Results",
-  "dataSource": "anomaly-sales-forecast.csv",
-  "xAxis": {
-    "key": "date"
-  },
-  "yAxis": {
-    "label": "Sales ($)"
-  },
-  "series": [
-    {
-      "type": "area",
-      "columns": {
-        "high": "conf95High",
-        "low": "conf95Low"
-      },
-      "name": "95% Confidence"
-    },
-    {
-      "type": "area",
-      "columns": {
-        "high": "conf80High",
-        "low": "conf80Low"
-      },
-      "name": "80% Confidence"
-    },
-    {
-      "column": "historical",
-      "type": "line",
-      "name": "Historical Sales"
-    },
-    {
-      "column": "forecast",
-      "type": "line",
-      "name": "Forecast"
-    }
-  ]
-}
-```
-
-```chart
-{
-  "id": "sales-forecast-plot",
-  "title": "Sales Forecast and Confidence Intervals",
-  "dataSource": "sales-forecast.csv",
-  "xAxis": {
-    "key": "date"
-  },
-  "yAxis": {
-    "label": "Revenue ($)"
-  },
-  "series": [
-    {
-      "type": "area",
-      "columns": {
-        "high": "interval95High",
-        "low": "interval95Low"
-      },
-      "name": "95% Prediction Interval"
-    },
-    {
-      "type": "area",
-      "columns": {
-        "high": "interval80High",
-        "low": "interval80Low"
-      },
-      "name": "80% Prediction Interval"
-    },
-    {
-      "column": "actual",
-      "type": "line",
-      "name": "Actual Revenue"
-    },
-    {
-      "column": "predicted",
-      "type": "line",
-      "name": "Predicted Revenue"
-    }
-  ]
-}
 ```
 
 The plot reveals several key insights:
@@ -357,33 +173,6 @@ Number of anomalies without exogenous features: 89
 Number of anomalies with exogenous features: 92
 ```
 
-```chart
-{
-  "id": "forecast-accuracy-mape",
-  "title": "Forecast Accuracy (MAPE) by Model",
-  "dataSource": "forecast-accuracy.csv",
-  "xAxis": {
-    "key": "model"
-  },
-  "yAxis": {
-    "label": "MAPE"
-  },
-  "series": [
-    {
-      "column": "mape",
-      "type": "bar",
-      "name": "MAPE",
-      "color": "chart-muted",
-      "highlight": {
-        "column": "isHighlight",
-        "color": "chart-3"
-      }
-    }
-  ],
-  "showLabels": true
-}
-```
-
 Although the increase is small, the model detected more anomalies when exogenous features were included.
 
 By giving the model more context about seasonality and long-term changes, these features sharpened its sense of what 'normal' looks like for different times of year, resulting in a more precise detection of truly unusual behavior. This suggests that month and year provide useful context, helping TimeGPT uncover subtle deviations that wouldn't otherwise be flagged.
@@ -410,28 +199,6 @@ Number of anomalies with 70% confidence interval: 505
 Reducing the confidence interval from 99% to 70% narrows the range of expected values, making the model more sensitive to deviations and resulting in many more anomalies being flagged.
 
 This is useful when you want to flag **more subtle deviations** or prefer a higher sensitivity in anomaly detection, especially for use cases where catching borderline anomalies is more important than minimizing false positives.
-
-```chart
-{
-  "id": "feature-weights",
-  "title": "Feature Importance Weights",
-  "dataSource": "feature-weights.csv",
-  "xAxis": {
-    "key": "weights"
-  },
-  "yAxis": {
-    "label": "Features"
-  },
-  "series": [
-    {
-      "column": "weights",
-      "type": "bar",
-      "color": "bg-rose-500",
-      "horizontal": true
-    }
-  ]
-}
-```
 
 ## Final Thoughts
 

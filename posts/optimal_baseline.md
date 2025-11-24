@@ -97,8 +97,6 @@ We will look for the optimal baseline in the remaining part of the dataset (ever
 data.plot_target_and_baseline()
 ```
 
-![png](/images/optimal_baseline/OBS_Notebook_5_0.svg)
-
 ```chart
 {
   "id": "chart-1",
@@ -162,8 +160,6 @@ Let's display some random candidates.
 ```python
 data.plot_target_and_candidates()
 ```
-
-![png](/images/optimal_baseline/OBS_Notebook_9_0.svg)
 
 ```chart-multiple
 {
@@ -266,8 +262,6 @@ Our plot function can be used to display the optimal baseline vs the target curv
 ```python
 data.plot_target_and_optimal_baseline()
 ```
-
-![png](/images/optimal_baseline/OBS_Notebook_13_0.svg)
 
 ```chart
 {
@@ -403,8 +397,6 @@ plt.plot(data.optimal_baseline_data['target_curve'], label = 'Target Time Series
 plt.plot(fixed_target, label = 'Target Time Series after OBS', color ='red')
 plt.legend()
 ```
-
-![png](/images/optimal_baseline/OBS_Notebook_20_1.svg)
 
 ```chart
 {

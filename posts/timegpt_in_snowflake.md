@@ -349,8 +349,6 @@ The table below shows the MAPE for all forecast methods. Lower MAPE values indic
 | Snowflake Best        | 0.091 |
 | Snowflake Fast        | 0.099 |
 
-![forecast_accuracy_mape_by_model](/images/timegpt_in_snowflake/forecast_accuracy_mape_by_model.svg)
-
 ```chart
 {
   "id": "chart-1",
@@ -396,8 +394,6 @@ We also measured how long each method took to train and forecast across 10 time 
 | TimeGPT LH: 0 Shot    | 19         |
 | Snowflake Best        | 2499       |
 | Snowflake Fast        | 1340       |
-
-![runtime_performance_by_model](/images/timegpt_in_snowflake/runtime_performance_by_model.svg)
 
 ```chart
 {

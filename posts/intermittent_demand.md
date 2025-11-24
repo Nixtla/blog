@@ -16,8 +16,6 @@ publication_date: 2025-08-26
 
 Intermittent demand forecasting poses significant challenges for data scientists, especially when dealing with time series that contain numerous zero values.
 
-![](/images/intermittent_demand/intermittent_demand_spikes.svg)
-
 ```chart
 {
   "id": "chart-1",
@@ -108,8 +106,6 @@ To understand the demand patterns, we plot the time series data.
       max_insample_length=365,
   )
 ```
-
-![](/images/intermittent_demand/sales_plot.svg)
 
 ```chart-multiple
 {
@@ -223,8 +219,6 @@ ax.legend(handles, labels)
 
 ax
 ```
-
-![](/images/intermittent_demand/compared_plot.svg)
 
 ```chart
 {

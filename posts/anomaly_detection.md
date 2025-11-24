@@ -16,8 +16,6 @@ publication_date: 2025-08-26
 
 Imagine that you're tracking daily website traffic. Some days show spikes in visits, but it's hard to tell which ones reflect real behavioral changes versus normal fluctuations. Manually spotting anomalies is time-consuming, unreliable, and impractical as your traffic data becomes more complex.
 
-![](/images/anomaly_detection/daily_website_traffic.svg)
-
 ```chart
 {
   "id": "chart-1",
@@ -109,8 +107,6 @@ Visualize the time series using the `plot` method:
 nixtla_client.plot(wikipedia)
 ```
 
-![](/images/anomaly_detection/wikipedia_plot.svg)
-
 ```chart
 {
   "id": "chart-2",
@@ -166,8 +162,6 @@ Plot the anomalies using the `plot` method:
 ```python
 nixtla_client.plot(wikipedia, anomalies_df)
 ```
-
-![](/images/anomaly_detection/anomaly_plot.svg)
 
 ```chart
 {
@@ -242,8 +236,6 @@ nixtla_client.weights_x.plot.barh(
     y='weights'
 )
 ```
-
-![](/images/anomaly_detection/feature_plot.svg)
 
 ```chart
 {

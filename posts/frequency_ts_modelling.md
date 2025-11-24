@@ -65,8 +65,6 @@ plt.ylabel('Amplitude (y)', fontsize = 20)
 
     Text(0, 0.5, 'Amplitude (y)')
 
-![pic](/images/fourier_modelling/example_ts.svg)
-
 ```chart
 {
   "id": "chart-1",
@@ -136,8 +134,6 @@ plt.xlabel('Frequency (f)',fontsize = 20)
 plt.ylabel('FT Amplitude (y)',fontsize = 20)
 ```
 
-![png](/images/fourier_modelling/fft_example.svg)
-
 ```chart
 {
   "id": "chart-2",
@@ -185,8 +181,6 @@ plt.subplot(2,1,2)
 plt.plot(t, y, color ='cyan', label = 'Original Time Series')
 plt.legend()
 ```
-
-![png](/images/fourier_modelling/ifft_rec.svg)
 
 ```chart
 {
@@ -256,8 +250,6 @@ plt.plot(t,y, color ='cyan')
 plt.xlabel('Time (t)',fontsize = 20)
 plt.ylabel('Amplitude (y)',fontsize = 20)
 ```
-
-![png](/images/fourier_modelling/complex_timeseries.svg)
 
 ```chart
 {
@@ -333,8 +325,6 @@ plt.show()
 
 ```
 
-![png](/images/fourier_modelling/fourier_filtering.svg)
-
 ```chart
 {
   "id": "chart-6",
@@ -389,8 +379,6 @@ plt.yticks(fontsize = 18)
 plt.tight_layout()
 plt.legend(fontsize = 12)
 ```
-
-![png](/images/fourier_modelling/fourier_filtering_ifft.svg)
 
 ```chart
 {
@@ -522,8 +510,6 @@ plt.plot(np.array(fcst_df['ds']),np.array(fcst_df['TimeGPT']), color = 'cyan')
 plt.fill_between(np.array(fcst_df['ds']),np.array(fcst_df['TimeGPT-lo-90']), np.array(fcst_df['TimeGPT-hi-90']), color ='cyan', alpha = 0.2)
 ```
 
-![png](/images/fourier_modelling/high_frequency_ts.svg)
-
 ```chart
 {
   "id": "chart-9",
@@ -619,8 +605,6 @@ plt.plot(np.array(input_seq['ds'][1800:]),np.array(input_seq['y'][1800:]), color
 plt.plot(np.array(fcst_df['ds']),np.array(fcst_df['TimeGPT']), color = 'cyan')
 plt.fill_between(np.array(fcst_df['ds']),np.array(fcst_df['TimeGPT-lo-90']), np.array(fcst_df['TimeGPT-hi-90']), color ='cyan', alpha = 0.2)
 ```
-
-![png](/images/fourier_modelling/low_frequency_ts.svg)
 
 ```chart
 {

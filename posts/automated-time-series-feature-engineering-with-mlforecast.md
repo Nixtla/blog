@@ -281,8 +281,6 @@ ax.legend()
 plt.show()
 ```
 
-![Rolling vs Expanding Mean Patterns](/images/stop-manual-feature-engineering-mlforecast/rolling-vs-expanding-patterns.svg)
-
 ```chart
 {
   "id": "chart-1",
@@ -554,8 +552,6 @@ ax.axvline(pd.Timestamp("2024-11-01"), linestyle="--", alpha=0.7, label="Train/T
 ax.legend()
 plt.show()
 ```
-
-![MLforecast Predictions vs Actual Sales](/images/stop-manual-feature-engineering-mlforecast/automated-predictions-vs-actual.svg)
 
 ```chart
 {

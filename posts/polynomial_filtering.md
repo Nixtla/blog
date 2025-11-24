@@ -113,8 +113,6 @@ plt.title('Underlying Signal')
 
 The plot displays, in white, the underlying signal amplitude (on the y axis) with respect to time (on the x axis).
 
-![png](/images/Polynomial_Filtering/underlying_signal.svg)
-
 ```chart
 {
   "id": "chart-1",
@@ -150,8 +148,6 @@ plt.ylabel('Amplitude')
 plt.title('Noise')
 ```
 
-![png](/images/Polynomial_Filtering/noise.svg)
-
 ```chart
 {
   "id": "chart-2",
@@ -184,8 +180,6 @@ plt.xlabel('Time')
 plt.ylabel('Amplitude')
 plt.title('Measured signal')
 ```
-
-![png](/images/Polynomial_Filtering/normal_noise.svg)
 
 ```chart
 {
@@ -266,8 +260,6 @@ Here is a brief description of this plot:
 - **Third Plot**: The difference between the filtered signal and the noisy signal is shown in white.
 
 - **Bottom Plot**: The actual noise that was artificially injected into the true signal to simulate a noisy real-world observation is shown in lime.
-
-  ![png](/images/Polynomial_Filtering/Filtering_result.svg)
 
 ```chart
 {
@@ -426,8 +418,6 @@ A brief description of the plot is shown below:
 
 - The top subplot shows the full time series of the underlying signal (in green), the TimeGPT forecast (in cyan) applied on the **Savitzky-Golay filtered signal**, and the TimeGPT forecast applied on the noisy input (real) signal.
 - The bottom subplot shows a zoomed in version of the top subplot.
-
-![png](/images/Polynomial_Filtering/TimeGPT_Prediction_vs_noisy.svg)
 
 ```chart
 {

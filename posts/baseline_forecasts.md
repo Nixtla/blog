@@ -241,8 +241,6 @@ Let's take a look at our forecasts now using the `plot` method in the `StatsFore
 sf.plot(df, pred_df)
 ```
 
-![](/images/baseline_forecasts/ts_plot.svg)
-
 ```chart-multiple
 {
   "id": "chart-multiple-1",

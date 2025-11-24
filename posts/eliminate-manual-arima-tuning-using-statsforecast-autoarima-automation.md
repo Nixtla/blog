@@ -313,8 +313,6 @@ def plot_forecasts_with_intervals(category_name):
 plot_forecasts_with_intervals("electronics")
 ```
 
-![autoarima-forecast-confidence-intervals](/images/eliminate-manual-arima-tuning-using-statsforecast-autoarima-automation/autoarima-forecast-confidence-intervals.svg)
-
 ```chart
 {
   "id": "chart-1",

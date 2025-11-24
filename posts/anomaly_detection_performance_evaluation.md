@@ -143,8 +143,6 @@ anomaly_data = anomaly_calibrator.inject_anomaly(location = 300, threshold = 0.1
 plot_normal_and_anomalous_signal(anomaly_data['normal_signal'], anomaly_data['anomalous_signal'])
 ```
 
-![Anomaly Example](/images/anomaly_detection_performance_evaluation/temp_22_0.svg)
-
 ```chart
 {
   "id": "chart-1",
@@ -207,8 +205,6 @@ For a fixed anomaly size, we can generate `num_location` time series, each with 
 anomaly_calibrator.build_anomalous_dataset(num_location = 20)
 anomaly_calibrator.plot_anomalous_dataset()
 ```
-
-![Anomaly Example](/images/anomaly_detection_performance_evaluation/temp_24_0.svg)
 
 ```chart
 {
@@ -273,8 +269,6 @@ As we can see, the anomaly detection model correctly identifies the location whe
 ```python
 anomaly_calibrator.plot_anomaly_detection()
 ```
-
-![Anomaly Example](/images/anomaly_detection_performance_evaluation/temp_30_0.svg)
 
 ```chart
 {

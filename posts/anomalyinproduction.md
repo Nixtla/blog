@@ -179,8 +179,6 @@ print("Rows:", len(cloud_cost_df))
 
 If we display the time series using the following block we get this output:
 
-![Anomaly Example](/images/anomaly_detection_monitoring/CloudCostTimeSeries.svg)
-
 ```chart
 {
   "id": "chart-1",
@@ -250,8 +248,6 @@ The output of this function is the following plot:
 1. The top plot represents, with the cyan color, the training data for Time GPT-1 (all data but last week). The other colors represent the forecasting using Time GPT-1. As we can see, we first forecast the next day, then we incorporate that day in the training and we forecast the day after and so on. The shaded area is the forecasting uncertainty.
 
 2. The bottom plot is a zoomed in version of the top plot.
-
-![Anomaly Example](/images/anomaly_detection_monitoring/ForecastingOnCloud.svg)
 
 ```chart
 {
@@ -345,8 +341,6 @@ results = simulate_and_plot_last_k_next_day_anomalies(
 ```
 
 This is what it looks like:
-
-![Monitoring Example](/images/anomaly_detection_monitoring/MonitoringAlgorithm.svg)
 
 ```chart
 {
