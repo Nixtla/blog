@@ -255,29 +255,29 @@ sf.plot(df, pred_df)
       "series": [
         { "column": "Adelaide_y", "name": "Adelaide_y", "type": "line" },
         { "column": "Adelaide_HistoricAverage", "name": "Adelaide_HistoricAverage", "type": "line" },
-        { "column": "Adelaide_Naive", "name": "Adelaide_HistoricAverage", "type": "line" },
-        { "column": "Adelaide_SeasonalNaive", "name": "Adelaide_HistoricAverage", "type": "line" },
-        { "column": "Adelaide_WindowAverage", "name": "Adelaide_HistoricAverage", "type": "line" }
+        { "column": "Adelaide_Naive", "name": "Adelaide_Naive", "type": "line" },
+        { "column": "Adelaide_SeasonalNaive", "name": "Adelaide_SeasonalNaive", "type": "line" },
+        { "column": "Adelaide_WindowAverage", "name": "Adelaide_WindowAverage", "type": "line" }
       ]
     },
     {
       "id": "chart-inner-2",
       "series": [
-        { "column": "Brisbane_y", "name": "Adelaide_y", "type": "line" },
-        { "column": "Brisbane_HistoricAverage", "name": "Adelaide_HistoricAverage", "type": "line" },
-        { "column": "Brisbane_Naive", "name": "Adelaide_HistoricAverage", "type": "line" },
-        { "column": "Brisbane_SeasonalNaive", "name": "Adelaide_HistoricAverage", "type": "line" },
-        { "column": "Brisbane_WindowAverage", "name": "Adelaide_HistoricAverage", "type": "line" }
+        { "column": "Brisbane_y", "name": "Brisbane_y", "type": "line" },
+        { "column": "Brisbane_HistoricAverage", "name": "Brisbane_HistoricAverage", "type": "line" },
+        { "column": "Brisbane_Naive", "name": "Brisbane_Naive", "type": "line" },
+        { "column": "Brisbane_SeasonalNaive", "name": "Brisbane_SeasonalNaive", "type": "line" },
+        { "column": "Brisbane_WindowAverage", "name": "Brisbane_WindowAverage", "type": "line" }
       ]
     },
     {
       "id": "chart-inner-3",
       "series": [
-        { "column": "Melbourne_y", "name": "Adelaide_y", "type": "line" },
-        { "column": "Melbourne_HistoricAverage", "name": "Adelaide_HistoricAverage", "type": "line" },
-        { "column": "Melbourne_Naive", "name": "Adelaide_HistoricAverage", "type": "line" },
-        { "column": "Melbourne_SeasonalNaive", "name": "Adelaide_HistoricAverage", "type": "line" },
-        { "column": "Melbourne_WindowAverage", "name": "Adelaide_HistoricAverage", "type": "line" }
+        { "column": "Melbourne_y", "name": "Melbourne_y", "type": "line" },
+        { "column": "Melbourne_HistoricAverage", "name": "Melbourne_HistoricAverage", "type": "line" },
+        { "column": "Melbourne_Naive", "name": "Melbourne_Naive", "type": "line" },
+        { "column": "Melbourne_SeasonalNaive", "name": "Melbourne_SeasonalNaive", "type": "line" },
+        { "column": "Melbourne_WindowAverage", "name": "Melbourne_WindowAverage", "type": "line" }
       ]
     }
   ]

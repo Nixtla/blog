@@ -314,37 +314,37 @@ def plot_random_temperatures(timeseries_data, temperature_values, n_temps=6, see
     {
       "id": "chart-inner-1",
       "series": [
-        { "column": "temp_0.838", "name": "temp_0.838", "type": "line", "strokeWidth": 1 }
+        { "column": "temp_0.838", "name": "temp_0.838", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     },
     {
       "id": "chart-inner-2",
       "series": [
-        { "column": "temp_0.535", "name": "temp_0.535", "type": "line", "strokeWidth": 1 }
+        { "column": "temp_0.535", "name": "temp_0.535", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     },
     {
       "id": "chart-inner-3",
       "series": [
-        { "column": "temp_0.707", "name": "temp_0.707", "type": "line", "strokeWidth": 1 }
+        { "column": "temp_0.707", "name": "temp_0.707", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     },
     {
       "id": "chart-inner-4",
       "series": [
-        { "column": "temp_0.455", "name": "temp_0.455", "type": "line", "strokeWidth": 1 }
+        { "column": "temp_0.455", "name": "temp_0.455", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     },
     {
       "id": "chart-inner-5",
       "series": [
-        { "column": "temp_0.444", "name": "temp_0.444", "type": "line", "strokeWidth": 1 }
+        { "column": "temp_0.444", "name": "temp_0.444", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     },
     {
       "id": "chart-inner-6",
       "series": [
-        { "column": "temp_0.394", "name": "temp_0.394", "type": "line", "strokeWidth": 1 }
+        { "column": "temp_0.394", "name": "temp_0.394", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     }
   ]
@@ -397,19 +397,19 @@ plt.show()
     {
       "id": "chart-inner-1",
       "series": [
-        { "column": "time_step_0_linear", "name": "time_step_0_linear", "type": "line" }
+        { "column": "time_step_0_linear", "name": "time_step_0_linear", "type": "line", "color": "lime-500" }
       ]
     },
     {
       "id": "chart-inner-2",
       "series": [
-        { "column": "time_step_10_sinusoidal", "name": "time_step_10_sinusoidal", "type": "line" }
+        { "column": "time_step_10_sinusoidal", "name": "time_step_10_sinusoidal", "type": "line", "color": "blue-700" }
       ]
     },
     {
       "id": "chart-inner-3",
       "series": [
-        { "column": "time_step_22_polynomial", "name": "time_step_22_polynomial", "type": "line" }
+        { "column": "time_step_22_polynomial", "name": "time_step_22_polynomial", "type": "line", "color": "cyan-500" }
       ]
     }
   ]
