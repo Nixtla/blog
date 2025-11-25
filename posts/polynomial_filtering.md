@@ -113,7 +113,26 @@ plt.title('Underlying Signal')
 
 The plot displays, in white, the underlying signal amplitude (on the y axis) with respect to time (on the x axis).
 
-![png](/images/Polynomial_Filtering/underlying_signal.svg)
+```chart
+{
+  "id": "chart-1",
+  "title": "Underlying Signal",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "x"
+  },
+  "yAxis": {
+    "label": "Amplitude"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 Now, let's consider the noise to be a random gaussian noise (a noise sampled from a gaussian distribution), with mean = 0 and standard deviation = 0.3.
 
@@ -129,7 +148,26 @@ plt.ylabel('Amplitude')
 plt.title('Noise')
 ```
 
-![png](/images/Polynomial_Filtering/noise.svg)
+```chart
+{
+  "id": "chart-2",
+  "title": "Noise",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "x"
+  },
+  "yAxis": {
+    "label": "Amplitude"
+  },
+  "series": [
+    {
+      "column": "noise",
+      "name": "Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 A common assumption is that the measured signal is defined as the sum of the underlying signal and an unwanted (and unknown) level of noise. This kind of noise is known as **additive noise**.
 
@@ -143,7 +181,26 @@ plt.ylabel('Amplitude')
 plt.title('Measured signal')
 ```
 
-![png](/images/Polynomial_Filtering/normal_noise.svg)
+```chart
+{
+  "id": "chart-3",
+  "title": "Measured Signal",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "x"
+  },
+  "yAxis": {
+    "label": "Amplitude"
+  },
+  "series": [
+    {
+      "column": "measured_signal",
+      "name": "Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 ### Savitzky-Golay Filter Implementation
 
@@ -203,7 +260,74 @@ Here is a brief description of this plot:
 - **Third Plot**: The difference between the filtered signal and the noisy signal is shown in white.
 
 - **Bottom Plot**: The actual noise that was artificially injected into the true signal to simulate a noisy real-world observation is shown in lime.
-  ![png](/images/Polynomial_Filtering/Filtering_result.svg)
+
+```chart
+{
+  "id": "chart-4",
+  "title": "Savitzky-Golay Filtering",
+  "dataSource": "chart-4.csv",
+  "xAxis": {
+    "key": "x"
+  },
+  "yAxis": {
+    "label": "Amplitude"
+  },
+  "series": [
+    {
+      "column": "noisy_signal",
+      "name": "Measured Signal",
+      "type": "line"
+    },
+    {
+      "column": "savgol_filtered",
+      "name": "Savitzky-Golay Filtered Signal",
+      "type": "line"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-5",
+  "title": "Savitzky-Golay Filtering",
+  "dataSource": "chart-4.csv",
+  "xAxis": {
+    "key": "x"
+  },
+  "yAxis": {
+    "label": "Amplitude"
+  },
+  "series": [
+    {
+      "column": "difference",
+      "name": "Difference",
+      "type": "line"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-6",
+  "title": "Savitzky-Golay Filtering",
+  "dataSource": "chart-4.csv",
+  "xAxis": {
+    "key": "x"
+  },
+  "yAxis": {
+    "label": "Amplitude"
+  },
+  "series": [
+    {
+      "column": "injected_noise",
+      "name": "Injected Noise",
+      "type": "line"
+    }
+  ]
+}
+```
 
 What we can notice is:
 
@@ -295,7 +419,67 @@ A brief description of the plot is shown below:
 - The top subplot shows the full time series of the underlying signal (in green), the TimeGPT forecast (in cyan) applied on the **Savitzky-Golay filtered signal**, and the TimeGPT forecast applied on the noisy input (real) signal.
 - The bottom subplot shows a zoomed in version of the top subplot.
 
-![png](/images/Polynomial_Filtering/TimeGPT_Prediction_vs_noisy.svg)
+```chart
+{
+  "id": "chart-7",
+  "title": "TimeGPT Predictions vs Noisy Input",
+  "dataSource": "chart-5.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Amplitude"
+  },
+  "series": [
+    {
+      "column": "measured_signal",
+      "name": "Measured Signal",
+      "type": "line"
+    },
+    {
+      "column": "timegpt_cleaned",
+      "name": "TimeGPT Prediction Cleaned",
+      "type": "line"
+    },
+    {
+      "column": "timegpt_noisy",
+      "name": "TimeGPT Prediction Noisy",
+      "type": "line"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-8",
+  "title": "TimeGPT Predictions vs Noisy Input (zoom)",
+  "dataSource": "chart-6.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Amplitude"
+  },
+  "series": [
+    {
+      "column": "measured_signal",
+      "name": "Measured Signal",
+      "type": "line"
+    },
+    {
+      "column": "timegpt_cleaned",
+      "name": "TimeGPT Prediction Cleaned",
+      "type": "line"
+    },
+    {
+      "column": "timegpt_noisy",
+      "name": "TimeGPT Prediction Noisy",
+      "type": "line"
+    }
+  ]
+}
+```
 
 As we can see, the cyan predictions, on the cleaned input, are much more in line with the green signal. This is because the cyan predictions are generated on a preprocessed cleaned signal, while the white predictions are generated on a noisy non cleaned input one.
 

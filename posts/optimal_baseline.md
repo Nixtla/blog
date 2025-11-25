@@ -97,7 +97,47 @@ We will look for the optimal baseline in the remaining part of the dataset (ever
 data.plot_target_and_baseline()
 ```
 
-![png](/images/optimal_baseline/OBS_Notebook_5_0.svg)
+```chart
+{
+  "id": "chart-1",
+  "title": "Target Segment City = Los Angeles, Segment Class = day, Segment Index = 377",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "hour"
+  },
+  "yAxis": {
+    "label": "Temperature (K)"
+  },
+  "series": [
+    {
+      "column": "target_curve",
+      "name": "Target Time Series",
+      "type": "line"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-2",
+  "title": "Remaining Part of the Time Series",
+  "dataSource": "chart-1-2.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Temperature (K)"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 This plot shows how OBS identifies anomalies by comparing a target segment to historical data:
 
@@ -121,7 +161,74 @@ Let's display some random candidates.
 data.plot_target_and_candidates()
 ```
 
-![png](/images/optimal_baseline/OBS_Notebook_9_0.svg)
+```chart-multiple
+{
+  "id": "chart-multiple-1",
+  "title": "Target and Candidate Baselines",
+  "dataSource": "chart-2.csv",
+  "columns": 4,
+  "xAxis": { "key": "hour" },
+  "yAxis": { "label": "Temperature (K)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_3", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_4", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_5", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-4",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_6", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-5",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_7", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-6",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_8", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-7",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_9", "name": "Possible Candidate", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-8",
+      "series": [
+        { "column": "target_curve", "name": "Target Time Series", "type": "line" },
+        { "column": "candidate_10", "name": "Possible Candidate", "type": "line" }
+      ]
+    }
+  ]
+}
+```
 
 As we can see above, each subplot compares the target curve (lime) with a possible candidate (blue). Some candidates match the target candidate closely, while others show very different patterns. This highlights how some segments are good matches and others are not.
 
@@ -156,7 +263,52 @@ Our plot function can be used to display the optimal baseline vs the target curv
 data.plot_target_and_optimal_baseline()
 ```
 
-![png](/images/optimal_baseline/OBS_Notebook_13_0.svg)
+```chart
+{
+  "id": "chart-3",
+  "title": "Optimal Baseline And Target",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "hour"
+  },
+  "yAxis": {
+    "label": "Temperature (K)"
+  },
+  "series": [
+    {
+      "column": "target_curve",
+      "name": "Target Time Series",
+      "type": "line"
+    },
+    {
+      "column": "optimal_baseline",
+      "name": "Optimal Baseline",
+      "type": "line"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-4",
+  "title": "Scaled Optimal Baseline Difference",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "hour"
+  },
+  "yAxis": {
+    "label": "Temperature (K)"
+  },
+  "series": [
+    {
+      "column": "residual",
+      "name": "Residual",
+      "type": "line"
+    }
+  ]
+}
+```
 
 The plot shows the comparison between the target curve and the optimal baseline:
 
@@ -172,6 +324,37 @@ data.run_anomaly_detection(threshold=0.007, plot = True)
 ```
 
 ![png](/images/optimal_baseline/OBS_Notebook_15_1.svg)
+
+```chart
+{
+  "id": "chart-5",
+  "title": "Anomaly Detection Results",
+  "dataSource": "chart-4.csv",
+  "xAxis": {
+    "key": "hour"
+  },
+  "yAxis": {
+    "label": "Scale Residual (K)"
+  },
+  "series": [
+    {
+      "column": "residual",
+      "name": "Residual",
+      "type": "line"
+    },
+    {
+      "column": "threshold",
+      "name": "Threshold = 0.007",
+      "type": "line",
+      "strokeDashArray": "5,5"
+    }
+  ],
+  "anomalies": {
+    "column": "is_anomaly",
+    "seriesColumn": "residual"
+  }
+}
+```
 
 The plot explains how to use the residual time series to flag anomalies. The residual curve is shown in white, with a threshold line at 0.007 (cyan). Two points exceed the threshold and are flagged as anomalies (lime dots). This method detects the earlier deviation we saw around hour 15 as an anomaly.
 
@@ -215,7 +398,31 @@ plt.plot(fixed_target, label = 'Target Time Series after OBS', color ='red')
 plt.legend()
 ```
 
-![png](/images/optimal_baseline/OBS_Notebook_20_1.svg)
+```chart
+{
+  "id": "chart-6",
+  "title": "Target Before and After OBS Cleaning",
+  "dataSource": "chart-5.csv",
+  "xAxis": {
+    "key": "hour"
+  },
+  "yAxis": {
+    "label": "Temperature (K)"
+  },
+  "series": [
+    {
+      "column": "target_original",
+      "name": "Target Time Series",
+      "type": "line"
+    },
+    {
+      "column": "target_after_obs",
+      "name": "Target Time Series after OBS",
+      "type": "line"
+    }
+  ]
+}
+```
 
 As we can see here, the OBS method smooths out the anomaly area by replacing the original values (green) with those from the optimal baseline, producing a "corrected" time series result (cyan). The corrected curve now follows a more consistent pattern, which helps reduce noise and improve downstream forecasting models.
 

@@ -65,7 +65,26 @@ plt.ylabel('Amplitude (y)', fontsize = 20)
 
     Text(0, 0.5, 'Amplitude (y)')
 
-![pic](/images/fourier_modelling/example_ts.svg)
+```chart
+{
+  "id": "chart-1",
+  "title": "Simple Sine Wave",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "t"
+  },
+  "yAxis": {
+    "label": "Amplitude (y)"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Actual Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 This represents an often encountered situation where our time series is the **sum of multiple sine waves operating at different frequencies, amplitudes, and phases**. In these scenarios, the Fourier Transform shines.
 
@@ -115,7 +134,26 @@ plt.xlabel('Frequency (f)',fontsize = 20)
 plt.ylabel('FT Amplitude (y)',fontsize = 20)
 ```
 
-![png](/images/fourier_modelling/fft_example.svg)
+```chart
+{
+  "id": "chart-2",
+  "title": "FFT Amplitude Spectrum",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "frequency"
+  },
+  "yAxis": {
+    "label": "FT Amplitude (y)"
+  },
+  "series": [
+    {
+      "column": "amplitude",
+      "name": "Actual Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 This plot shows that the Fourier Transform successfully reveals the two components that make up the original time series:
 
@@ -144,7 +182,48 @@ plt.plot(t, y, color ='cyan', label = 'Original Time Series')
 plt.legend()
 ```
 
-![png](/images/fourier_modelling/ifft_rec.svg)
+```chart
+{
+  "id": "chart-3",
+  "title": "Inverse FFT Comparison",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "t"
+  },
+  "yAxis": {
+    "label": "Amplitude (y)"
+  },
+  "series": [
+    {
+      "column": "inverse_fft",
+      "name": "Inverse FT",
+      "type": "line",
+      "color": "chart-3"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-4",
+  "title": "Inverse FFT Comparison",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "t"
+  },
+  "yAxis": {
+    "label": "Amplitude (y)"
+  },
+  "series": [
+    {
+      "column": "original",
+      "name": "Original Time Series",
+      "type": "line"
+    }
+  ]
+}
+```
 
 Pretty amazing right? Now let's see how we can use this tool.
 
@@ -172,7 +251,26 @@ plt.xlabel('Time (t)',fontsize = 20)
 plt.ylabel('Amplitude (y)',fontsize = 20)
 ```
 
-![png](/images/fourier_modelling/complex_timeseries.svg)
+```chart
+{
+  "id": "chart-5",
+  "title": "Fourier Filtering - Frequency Bands",
+  "dataSource": "chart-4.csv",
+  "xAxis": {
+    "key": "t"
+  },
+  "yAxis": {
+    "label": "Amplitude (y)"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 For such a complex time series, retrospectively identifying the **specific frequency** component is not trivial nor necessary. Nonetheless, we can run the Fourier Transform and split it into two non overlapping parts:
 
@@ -227,7 +325,31 @@ plt.show()
 
 ```
 
-![png](/images/fourier_modelling/fourier_filtering.svg)
+```chart
+{
+  "id": "chart-6",
+  "title": "Low vs High Frequency Bands in FFT",
+  "dataSource": "chart-5.csv",
+  "xAxis": {
+    "key": "frequency_bin"
+  },
+  "yAxis": {
+    "label": "Magnitude (y)"
+  },
+  "series": [
+    {
+      "column": "low_freq_magnitude",
+      "name": "Low Frequencies",
+      "type": "line"
+    },
+    {
+      "column": "high_freq_magnitude",
+      "name": "High Frequencies",
+      "type": "line"
+    }
+  ]
+}
+```
 
 As we can see, we retrieve three peaks for the low frequencies and three peaks for the high frequencies. Now we can do even more: for each one of these parts we can run the **inverse** Fourier Transform.
 
@@ -258,7 +380,48 @@ plt.tight_layout()
 plt.legend(fontsize = 12)
 ```
 
-![png](/images/fourier_modelling/fourier_filtering_ifft.svg)
+```chart
+{
+  "id": "chart-7",
+  "title": "Filtered Inverse FFT Components",
+  "dataSource": "chart-6.csv",
+  "xAxis": {
+    "key": "t"
+  },
+  "yAxis": {
+    "label": "Amplitude (y)"
+  },
+  "series": [
+    {
+      "column": "low_ifft",
+      "name": "Low IFT",
+      "type": "line"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-8",
+  "title": "Filtered Inverse FFT Components",
+  "dataSource": "chart-6.csv",
+  "xAxis": {
+    "key": "t"
+  },
+  "yAxis": {
+    "label": "Amplitude (y)"
+  },
+  "series": [
+    {
+      "column": "high_ifft",
+      "name": "High IFT",
+      "type": "line",
+      "color": "lime-500"
+    }
+  ]
+}
+```
 
 As we can imagine, the **high frequency** signal is very crazy-up and downy, as you would expect from a high frequency sine wave, and the **low frequency** signal has a more relaxed shape, as you would expect from a low frequency sine wave.
 
@@ -347,7 +510,81 @@ plt.plot(np.array(fcst_df['ds']),np.array(fcst_df['TimeGPT']), color = 'cyan')
 plt.fill_between(np.array(fcst_df['ds']),np.array(fcst_df['TimeGPT-lo-90']), np.array(fcst_df['TimeGPT-hi-90']), color ='cyan', alpha = 0.2)
 ```
 
-![png](/images/fourier_modelling/high_frequency_ts.svg)
+```chart
+{
+  "id": "chart-9",
+  "title": "High Frequency Time Series Forecasting",
+  "dataSource": "chart-7.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "actual",
+      "name": "Actual Data",
+      "type": "line",
+      "color": "blue-700",
+      "zIndex": 4
+    },
+    {
+      "column": "forecast",
+      "name": "Forecast",
+      "type": "line",
+      "color": "cyan-400",
+      "zIndex": 5
+    },
+    {
+      "type": "area",
+      "columns": {
+        "high": "hi_90",
+        "low": "lo_90"
+      },
+      "name": "90% Interval"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-10",
+  "title": "High Frequency Time Series Forecasting (zoom)",
+  "dataSource": "chart-9.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "actual",
+      "name": "Actual Data",
+      "type": "line",
+      "color": "blue-700",
+      "zIndex": 4
+    },
+    {
+      "column": "forecast",
+      "name": "Forecast",
+      "type": "line",
+      "color": "cyan-400",
+      "zIndex": 5
+    },
+    {
+      "type": "area",
+      "columns": {
+        "high": "hi_90",
+        "low": "lo_90"
+      },
+      "name": "90% Interval"
+    }
+  ]
+}
+```
 
 Similarly strong performance can also be observed for the low-frequency time series:
 
@@ -369,7 +606,77 @@ plt.plot(np.array(fcst_df['ds']),np.array(fcst_df['TimeGPT']), color = 'cyan')
 plt.fill_between(np.array(fcst_df['ds']),np.array(fcst_df['TimeGPT-lo-90']), np.array(fcst_df['TimeGPT-hi-90']), color ='cyan', alpha = 0.2)
 ```
 
-![png](/images/fourier_modelling/low_frequency_ts.svg)
+```chart
+{
+  "id": "chart-11",
+  "title": "Low Frequency Time Series Forecasting",
+  "dataSource": "chart-8.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "actual",
+      "name": "Actual Data",
+      "type": "line",
+      "color": "blue-700"
+    },
+    {
+      "column": "forecast",
+      "name": "Forecast",
+      "type": "line",
+      "color": "cyan-400"
+    },
+    {
+      "type": "area",
+      "columns": {
+        "high": "hi_90",
+        "low": "lo_90"
+      },
+      "name": "90% Interval"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-12",
+  "title": "Low Frequency Time Series Forecasting (zoom)",
+  "dataSource": "chart-10.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "actual",
+      "name": "Actual Data",
+      "type": "line",
+      "color": "blue-700"
+    },
+    {
+      "column": "forecast",
+      "name": "Forecast",
+      "type": "line",
+      "color": "cyan-400"
+    },
+    {
+      "type": "area",
+      "columns": {
+        "high": "hi_90",
+        "low": "lo_90"
+      },
+      "name": "90% Interval"
+    }
+  ]
+}
+```
 
 ## Putting Everything Together
 

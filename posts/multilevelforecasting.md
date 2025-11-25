@@ -54,7 +54,26 @@ data = pd.read_csv('data/euro_conversion_data.csv')
 plot_timeseries(data)
 ```
 
-![image](/images/MultiLevelForecasting/raw_timeseries_plot.svg)
+```chart
+{
+  "id": "chart-1",
+  "title": "Raw Time Series",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "Date"
+  },
+  "yAxis": {
+    "label": "US dollar - Euro Conversion"
+  },
+  "series": [
+    {
+      "column": "US dollar",
+      "name": "Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 As we can see from the plot above, the timeseries shows a rich and complex structure. There are long-term trends, such as the rise and fall between 2002 and 2015, mid-term cycles, and short-term fluctuations that can be very interesting if we are monitoring the rapid evolution of the market.
 
@@ -108,7 +127,26 @@ print(x_full.shape)
 
 And it looks like this:
 
-![image](/images/MultiLevelForecasting/year_averaged_data.svg)
+```chart
+{
+  "id": "chart-2",
+  "title": "Yearly Averaged Data",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "time_group"
+  },
+  "yAxis": {
+    "label": "US dollar - Euro Conversion"
+  },
+  "series": [
+    {
+      "column": "US dollar",
+      "name": "Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 In this case, we are interested in forecasting the next 2-3 averaged years of our time series.
 
@@ -157,7 +195,36 @@ plt.plot(x_full[train_index+val_index-1:], y[train_index+val_index-1:], label='T
 plt.plot(x_full, y_full_pred, color = 'cyan', label = 'Model Prediction')
 ```
 
-![image](/images/MultiLevelForecasting/year_prediction.svg)
+```chart
+{
+  "id": "chart-3",
+  "title": "Year Prediction with Polynomial Regression",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "year"
+  },
+  "yAxis": {
+    "label": "US dollar - Euro Conversion"
+  },
+  "series": [
+    {
+      "column": "actual",
+      "name": "Data",
+      "type": "line"
+    },
+    {
+      "column": "prediction",
+      "name": "Data 2",
+      "type": "line"
+    },
+    {
+      "column": "split",
+      "name": "Data 3",
+      "type": "line"
+    }
+  ]
+}
+```
 
 As we can see, the model closely follows the shape of the time series and manages to forecast the next three years (2023, 2024, and 2025) with surprising accuracy, despite its simplicity.
 
@@ -174,7 +241,26 @@ print(x_full.shape)
 
 And it looks like this:
 
-![image](/images/MultiLevelForecasting/month_averaged_data.svg)
+```chart
+{
+  "id": "chart-4",
+  "title": "Monthly Averaged Data",
+  "dataSource": "chart-4.csv",
+  "xAxis": {
+    "key": "time_group"
+  },
+  "yAxis": {
+    "label": "US dollar - Euro Conversion"
+  },
+  "series": [
+    {
+      "column": "US dollar",
+      "name": "Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 In this case, we are interested in understanding what will happen, let's say, in the next 3 or 4 months of our time series.
 
@@ -257,7 +343,39 @@ plt.legend()
 plt.savefig('/images/MultiLevelForecasting/month_prediction.svg')
 ```
 
-![image](/images/MultiLevelForecasting/month_prediction.svg)
+```chart
+{
+  "id": "chart-5",
+  "title": "Month Prediction with AutoARIMA",
+  "dataSource": "chart-5.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "US dollar - Euro Conversion"
+  },
+  "series": [
+    {
+      "type": "area",
+      "columns": {
+        "high": "upper_bound",
+        "low": "lower_bound"
+      },
+      "name": "AutoARIMA 95p Interval"
+    },
+    {
+      "column": "actual",
+      "type": "line",
+      "name": "Test Set Data"
+    },
+    {
+      "column": "prediction",
+      "type": "line",
+      "name": "Auto ARIMA Prediction"
+    }
+  ]
+}
+```
 
 As we can see, the AutoARIMA model does a solid job here. The forecast (in cyan) tracks the actual test data (in lime) pretty closely, and the 95% confidence interval (in dark teal) comfortably captures the uncertainty without being overly wide. It’s a good example of how a well-tuned statistical model can perform strongly for mid-term forecasting.
 
@@ -272,9 +390,28 @@ print(x_full.shape)
 (6723, 1)
 ```
 
-![image](/images/MultiLevelForecasting/day_averaged_data.svg)
+```chart
+{
+  "id": "chart-6",
+  "title": "Day Averaged Data",
+  "dataSource": "chart-6.csv",
+  "xAxis": {
+    "key": "time_group"
+  },
+  "yAxis": {
+    "label": "US dollar - Euro Conversion"
+  },
+  "series": [
+    {
+      "column": "US dollar",
+      "name": "Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
-### Model
+### Model
 
 For short-term forecasting, we shift our focus to daily data, where small fluctuations matter and recent changes carry the most weight. In this setting, traditional statistical models often fall short, we need something that can handle fine-grained patterns and fast dynamics. That’s where deep learning models, like [**TimeGPT-1**](https://www.nixtla.io/docs), come into play.
 
@@ -325,7 +462,39 @@ And this is how it looks like:
 
 - The **cyan shaded area** represents the 75% confidence interval produced by TimeGPT-1, capturing the model's uncertainty in its predictions.
 
-![image](/images/MultiLevelForecasting/day_prediction.svg)
+```chart
+{
+  "id": "chart-7",
+  "title": "Day Prediction with TimeGPT",
+  "dataSource": "chart-7.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "US dollar - Euro Conversion"
+  },
+  "series": [
+    {
+      "type": "area",
+      "columns": {
+        "high": "upper_bound",
+        "low": "lower_bound"
+      },
+      "name": "TimeGPT 95p Interval"
+    },
+    {
+      "column": "actual",
+      "type": "line",
+      "name": "Training Data"
+    },
+    {
+      "column": "prediction",
+      "type": "line",
+      "name": "TimeGPT Forecast"
+    }
+  ]
+}
+```
 
 TimeGPT-1 is doing a great job here. The forecast (in cyan) aligns well with the actual test data (in lime), and the p75 confidence boundaries (in cyan) wrap the predictions nicely without being too loose or overly optimistic. It shows how transformer-based models can effectively capture short-term fluctuations, even in noisy daily data.
 
