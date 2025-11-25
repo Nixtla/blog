@@ -568,7 +568,6 @@ def detect_anomalies(
     n = len(y)
     if len(temperature_values) != n:
         raise ValueError("temperature_values length must match timeseries_data length.")
-
     # 1. Build long-format df expected by StatsForecast
     start = pd.Timestamp("2024-01-01")
     ds = pd.date_range(start, periods=n, freq="D")

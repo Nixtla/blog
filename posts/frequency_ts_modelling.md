@@ -678,7 +678,7 @@ plt.fill_between(np.array(fcst_df['ds']),np.array(fcst_df['TimeGPT-lo-90']), np.
 }
 ```
 
-## Putting everthing together
+## Putting Everything Together
 
 What we did in this blog post can be summarized in these steps:
 

@@ -55,7 +55,7 @@ nixtla_client = NixtlaClient(api_key=NIXTLA_API_KEY)
 
 ## Load and Prepare the Dataset
 
-Next, you'll load the historical page view data from the Peyton Manning dataset. This dataset contains daily Wikipedia page views for Peyton Manning, a former NFL quarterback, spanning multiple years.
+We're currently launching pilot programs with selected organizations. If you'd like to be among the first to leverage TimeGPT-2 in production, [join our waitlist](https://www.nixtla.io/timegpt-2-waitlist?utm_campaign=timegpt2_announcement&utm_source=nixtla.io/blog&utm_medium=referral) to request early access.
 
 It's well-suited for anomaly detection because traffic naturally spikes around events like playoff games, retirement announcements, or media coverage. These real-world fluctuations provide a strong test case for detecting unexpected user behavior in time series data.
 
