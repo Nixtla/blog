@@ -19,18 +19,14 @@ author_position: Data Scientist
 publication_date: 2025-10-15
 ---
 
-
 Every bridge, building, and critical infrastructure around us is constantly under stress.
-Wind loads, temperature fluctuations, traffic vibrations, and material aging all take their toll over time. 
-When disasters strike, such as a bridge collapsing, a massive sinkhole opening in a street, or a pipe bursting, it's rarely due to a single crack that appeared overnight. Instead, cracks and corrosion gradually worsen over time until the critical failure occurs. 
-For this reason, the question that keeps structural engineers awake at night is simple yet profound: *How do we know when a structure is starting to fail before it becomes dangerous?*
-
-
+Wind loads, temperature fluctuations, traffic vibrations, and material aging all take their toll over time.
+When disasters strike, such as a bridge collapsing, a massive sinkhole opening in a street, or a pipe bursting, it's rarely due to a single crack that appeared overnight. Instead, cracks and corrosion gradually worsen over time until the critical failure occurs.
+For this reason, the question that keeps structural engineers awake at night is simple yet profound: _How do we know when a structure is starting to fail before it becomes dangerous?_
 
 This is where **Structural Health Monitoring (SHM)** comes in. SHM is a field that combines civil engineering, sensor technology, and data science to continuously monitor the integrity of structures. By installing networks of sensors (accelerometers, strain gauges, temperature sensors) on bridges, buildings, tunnels, and other critical infrastructure, engineers can collect time series data that captures the structure's "heartbeat."
 
-
-As one can easily imagine, people who work in SHM deal with *a lot* of time series. In this blog post, we'll explore the core challenge of detecting when something is genuinely wrong with a structure versus when the sensors are just picking up normal environmental variations. In particular, we'll build a complete **damage detection pipeline** that can identify structural damage even when **temperature effects** are present in the data.
+As one can easily imagine, people who work in SHM deal with _a lot_ of time series. In this blog post, we'll explore the core challenge of detecting when something is genuinely wrong with a structure versus when the sensors are just picking up normal environmental variations. In particular, we'll build a complete **damage detection pipeline** that can identify structural damage even when **temperature effects** are present in the data.
 
 Here's our roadmap:
 
@@ -55,7 +51,6 @@ Let's get started!
 
 To simulate realistic SHM data, we need signals that look like what actual sensors measure. In the real world, when waves propagate through a structure, they create complex patterns. They have localized bursts of energy that decay over time. The mathematical name for these "wave packages" is **chirplet**. This is the function we will use:
 
-
 ```python
 def chirplet(t, tau, fc, alpha1, alpha2=0.0, beta=1.0, phi=0.0):
     u = t - tau
@@ -65,8 +60,6 @@ def chirplet(t, tau, fc, alpha1, alpha2=0.0, beta=1.0, phi=0.0):
 ```
 
 And this is how it looks:
-
-
 
 ```python
 # Generate simple chirplet
@@ -81,8 +74,26 @@ plt.grid(True, alpha=0.3)
 plt.show()
 ```
 
-
-![Chirplet Signal](/images/damage_detection/chirplet.svg)
+```chart
+{
+  "id": "chart-1",
+  "title": "Chirplet Signal",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "t"
+  },
+  "yAxis": {
+    "label": "Amplitue"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Actual Signal",
+      "type": "line"
+    }
+  ]
+}
+```
 
 ### Full Signal
 
@@ -145,7 +156,26 @@ plt.savefig('images/random_signal.svg')
 plt.show()
 ```
 
-![Random Signal](/images/damage_detection/random_signal.svg)
+```chart
+{
+  "id": "chart-3",
+  "title": "Simulated Sensor Signal",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "t"
+  },
+  "yAxis": {
+    "label": "Amplitue"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Actual Signal",
+      "type": "line"
+    }
+  ]
+}
+```
 
 ### Full Dataset (Temperature Dependency)
 
@@ -159,7 +189,7 @@ There are three random options for the variation that we will simulate:
 
 1. The relationship is **linear**, amplitude increases proportionally with temperature
 2. The relationship is **polynomial**, a more complex, curved relationship between amplitude and temperature
-3. The relationship is  **sinusoidal**, with cyclical variations
+3. The relationship is **sinusoidal**, with cyclical variations
 
 These different patterns, which are randomly injected for every index (out of the 600), mimic the complex physics happening in real materials as temperature changes.
 
@@ -272,11 +302,58 @@ def plot_random_temperatures(timeseries_data, temperature_values, n_temps=6, see
     plt.show()
 ```
 
-![Random Signal with temperatures](/images/damage_detection/random_temperatures.svg)
+```chart-multiple
+{
+  "id": "chart-multiple-1",
+  "title": "Random Temperatures",
+  "dataSource": "chart-2.csv",
+  "columns": 3,
+  "xAxis": { "key": "time_step" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "temp_0.838", "name": "temp_0.838", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "temp_0.535", "name": "temp_0.535", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "temp_0.707", "name": "temp_0.707", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
+      ]
+    },
+    {
+      "id": "chart-inner-4",
+      "series": [
+        { "column": "temp_0.455", "name": "temp_0.455", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
+      ]
+    },
+    {
+      "id": "chart-inner-5",
+      "series": [
+        { "column": "temp_0.444", "name": "temp_0.444", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
+      ]
+    },
+    {
+      "id": "chart-inner-6",
+      "series": [
+        { "column": "temp_0.394", "name": "temp_0.394", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
+      ]
+    }
+  ]
+}
+```
 
 Now the question to answer is the following:
 
-*At what index, and what temperature, does the signal matrix present an anomaly?*
+_At what index, and what temperature, does the signal matrix present an anomaly?_
 
 From the following plot, it is extremely hard to answer this question, but if we transpose the signal matrix and plot for a fixed index **at different temperatures**, we get the following:
 
@@ -307,8 +384,37 @@ for i, time_step in enumerate(time_steps_to_show):
 plt.tight_layout()
 plt.show()
 ```
-![Dependency Types](/images/damage_detection/dependency_types.svg)
 
+```chart-multiple
+{
+  "id": "chart-multiple-2",
+  "title": "Dependency Types Visualization",
+  "dataSource": "chart-4.csv",
+  "columns": 3,
+  "xAxis": { "key": "temperature" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "time_step_0_linear", "name": "time_step_0_linear", "type": "line", "color": "lime-500" }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "time_step_10_sinusoidal", "name": "time_step_10_sinusoidal", "type": "line", "color": "blue-700" }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "time_step_22_polynomial", "name": "time_step_22_polynomial", "type": "line", "color": "cyan-500" }
+      ]
+    }
+  ]
+}
+```
 
 Now, if at temperature = 1 you see -0.06 at time step = 0, then it is obviously not an anomaly, because it follows the linear trend. However, if you see the same value at time step = 22, there is obviously a problem.
 
@@ -366,7 +472,9 @@ t_mixed, timeseries_mixed, temperature_values, column_names, dependency_types = 
     change_probability=0.1  # 10% chance of changing dependency type at each time step
 )
 ```
+
 2. Adding the anomaly:
+
 ```python
 # Example: Add anomaly at time step 30, temperature 0.5
 timeseries_with_anomaly = add_anomaly(
@@ -379,7 +487,8 @@ timeseries_with_anomaly = add_anomaly(
 ```
 
 3. Displaying the anomaly:
-``` python
+
+```python
 
 plt.figure(figsize=(12, 6))
 time_step = 30
@@ -395,8 +504,36 @@ plt.savefig('images/anomaly_detection.svg')
 plt.show()
 ```
 
-![Dependency Types](/images/damage_detection/anomaly_detection_input.svg)
-
+```chart
+{
+  "id": "chart-5",
+  "title": "Time step 30 - Signal vs Temperature (Before/After Anomaly)",
+  "dataSource": "chart-5.csv",
+  "xAxis": {
+    "key": "temperature"
+  },
+  "yAxis": {
+    "label": "Amplitue"
+  },
+  "series": [
+    {
+      "column": "original",
+      "name": "Original",
+      "type": "line"
+    },
+    {
+      "column": "with_anomaly",
+      "name": "With Anomaly",
+      "type": "line",
+      "showDots": true
+    }
+  ],
+  "thresholds": {
+    "enabled": true,
+    "column": "threshold"
+  }
+}
+```
 
 Now that we have injected the anomaly, let's see if we are going to be able to detect it.
 
@@ -424,36 +561,35 @@ from statsforecast.models import AutoETS
 
 def detect_anomalies(
     timeseries_data: np.ndarray,
-    temperature_values: pd.DatetimeIndex, 
+    temperature_values: pd.DatetimeIndex,
     timegpt_level: float = 0.90
 ) -> pd.DataFrame:
     y = np.asarray(timeseries_data, dtype=float)
     n = len(y)
     if len(temperature_values) != n:
         raise ValueError("temperature_values length must match timeseries_data length.")
-    
     # 1. Build long-format df expected by StatsForecast
     start = pd.Timestamp("2024-01-01")
     ds = pd.date_range(start, periods=n, freq="D")
     df = pd.DataFrame({"unique_id": 0, "ds": ds, "y": y})
-    
+
     # 2. Initialize the model
     levels = [int(round(timegpt_level * 100))]
     sf = StatsForecast(models=[AutoETS(season_length=1)], freq="D", n_jobs=-1)
-    
+
     # 3. Fit & get forecasts with fitted=True
     _ = sf.forecast(df=df, h=1, level=levels, fitted=True)
-    
+
     # 4. Retrieve insample fitted values & intervals
     insample = sf.forecast_fitted_values()
     model_name = [c for c in insample.columns if c not in ("unique_id", "ds", "y") and "-lo-" not in c and "-hi-" not in c][0]
     lo_col = f"{model_name}-lo-{levels[0]}"
     hi_col = f"{model_name}-hi-{levels[0]}"
-    
+
     # 5. Flag anomalies: outside the interval
     is_anom = ~insample["y"].between(insample[lo_col], insample[hi_col])
     is_anom = is_anom.astype(int).to_numpy()
-    
+
     # 6. Assemble output
     out = pd.DataFrame({
         "ds": insample["ds"].values,
@@ -470,7 +606,7 @@ def detect_anomalies(
     return out
 
 df_out = detect_anomalies(
-    timeseries_data=timeseries_with_anomaly[time_step,:], 
+    timeseries_data=timeseries_with_anomaly[time_step,:],
     temperature_values=temperature_values
 )
 ```
@@ -499,7 +635,30 @@ plt.grid(True, alpha=0.3)
 plt.show()
 ```
 
-![Detected Anomalies](/images/damage_detection/anomaly_detection.svg)
+```chart
+{
+  "id": "chart-6",
+  "title": "Anomaly Detection at time step 30",
+  "dataSource": "chart-6.csv",
+  "xAxis": {
+    "key": "temperature"
+  },
+  "yAxis": {
+    "label": "Signal Value"
+  },
+  "series": [
+    {
+      "column": "signal_value",
+      "name": "Original",
+      "type": "line"
+    }
+  ],
+  "anomalies": {
+    "column": "is_anomaly",
+    "seriesColumn": "signal_value"
+  }
+}
+```
 
 There we go: **anomaly detected**!
 
@@ -516,10 +675,33 @@ plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
 ```
-![Detected Anomalies Time Series](/images/damage_detection/anomaly_detection_ts.svg)
 
+```chart
+{
+  "id": "chart-7",
+  "title": "Anomaly Detection at time step 30",
+  "dataSource": "chart-7.csv",
+  "xAxis": {
+    "key": "time"
+  },
+  "yAxis": {
+    "label": "Signal Value"
+  },
+  "series": [
+    {
+      "column": "signal_value",
+      "name": "Original",
+      "type": "line"
+    }
+  ],
+  "thresholds": {
+    "enabled": true,
+    "column": "threshold"
+  }
+}
+```
 
-As we can see, that point doesn't look like an anomaly *per se* but it is clearly an anomaly when we consider the temperature perspective: well done!
+As we can see, that point doesn't look like an anomaly _per se_ but it is clearly an anomaly when we consider the temperature perspective: well done!
 
 ## Conclusion
 

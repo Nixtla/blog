@@ -16,7 +16,26 @@ publication_date: 2025-08-26
 
 Imagine that you're tracking daily website traffic. Some days show spikes in visits, but it's hard to tell which ones reflect real behavioral changes versus normal fluctuations. Manually spotting anomalies is time-consuming, unreliable, and impractical as your traffic data becomes more complex.
 
-![](/images/anomaly_detection/daily_website_traffic.svg)
+```chart
+{
+  "id": "chart-1",
+  "title": "Daily Website Traffic with Potential Anomalies",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Actual Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 This is where anomaly detection becomes essential. Instead of relying on manual inspection or guesswork, a model like TimeGPT provides consistent, automated detection of unusual behavior based on the page's historical trends and known patterns.
 
@@ -88,7 +107,26 @@ Visualize the time series using the `plot` method:
 nixtla_client.plot(wikipedia)
 ```
 
-![](/images/anomaly_detection/wikipedia_plot.svg)
+```chart
+{
+  "id": "chart-2",
+  "title": "Raw Wikipedia Page Views",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Actual Data",
+      "type": "line"
+    }
+  ]
+}
+```
 
 The time series spans several years and shows clear seasonal spikes, likely tied to NFL events, alongside irregular, sharp peaks. These mixed patterns make it hard to judge by eye which spikes are expected and which are truly unusual, making TimeGPT essential for accurate anomaly detection.
 
@@ -125,7 +163,49 @@ Plot the anomalies using the `plot` method:
 nixtla_client.plot(wikipedia, anomalies_df)
 ```
 
-![](/images/anomaly_detection/anomaly_plot.svg)
+```chart
+{
+  "id": "chart-3",
+  "title": "Daily Website Traffic with Anomalies",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target (y)"
+  },
+  "series": [
+    {
+      "type": "area",
+      "columns": {
+        "high": "TimeGPT-hi-99",
+        "low": "TimeGPT-lo-99"
+      },
+      "name": "TimeGPT Level 99",
+      "zIndex": 3,
+      "color": "chart-muted"
+    },
+    {
+      "column": "y",
+      "name": "Actual Data",
+      "type": "line",
+      "color": "blue-700",
+      "zIndex": 4
+    },
+    {
+      "column": "TimeGPT",
+      "name": "TimeGPT Forecast",
+      "type": "line",
+      "color": "cyan-400",
+      "zIndex": 5
+    }
+  ],
+  "anomalies": {
+    "column": "anomaly",
+    "seriesColumn": "y"
+  }
+}
+```
 
 The plot reveals several key insights:
 
@@ -157,7 +237,26 @@ nixtla_client.weights_x.plot.barh(
 )
 ```
 
-![](/images/anomaly_detection/feature_plot.svg)
+```chart
+{
+  "id": "chart-4",
+  "title": "Feature Importance Weights",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "weights"
+  },
+  "yAxis": {
+    "label": "Features"
+  },
+  "series": [
+    {
+      "column": "weights",
+      "type": "bar",
+      "horizontal": true
+    }
+  ]
+}
+```
 
 In this plot:
 

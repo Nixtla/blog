@@ -241,7 +241,48 @@ Let's take a look at our forecasts now using the `plot` method in the `StatsFore
 sf.plot(df, pred_df)
 ```
 
-![](/images/baseline_forecasts/ts_plot.svg)
+```chart-multiple
+{
+  "id": "chart-multiple-1",
+  "title": "Baseline Forecast",
+  "dataSource": "chart-1.csv",
+  "columns": 2,
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "Adelaide_y", "name": "Adelaide_y", "type": "line" },
+        { "column": "Adelaide_HistoricAverage", "name": "Adelaide_HistoricAverage", "type": "line" },
+        { "column": "Adelaide_Naive", "name": "Adelaide_Naive", "type": "line" },
+        { "column": "Adelaide_SeasonalNaive", "name": "Adelaide_SeasonalNaive", "type": "line" },
+        { "column": "Adelaide_WindowAverage", "name": "Adelaide_WindowAverage", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "Brisbane_y", "name": "Brisbane_y", "type": "line" },
+        { "column": "Brisbane_HistoricAverage", "name": "Brisbane_HistoricAverage", "type": "line" },
+        { "column": "Brisbane_Naive", "name": "Brisbane_Naive", "type": "line" },
+        { "column": "Brisbane_SeasonalNaive", "name": "Brisbane_SeasonalNaive", "type": "line" },
+        { "column": "Brisbane_WindowAverage", "name": "Brisbane_WindowAverage", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "Melbourne_y", "name": "Melbourne_y", "type": "line" },
+        { "column": "Melbourne_HistoricAverage", "name": "Melbourne_HistoricAverage", "type": "line" },
+        { "column": "Melbourne_Naive", "name": "Melbourne_Naive", "type": "line" },
+        { "column": "Melbourne_SeasonalNaive", "name": "Melbourne_SeasonalNaive", "type": "line" },
+        { "column": "Melbourne_WindowAverage", "name": "Melbourne_WindowAverage", "type": "line" }
+      ]
+    }
+  ]
+}
+```
 
 Now that we have predictions for the 4 models across the 3 different time series, let's evaluate the forecasts using the `evaluate` method with `rmse` as the error metric:
 

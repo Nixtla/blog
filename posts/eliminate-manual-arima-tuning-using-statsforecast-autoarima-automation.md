@@ -313,7 +313,48 @@ def plot_forecasts_with_intervals(category_name):
 plot_forecasts_with_intervals("electronics")
 ```
 
-![autoarima-forecast-confidence-intervals](/images/eliminate-manual-arima-tuning-using-statsforecast-autoarima-automation/autoarima-forecast-confidence-intervals.svg)
+```chart
+{
+  "id": "chart-1",
+  "title": "Electronics Sales Forecast with Confidence Intervals",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Sales [$]"
+  },
+  "series": [
+    {
+      "column": "actual",
+      "name": "Historical Sales",
+      "type": "line"
+    },
+    {
+      "column": "forecast",
+      "name": "AutoARIMA Forecast",
+      "type": "line",
+      "color": "cyan-400"
+    },
+    {
+      "type": "area",
+      "columns": {
+        "high": "hi_95",
+        "low": "lo_95"
+      },
+      "name": "95% Confidence"
+    },
+    {
+      "type": "area",
+      "columns": {
+        "high": "hi_80",
+        "low": "lo_80"
+      },
+      "name": "80% Confidence"
+    }
+  ]
+}
+```
 
 The electronics forecast captures seasonal patterns with confidence intervals that widen over time, reflecting increasing uncertainty in longer-term predictions. AutoARIMA successfully identifies the cyclical sales patterns while providing realistic uncertainty bounds for inventory planning decisions.
 

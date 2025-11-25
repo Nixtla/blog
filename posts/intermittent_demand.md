@@ -16,7 +16,27 @@ publication_date: 2025-08-26
 
 Intermittent demand forecasting poses significant challenges for data scientists, especially when dealing with time series that contain numerous zero values.
 
-![](/images/intermittent_demand/intermittent_demand_spikes.svg)
+```chart
+{
+  "id": "chart-1",
+  "title": "Intermittent Demand",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target (y)"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Original Sales",
+      "type": "line",
+      "showDots": true
+    }
+  ]
+}
+```
 
 Traditional forecasting models often struggle with such sparse data, leading to inaccurate predictions. Nixtla's [TimeGPT](https://www.nixtla.io/docs/intro) offers a robust solution to this problem by effectively handling intermittent demand scenarios.
 
@@ -87,7 +107,66 @@ To understand the demand patterns, we plot the time series data.
   )
 ```
 
-![](/images/intermittent_demand/sales_plot.svg)
+```chart-multiple
+{
+  "id": "chart-multiple-1",
+  "title": "Demand Patterns",
+  "dataSource": "chart-3.csv",
+  "columns": 2,
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "FOODS_1_001", "name": "FOODS_1_001", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "FOODS_1_002", "name": "FOODS_1_002", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "FOODS_1_003", "name": "FOODS_1_003", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-4",
+      "series": [
+        { "column": "FOODS_1_004", "name": "FOODS_1_004", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-5",
+      "series": [
+        { "column": "FOODS_1_005", "name": "FOODS_1_005", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-6",
+      "series": [
+        { "column": "FOODS_1_006", "name": "FOODS_1_006", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-7",
+      "series": [
+        { "column": "FOODS_1_008", "name": "FOODS_1_008", "type": "line" }
+      ]
+    },
+    {
+      "id": "chart-inner-8",
+      "series": [
+        { "column": "FOODS_1_009", "name": "FOODS_1_009", "type": "line" }
+      ]
+    }
+  ]
+}
+```
 
 The plot reveals the intermittent nature of the demand, with many periods showing zero sales.
 
@@ -141,7 +220,32 @@ ax.legend(handles, labels)
 ax
 ```
 
-![](/images/intermittent_demand/compared_plot.svg)
+```chart
+{
+  "id": "chart-2",
+  "title": "Original vs Log-Transformed Comparison",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target (y)"
+  },
+  "series": [
+    {
+      "column": "y",
+      "name": "Original Sales",
+      "type": "line"
+    },
+    {
+      "column": "log_transformed",
+      "name": "Transformed Sales",
+      "type": "line",
+      "strokeDashArray": "5,5"
+    }
+  ]
+}
+```
 
 The plot shows a clear distinction between the original and log-transformed sales series for FOODS_1_001. The original data has sharp peaks and frequent zero values, indicating highly volatile demand.
 
