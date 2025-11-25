@@ -75,7 +75,7 @@ export default function handler(req, res) {
       categories: frontmatter.categories || null,
       tags: frontmatter.tags || null,
       fileName: postSlug,
-      readTimeMinutes: calculateReadTime(content),
+      readTimeMinutes: calculateReadTime(contentWithPlaceholders),
       content: contentWithPlaceholders,
       charts,
       chartMultiples,
