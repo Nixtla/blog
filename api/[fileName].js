@@ -289,7 +289,12 @@ function downsampleData(data, targetPoints) {
     return data;
   }
 
-  const step = Math.floor(data.length / targetPoints);
+  let step = Math.floor(data.length / targetPoints);
+
+  if (step < 2) {
+    step = 2;
+  }
+
   const downsampled = [];
 
   downsampled.push(data[0]);
