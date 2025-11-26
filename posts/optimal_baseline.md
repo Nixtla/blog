@@ -323,8 +323,6 @@ We can see that the target time series is very in line with the Optimal Baseline
 data.run_anomaly_detection(threshold=0.007, plot = True)
 ```
 
-![png](/images/optimal_baseline/OBS_Notebook_15_1.svg)
-
 ```chart
 {
   "id": "chart-5",
