@@ -275,9 +275,6 @@ function loadChartData(postSlug, dataSource) {
   const MAX_POINTS = 2000;
 
   if (data.length > MAX_POINTS) {
-    console.log(
-      `Downsampling ${sanitizedDataSource}: ${data.length} → ${MAX_POINTS} points`
-    );
     return downsampleData(data, MAX_POINTS);
   }
 
