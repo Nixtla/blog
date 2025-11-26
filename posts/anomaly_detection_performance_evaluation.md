@@ -147,7 +147,7 @@ plot_normal_and_anomalous_signal(anomaly_data['normal_signal'], anomaly_data['an
 {
   "id": "chart-1",
   "title": "Normal vs Anomalous Signal Comparison",
-  "dataSource": "chart-1.csv.gz",
+  "dataSource": "chart-1.csv",
   "xAxis": {
     "key": "ds"
   },
@@ -175,7 +175,7 @@ plot_normal_and_anomalous_signal(anomaly_data['normal_signal'], anomaly_data['an
 {
   "id": "chart-1-2",
   "title": "Normal vs Anomalous Signal Comparison",
-  "dataSource": "chart-1-2.csv.gz",
+  "dataSource": "chart-1-2.csv",
   "xAxis": {
     "key": "ds"
   },
@@ -210,7 +210,7 @@ anomaly_calibrator.plot_anomalous_dataset()
 {
   "id": "chart-2",
   "title": "Multiple Anomalous Signals",
-  "dataSource": "chart-2.csv.gz",
+  "dataSource": "chart-2.csv",
   "xAxis": {
     "key": "time_step"
   },
@@ -274,7 +274,7 @@ anomaly_calibrator.plot_anomaly_detection()
 {
   "id": "chart-3",
   "title": "Time Series with TimeGPT Predictions and Anomalies",
-  "dataSource": "chart-3.csv.gz",
+  "dataSource": "chart-3.csv",
   "xAxis": {
     "key": "ds"
   },

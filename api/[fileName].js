@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import Papa from "papaparse";
-import zlib from "zlib";
 
 const PAPAPARSE_CONFIG = {
   header: true,
@@ -141,9 +140,8 @@ function sanitizeDataSource(dataSource) {
     throw new Error("Invalid characters in dataSource");
   }
 
-  // Accept both .csv and .csv.gz files
-  if (!sanitized.endsWith(".csv") && !sanitized.endsWith(".csv.gz")) {
-    throw new Error("dataSource must be a CSV or CSV.GZ file");
+  if (!sanitized.endsWith(".csv")) {
+    throw new Error("dataSource must be a CSV file");
   }
 
   return sanitized;
@@ -252,50 +250,18 @@ function extractCharts(content, postSlug) {
 function loadChartData(postSlug, dataSource) {
   const sanitizedDataSource = sanitizeDataSource(dataSource);
 
-  // Try .gz version first (prioritize compressed), then fall back to .csv
-  const gzPath = path.join(
-    process.cwd(),
-    "blogCharts",
-    postSlug,
-    sanitizedDataSource.endsWith(".gz")
-      ? sanitizedDataSource
-      : sanitizedDataSource + ".gz"
-  );
-
   const csvPath = path.join(
     process.cwd(),
     "blogCharts",
     postSlug,
-    sanitizedDataSource.endsWith(".csv.gz")
-      ? sanitizedDataSource.replace(".gz", "")
-      : sanitizedDataSource
+    sanitizedDataSource
   );
 
-  let csvContent;
-
-  // Check for .gz file first
-  if (fs.existsSync(gzPath)) {
-    try {
-      const compressed = fs.readFileSync(gzPath);
-      csvContent = zlib.gunzipSync(compressed).toString("utf-8");
-      console.log(`Loaded compressed file: ${gzPath}`);
-    } catch (error) {
-      console.error(`Error decompressing ${gzPath}:`, error);
-      throw new Error(`Failed to decompress CSV file: ${sanitizedDataSource}`);
-    }
-  }
-  // Fall back to regular CSV
-  else if (fs.existsSync(csvPath)) {
-    csvContent = fs.readFileSync(csvPath, "utf-8");
-    console.log(`Loaded regular CSV: ${csvPath}`);
-  }
-  // File not found
-  else {
-    throw new Error(
-      `CSV file not found: ${sanitizedDataSource} (tried both .csv and .csv.gz)`
-    );
+  if (!fs.existsSync(csvPath)) {
+    throw new Error(`CSV file not found: ${sanitizedDataSource}`);
   }
 
+  const csvContent = fs.readFileSync(csvPath, "utf-8");
   const result = Papa.parse(csvContent, PAPAPARSE_CONFIG);
 
   if (result.errors.length > 0) {
@@ -305,7 +271,38 @@ function loadChartData(postSlug, dataSource) {
     );
   }
 
-  return result.data;
+  const data = result.data;
+  const MAX_POINTS = 2000;
+
+  if (data.length > MAX_POINTS) {
+    console.log(
+      `Downsampling ${sanitizedDataSource}: ${data.length} → ${MAX_POINTS} points`
+    );
+    return downsampleData(data, MAX_POINTS);
+  }
+
+  return data;
+}
+
+function downsampleData(data, targetPoints) {
+  if (data.length <= targetPoints) {
+    return data;
+  }
+
+  const step = Math.floor(data.length / targetPoints);
+  const downsampled = [];
+
+  downsampled.push(data[0]);
+
+  for (let i = step; i < data.length - 1; i += step) {
+    downsampled.push(data[i]);
+  }
+
+  if (data.length > 1) {
+    downsampled.push(data[data.length - 1]);
+  }
+
+  return downsampled;
 }
 
 function calculateReadTime(content) {
