@@ -249,6 +249,7 @@ function extractCharts(content, postSlug) {
 
 function loadChartData(postSlug, dataSource) {
   const sanitizedDataSource = sanitizeDataSource(dataSource);
+
   const csvPath = path.join(
     process.cwd(),
     "blogCharts",
@@ -270,7 +271,40 @@ function loadChartData(postSlug, dataSource) {
     );
   }
 
-  return result.data;
+  const data = result.data;
+  const MAX_POINTS = 2000;
+
+  if (data.length > MAX_POINTS) {
+    return downsampleData(data, MAX_POINTS);
+  }
+
+  return data;
+}
+
+function downsampleData(data, targetPoints) {
+  if (data.length <= targetPoints) {
+    return data;
+  }
+
+  let step = Math.floor(data.length / targetPoints);
+
+  if (step < 2) {
+    step = 2;
+  }
+
+  const downsampled = [];
+
+  downsampled.push(data[0]);
+
+  for (let i = step; i < data.length - 1; i += step) {
+    downsampled.push(data[i]);
+  }
+
+  if (data.length > 1) {
+    downsampled.push(data[data.length - 1]);
+  }
+
+  return downsampled;
 }
 
 function calculateReadTime(content) {

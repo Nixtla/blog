@@ -183,7 +183,7 @@ nixtla_client.plot(wikipedia, anomalies_df)
       },
       "name": "TimeGPT Level 99",
       "zIndex": 3,
-      "color": "chart-muted"
+      "color": "cyan-900"
     },
     {
       "column": "y",
