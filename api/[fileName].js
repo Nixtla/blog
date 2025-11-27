@@ -131,10 +131,12 @@ function sanitizeDataSource(dataSource) {
     throw new Error("Invalid dataSource parameter");
   }
 
-  const sanitized = dataSource
-    .replace(/\\/g, "/")
-    .replace(/\.\.\/*/g, "")
-    .replace(/^\/+/, "");
+  let sanitized = dataSource.replace(/\\/g, "/");
+  // Remove all "../", "..//", etc. recursively to prevent incomplete sanitization
+  while (/\.\.\/*/.test(sanitized)) {
+    sanitized = sanitized.replace(/\.\.\/*/g, "");
+  }
+  sanitized = sanitized.replace(/^\/+/, "");
 
   if (!/^[a-zA-Z0-9_\-\/\.]+$/.test(sanitized)) {
     throw new Error("Invalid characters in dataSource");
