@@ -232,8 +232,8 @@ plot_series(df_train, eval_base, max_ids=4, max_insample_length=5*24)
       "id": "chart-inner-3",
       "series": [
         { "column": "y_H25", "name": "y_H25", "type": "line", "color": "blue-500", "strokeWidth": 1 },
-        { "column": "naive_H25", "name": "actual_H25", "type": "line", "color": "purple-500", "strokeWidth": 1 },
-        { "column": "seasonal_H25", "name": "actual_H25", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+        { "column": "naive_H25", "name": "naive_H25", "type": "line", "color": "purple-500", "strokeWidth": 1 },
+        { "column": "seasonal_H25", "name": "seasonal_H25", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
       ]
     },
     {
