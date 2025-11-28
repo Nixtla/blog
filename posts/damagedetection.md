@@ -308,6 +308,11 @@ def plot_random_temperatures(timeseries_data, temperature_values, n_temps=6, see
   "title": "Random Temperatures",
   "dataSource": "chart-2.csv",
   "columns": 3,
+  "legendConfig": {
+    "displaySeries": [
+        { "name": "Temperature", "color": "cyan-500" }
+    ]
+  },
   "xAxis": { "key": "time_step" },
   "yAxis": { "label": "Target (y)" },
   "charts": [
@@ -391,6 +396,13 @@ plt.show()
   "title": "Dependency Types Visualization",
   "dataSource": "chart-4.csv",
   "columns": 3,
+  "legendConfig": {
+    "displaySeries": [
+        { "name": "Time Step Linear 0", "color": "lime-500" },
+        { "name": "Time Step Sinusoidal 10", "color": "blue-700" },
+        { "name": "Time Step Polynomial 22", "color": "cyan-500" }
+    ]
+  },
   "xAxis": { "key": "temperature" },
   "yAxis": { "label": "Target (y)" },
   "charts": [

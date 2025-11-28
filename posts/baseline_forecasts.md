@@ -247,6 +247,15 @@ sf.plot(df, pred_df)
   "title": "Baseline Forecast",
   "dataSource": "chart-1.csv",
   "columns": 2,
+  "legendConfig": {
+    "displaySeries": [
+        { "name": "Y" },
+        { "name": "Historic Average" },
+        { "name": "Naive" },
+        { "name": "Seasonal Naive" },
+        { "name": "Window Average" }
+    ]
+  },
   "xAxis": { "key": "ds" },
   "yAxis": { "label": "Target (y)" },
   "charts": [
