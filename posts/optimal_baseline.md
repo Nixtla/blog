@@ -167,6 +167,12 @@ data.plot_target_and_candidates()
   "title": "Target and Candidate Baselines",
   "dataSource": "chart-2.csv",
   "columns": 4,
+  "legendConfig": {
+    "displaySeries": [
+        { "name": "Target Curve", "color": "cyan-500" },
+        { "name": "Possible Candidate", "color": "lime-500" }
+    ]
+  },
   "xAxis": { "key": "hour" },
   "yAxis": { "label": "Temperature (K)" },
   "charts": [
@@ -174,56 +180,56 @@ data.plot_target_and_candidates()
       "id": "chart-inner-1",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
-        { "column": "candidate_3", "name": "Possible Candidate", "type": "line" }
+        { "column": "candidate_3", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
       ]
     },
     {
       "id": "chart-inner-2",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
-        { "column": "candidate_4", "name": "Possible Candidate", "type": "line" }
+        { "column": "candidate_4", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
       ]
     },
     {
       "id": "chart-inner-3",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
-        { "column": "candidate_5", "name": "Possible Candidate", "type": "line" }
+        { "column": "candidate_5", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
       ]
     },
     {
       "id": "chart-inner-4",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
-        { "column": "candidate_6", "name": "Possible Candidate", "type": "line" }
+        { "column": "candidate_6", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
       ]
     },
     {
       "id": "chart-inner-5",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
-        { "column": "candidate_7", "name": "Possible Candidate", "type": "line" }
+        { "column": "candidate_7", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
       ]
     },
     {
       "id": "chart-inner-6",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
-        { "column": "candidate_8", "name": "Possible Candidate", "type": "line" }
+        { "column": "candidate_8", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
       ]
     },
     {
       "id": "chart-inner-7",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
-        { "column": "candidate_9", "name": "Possible Candidate", "type": "line" }
+        { "column": "candidate_9", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
       ]
     },
     {
       "id": "chart-inner-8",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
-        { "column": "candidate_10", "name": "Possible Candidate", "type": "line" }
+        { "column": "candidate_10", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
       ]
     }
   ]

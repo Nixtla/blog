@@ -44,10 +44,19 @@ export default function handler(req, res) {
   }
 
   try {
-    const { fileName } = req.query;
+    const { fileName, maxPoints } = req.query;
 
     if (!fileName) {
       return res.status(400).json({ error: "Missing fileName parameter" });
+    }
+
+    // Use maxPoints from query param or default to 2000
+    const parsedMaxPoints = maxPoints ? parseInt(maxPoints, 10) : 2000;
+
+    if (maxPoints && Number.isNaN(parsedMaxPoints)) {
+      return res.status(400).json({
+        error: "Invalid maxPoints parameter - must be a number",
+      });
     }
 
     const postSlug = sanitizeFileName(fileName);
@@ -61,7 +70,8 @@ export default function handler(req, res) {
     const { frontmatter, content } = parseFrontmatter(markdownContent);
     const { contentWithPlaceholders, charts, chartMultiples } = extractCharts(
       content,
-      postSlug
+      postSlug,
+      parsedMaxPoints
     );
 
     const response = {
@@ -196,7 +206,7 @@ function parseArrayValue(value) {
   return value;
 }
 
-function extractCharts(content, postSlug) {
+function extractCharts(content, postSlug, maxPoints) {
   if (!content.includes("```chart")) {
     return { contentWithPlaceholders: content, charts: {}, chartMultiples: {} };
   }
@@ -212,7 +222,13 @@ function extractCharts(content, postSlug) {
       const chartId = chartData.id || `chart-${chartIndex++}`;
 
       if (chartData.dataSource) {
-        chartData.data = loadChartData(postSlug, chartData.dataSource);
+        // Use chart-specific maxPoints if provided, otherwise use global maxPoints
+        const chartMaxPoints = chartData.maxPoints || maxPoints;
+        chartData.data = loadChartData(
+          postSlug,
+          chartData.dataSource,
+          chartMaxPoints
+        );
       }
 
       charts[chartId] = chartData;
@@ -230,7 +246,13 @@ function extractCharts(content, postSlug) {
       const chartId = chartData.id || `chart-multiple-${chartMultipleIndex++}`;
 
       if (chartData.dataSource) {
-        chartData.data = loadChartData(postSlug, chartData.dataSource);
+        // Use chart-specific maxPoints if provided, otherwise use global maxPoints
+        const chartMaxPoints = chartData.maxPoints || maxPoints;
+        chartData.data = loadChartData(
+          postSlug,
+          chartData.dataSource,
+          chartMaxPoints
+        );
       }
 
       chartMultiples[chartId] = chartData;
@@ -249,7 +271,7 @@ function extractCharts(content, postSlug) {
   return { contentWithPlaceholders, charts, chartMultiples };
 }
 
-function loadChartData(postSlug, dataSource) {
+function loadChartData(postSlug, dataSource, maxPoints) {
   const sanitizedDataSource = sanitizeDataSource(dataSource);
 
   const csvPath = path.join(
@@ -274,10 +296,9 @@ function loadChartData(postSlug, dataSource) {
   }
 
   const data = result.data;
-  const MAX_POINTS = 2000;
 
-  if (data.length > MAX_POINTS) {
-    return downsampleData(data, MAX_POINTS);
+  if (data.length > maxPoints) {
+    return downsampleData(data, maxPoints);
   }
 
   return data;

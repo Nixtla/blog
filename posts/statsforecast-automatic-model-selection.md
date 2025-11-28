@@ -117,7 +117,49 @@ Visualize the selected time series:
 plot_series(df_train, df_test.rename(columns={"y": "actual"}), max_ids=4)
 ```
 
-![Selected Time Series](/images/statsforecast-automatic-model-selection/selected-series.svg)
+```chart-multiple
+{
+  "id": "chart-multiple-1",
+  "title": "Selected Series",
+  "dataSource": "chart-1.csv",
+  "columns": 2,
+  "legendConfig": {
+    "displaySeries": [{ "name": "Y", "color": "blue-500" }, { "name": "Actual", "color": "cyan-500" }]
+  },
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "y_H51", "name": "y_H51", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "actual_H51", "name": "actual_H51", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "y_H263", "name": "y_H263", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "actual_H263", "name": "actual_H263", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "y_H25", "name": "y_H25", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "actual_H25", "name": "actual_H25", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-4",
+      "series": [
+        { "column": "y_H69", "name": "y_H69", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "actual_H69", "name": "actual_H69", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+      ]
+    }
+  ]
+}
+```
 
 Each series shows different patterns. Some have strong daily cycles, others trend up or down over time, and some are quite volatile. This variety is why selecting the right model for each series matters.
 
@@ -152,7 +194,57 @@ Visualize baseline predictions:
 plot_series(df_train, eval_base, max_ids=4, max_insample_length=5*24)
 ```
 
-![Baseline Forecasts](/images/statsforecast-automatic-model-selection/baseline-forecasts.svg)
+```chart-multiple
+{
+  "id": "chart-multiple-2",
+  "title": "Selected Series",
+  "dataSource": "chart-2.csv",
+  "columns": 2,
+  "legendConfig": {
+    "displaySeries": [
+        { "name": "Y", "color": "blue-500" },
+        { "name": "Naive", "color": "purple-500" },
+        { "name": "Seasonal", "color": "cyan-500" }
+    ]
+  },
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "y_H165", "name": "y_H165", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "naive_H165", "name": "naive_H165", "type": "line", "color": "purple-500", "strokeWidth": 1 },
+        { "column": "seasonal_H165", "name": "seasonal_H165", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "y_H263", "name": "y_H263", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "naive_H263", "name": "naive_H263", "type": "line", "color": "purple-500", "strokeWidth": 1 },
+        { "column": "seasonal_H263", "name": "seasonal_H263", "type": "line", "color": "cyan-500", "strokeWidth": 1}
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "y_H25", "name": "y_H25", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "naive_H25", "name": "naive_H25", "type": "line", "color": "purple-500", "strokeWidth": 1 },
+        { "column": "seasonal_H25", "name": "seasonal_H25", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-4",
+      "series": [
+        { "column": "y_H299", "name": "y_H299", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "naive_H299", "name": "naive_H299", "type": "line", "color": "purple-500", "strokeWidth": 1 },
+        { "column": "seasonal_H299", "name": "seasonal_H299", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+      ]
+    }
+  ]
+}
+```
 
 The plot shows 5 days of historical data followed by 48-hour forecasts. The cyan line shows SeasonalNaive following the daily rhythm, while the pink Naive line stays flat at the last value.
 
@@ -170,11 +262,11 @@ metrics_base = evaluate(
 metrics_base
 ```
 
-|       | Naive     | SeasonalNaive |
-|-------|-----------|---------------|
-| mase  | 8.029174  | 0.993421      |
-| rmse  | 179.520049| 66.529088     |
-| smape | 0.252074  | 0.065754      |
+|       | Naive      | SeasonalNaive |
+| ----- | ---------- | ------------- |
+| mase  | 8.029174   | 0.993421      |
+| rmse  | 179.520049 | 66.529088     |
+| smape | 0.252074   | 0.065754      |
 
 The SeasonalNaive model performs significantly better than Naive, achieving MASE close to 1.0. This suggests strong seasonal patterns in the hourly data that repeating values from 24 hours ago captures effectively.
 
@@ -227,7 +319,67 @@ Visualize predictions from all models:
 plot_series(df_train, eval_sf_models, max_ids=4, max_insample_length=5*24)
 ```
 
-![StatsForecast Model Predictions](/images/statsforecast-automatic-model-selection/statsforecast-predictions.svg)
+```chart-multiple
+{
+  "id": "chart-multiple-3",
+  "title": "Selected Series",
+  "dataSource": "chart-3.csv",
+  "columns": 2,
+  "legendConfig": {
+    "displaySeries": [
+        { "name": "Y", "color": "blue-500" },
+        { "name": "AutoARIMA", "color": "green-500" },
+        { "name": "AutoETS", "color": "purple-500" },
+        { "name": "CES", "color": "pink-500" },
+        { "name": "AutoTheta", "color": "cyan-500" }
+    ]
+  },
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "y_H165", "name": "y_H165", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "AutoARIMA_H165", "name": "AutoARIMA_H165", "type": "line", "color": "green-500", "strokeWidth": 1 },
+        { "column": "AutoETS_H165", "name": "AutoETS_H165", "type": "line", "color": "purple-500", "strokeWidth": 1 },
+        { "column": "CES_H165", "name": "CES_H165", "type": "line", "color": "pink-500", "strokeWidth": 1 },
+        { "column": "AutoTheta_H165", "name": "AutoTheta_H165", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "y_H263", "name": "y_H263", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "AutoARIMA_H263", "name": "AutoARIMA_H263", "type": "line", "color": "green-500", "strokeWidth": 1 },
+        { "column": "AutoETS_H263", "name": "AutoETS_H263", "type": "line", "color": "purple-500", "strokeWidth": 1 },
+        { "column": "CES_H263", "name": "CES_H263", "type": "line", "color": "pink-500", "strokeWidth": 1 },
+        { "column": "AutoTheta_H263", "name": "AutoTheta_H263", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "y_H25", "name": "y_H25", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "AutoARIMA_H25", "name": "AutoARIMA_H25", "type": "line", "color": "green-500", "strokeWidth": 1 },
+        { "column": "AutoETS_H25", "name": "AutoETS_H25", "type": "line", "color": "purple-500", "strokeWidth": 1 },
+        { "column": "CES_H25", "name": "CES_H25", "type": "line", "color": "pink-500", "strokeWidth": 1 },
+        { "column": "AutoTheta_H25", "name": "AutoTheta_H25", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-4",
+      "series": [
+        { "column": "y_H299", "name": "y_H299", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "AutoARIMA_H299", "name": "AutoARIMA_H299", "type": "line", "color": "green-500", "strokeWidth": 1 },
+        { "column": "AutoETS_H299", "name": "AutoETS_H299", "type": "line", "color": "purple-500", "strokeWidth": 1 },
+        { "column": "CES_H299", "name": "CES_H299", "type": "line", "color": "pink-500", "strokeWidth": 1 },
+        { "column": "AutoTheta_H299", "name": "AutoTheta_H299", "type": "line", "color": "cyan-500", "strokeWidth": 1 }
+      ]
+    }
+  ]
+}
+```
 
 Unlike the simple baselines, these models adapt to the data's complexity and follow the actual patterns much more closely.
 
@@ -245,11 +397,11 @@ metrics_sf_models = evaluate(
 metrics_sf_models
 ```
 
-|       | AutoARIMA | AutoETS   | CES       | AutoTheta |
-|-------|-----------|-----------|-----------|-----------|
-| mase  | 0.803407  | 1.331669  | 0.729921  | 1.868366  |
-| rmse  | 71.456734 | 122.784231| 60.979897 | 65.105242 |
-| smape | 0.063307  | 0.075775  | 0.079244  | 0.076261  |
+|       | AutoARIMA | AutoETS    | CES       | AutoTheta |
+| ----- | --------- | ---------- | --------- | --------- |
+| mase  | 0.803407  | 1.331669   | 0.729921  | 1.868366  |
+| rmse  | 71.456734 | 122.784231 | 60.979897 | 65.105242 |
+| smape | 0.063307  | 0.075775   | 0.079244  | 0.076261  |
 
 AutoCES achieves the lowest MASE (0.73) and RMSE (60.98), outperforming both AutoARIMA and baseline models. All automatic models beat the Naive baseline, demonstrating that automated parameter optimization works effectively.
 
@@ -261,7 +413,26 @@ from utils import plot_metric_bar_multi
 plot_metric_bar_multi(dfs=[metrics_sf_models, metrics_base], metric='mase')
 ```
 
-![Model Comparison](/images/statsforecast-automatic-model-selection/model-comparison-bar-chart.svg)
+```chart
+{
+  "id": "chart-1",
+  "title": "MASE Comparison Accross Models",
+  "dataSource": "chart-4.csv",
+  "xAxis": {
+    "key": "model"
+  },
+  "yAxis": {
+    "label": "MASE"
+  },
+  "series": [
+    {
+      "column": "mase",
+      "type": "bar"
+    }
+  ],
+  "showLabels": true
+}
+```
 
 This bar chart shows MASE (Mean Absolute Scaled Error), where values below 1.0 beat the baseline and values above 1.0 perform worse:
 
@@ -283,8 +454,6 @@ Traditional cross-validation uses random splits, which doesn't work for time ser
 4. Repeat: train, forecast, evaluate
 5. Compare models across all windows and select the best for each series
 
-![Rolling-window cross-validation](https://raw.githubusercontent.com/Nixtla/statsforecast/main/nbs/imgs/ChainedWindows.gif)
-
 Run cross-validation with rolling windows:
 
 ```python
@@ -304,11 +473,11 @@ cv_df.head()
 Cross-validation results: (384, 11)
 ```
 
-| unique_id | ds                  | cutoff              | y       | AutoARIMA | AutoETS   | CES       | AutoTheta |
-|-----------|---------------------|---------------------|---------|-----------|-----------|-----------|-----------|
-| H10       | 2024-01-29 05:00:00 | 2024-01-29 04:00:00 | 14502.0 | 14478.23  | 14512.45  | 14489.12  | 14501.67  |
-| H10       | 2024-01-29 06:00:00 | 2024-01-29 04:00:00 | 14547.0 | 14523.78  | 14558.19  | 14534.87  | 14547.42  |
-| H10       | 2024-01-29 07:00:00 | 2024-01-29 04:00:00 | 14595.0 | 14571.34  | 14606.01  | 14582.63  | 14595.18  |
+| unique_id | ds                  | cutoff              | y       | AutoARIMA | AutoETS  | CES      | AutoTheta |
+| --------- | ------------------- | ------------------- | ------- | --------- | -------- | -------- | --------- |
+| H10       | 2024-01-29 05:00:00 | 2024-01-29 04:00:00 | 14502.0 | 14478.23  | 14512.45 | 14489.12 | 14501.67  |
+| H10       | 2024-01-29 06:00:00 | 2024-01-29 04:00:00 | 14547.0 | 14523.78  | 14558.19 | 14534.87 | 14547.42  |
+| H10       | 2024-01-29 07:00:00 | 2024-01-29 04:00:00 | 14595.0 | 14571.34  | 14606.01 | 14582.63 | 14595.18  |
 
 Evaluate model performance and select the best for each series:
 
@@ -323,7 +492,7 @@ evaluation_df['best_statsforecast_model'].value_counts().to_frame().reset_index(
 ```
 
 | best_statsforecast_model | count |
-|--------------------------|-------|
+| ------------------------ | ----- |
 | AutoARIMA                | 3     |
 | AutoETS                  | 2     |
 | AutoTheta                | 2     |
@@ -344,7 +513,57 @@ eval_best_sf = df_test.merge(best_fcst_sf, on=['unique_id', 'ds'])
 plot_series(df_train, eval_best_sf, level=[90], max_insample_length=5*24, max_ids=4)
 ```
 
-![Best Model Forecasts with Intervals](/images/statsforecast-automatic-model-selection/best-model-forecasts.svg)
+```chart-multiple
+{
+  "id": "chart-multiple-4",
+  "title": "Forecasts with Prediction Intervals",
+  "dataSource": "chart-5.csv",
+  "columns": 2,
+  "legendConfig": {
+    "displaySeries": [
+        { "name": "Y", "color": "blue-500" },
+        { "name": "StatsForecast Model", "color": "cyan-500" },
+        { "name": "Model Level 90", "color": "cyan-800" }
+    ]
+  },
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "y_H165", "name": "y_H165", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "best_statsforecast_model_H165", "name": "best_statsforecast_model_H165", "type": "line", "color": "cyan-500", "strokeWidth": 1 },
+        { "columns": { "high": "best_statsforecast_model-hi-90_H165", "low": "best_statsforecast_model-lo-90_H165" }, "name": "best_statsforecast_model_level_90", "type": "area", "color": "cyan-800", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "y_H263", "name": "y_H263", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "best_statsforecast_model_H263", "name": "best_statsforecast_model_H263", "type": "line", "color": "cyan-500", "strokeWidth": 1 },
+        { "columns": { "high": "best_statsforecast_model-hi-90_H263", "low": "best_statsforecast_model-lo-90_H263" }, "name": "best_statsforecast_model_level_90", "type": "area", "color": "cyan-800", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "y_H25", "name": "y_H25", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "best_statsforecast_model_H25", "name": "best_statsforecast_model_H25", "type": "line", "color": "cyan-500", "strokeWidth": 1 },
+        { "columns": { "high": "best_statsforecast_model-hi-90_H25", "low": "best_statsforecast_model-lo-90_H25" }, "name": "best_statsforecast_model_level_90", "type": "area", "color": "cyan-800", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-4",
+      "series": [
+        { "column": "y_H299", "name": "y_H299", "type": "line", "color": "blue-500", "strokeWidth": 1 },
+        { "column": "best_statsforecast_model_H299", "name": "best_statsforecast_model_H299", "type": "line", "color": "cyan-500", "strokeWidth": 1 },
+        { "columns": { "high": "best_statsforecast_model-hi-90_H299", "low": "best_statsforecast_model-lo-90_H299" }, "name": "best_statsforecast_model_level_90", "type": "area", "color": "cyan-800", "strokeWidth": 1 }
+      ]
+    }
+  ]
+}
+```
 
 These are the forecasts from the best model for each series. The shaded bands represent 90% prediction intervals:
 
@@ -370,7 +589,26 @@ Compare baseline, individual models, and best model selection:
 plot_metric_bar_multi(dfs=[metrics_sf_models, metrics_base, metrics_sf_best], metric='mase')
 ```
 
-![Complete Model Comparison](/images/statsforecast-automatic-model-selection/complete-comparison.svg)
+```chart
+{
+  "id": "chart-2",
+  "title": "MASE Comparison Accross Model Groups",
+  "dataSource": "chart-6.csv",
+  "xAxis": {
+    "key": "model"
+  },
+  "yAxis": {
+    "label": "MASE"
+  },
+  "series": [
+    {
+      "column": "mase",
+      "type": "bar"
+    }
+  ],
+  "showLabels": true
+}
+```
 
 The green bar, which represents the best model selection, has the lowest MASE. By selecting the best model for each series, we get stronger performance than applying a single model to every time series.
 
@@ -416,7 +654,6 @@ Zero-shot forecasting means using the pre-trained model directly without any tra
 
 The code below generates 48-hour forecasts with 80% and 90% prediction intervals in a single API call:
 
-
 ```python
 # Simple zero-shot TimeGPT forecast
 fcst_timegpt = nixtla_client.forecast(
@@ -428,14 +665,13 @@ fcst_timegpt = nixtla_client.forecast(
 fcst_timegpt.head()
 ```
 
-|   | unique_id | ds                  | TimeGPT    | TimeGPT-hi-80 | TimeGPT-hi-90 | TimeGPT-lo-80 | TimeGPT-lo-90 |
-|---|-----------|---------------------|------------|---------------|---------------|---------------|---------------|
-| 0 | H165      | 2024-01-30 05:00:00 | 20.847889  | 26.581411     | 27.379568     | 15.114367     | 14.316211     |
-| 1 | H165      | 2024-01-30 06:00:00 | 25.407340  | 34.487167     | 34.707325     | 16.327513     | 16.107355     |
-| 2 | H165      | 2024-01-30 07:00:00 | 49.702620  | 75.707430     | 79.375336     | 23.697813     | 20.029905     |
-| 3 | H165      | 2024-01-30 08:00:00 | 134.175630 | 152.434750    | 153.382050    | 115.916504    | 114.969210    |
-| 4 | H165      | 2024-01-30 09:00:00 | 366.113680 | 379.054170    | 381.407230    | 353.173200    | 350.820130    |
-
+|     | unique_id | ds                  | TimeGPT    | TimeGPT-hi-80 | TimeGPT-hi-90 | TimeGPT-lo-80 | TimeGPT-lo-90 |
+| --- | --------- | ------------------- | ---------- | ------------- | ------------- | ------------- | ------------- |
+| 0   | H165      | 2024-01-30 05:00:00 | 20.847889  | 26.581411     | 27.379568     | 15.114367     | 14.316211     |
+| 1   | H165      | 2024-01-30 06:00:00 | 25.407340  | 34.487167     | 34.707325     | 16.327513     | 16.107355     |
+| 2   | H165      | 2024-01-30 07:00:00 | 49.702620  | 75.707430     | 79.375336     | 23.697813     | 20.029905     |
+| 3   | H165      | 2024-01-30 08:00:00 | 134.175630 | 152.434750    | 153.382050    | 115.916504    | 114.969210    |
+| 4   | H165      | 2024-01-30 09:00:00 | 366.113680 | 379.054170    | 381.407230    | 353.173200    | 350.820130    |
 
 ### Fine-Tuned Forecast with TimeGPT
 
@@ -453,7 +689,6 @@ fcst_timegpt_ft = nixtla_client.forecast(
     finetune_steps=10
 )
 ```
-
 
 ### TimeGPT-2 - The Latest Foundation Model
 
@@ -498,7 +733,62 @@ fig = nixtla_client.plot(
 )
 ```
 
-![TimeGPT-2 Forecasts](/images/statsforecast-automatic-model-selection/timegpt-2-forecasts.svg)
+```chart-multiple
+{
+  "id": "chart-multiple-5",
+  "title": "TimeGPT-2 - The Latest Foundation Model",
+  "dataSource": "chart-7.csv",
+  "columns": 2,
+  "legendConfig": {
+    "displaySeries": [
+        { "name": "Y", "color": "blue-800" },
+        { "name": "TimeGPT", "color": "pink-400" },
+        { "name": "TimeGPT Level 80", "color": "pink-300" },
+        { "name": "TimeGPT Level 90", "color": "pink-200" }
+    ]
+  },
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-inner-1",
+      "series": [
+        { "column": "H165_y", "name": "y_H165", "type": "line", "color": "blue-800", "strokeWidth": 1 },
+        { "column": "H165_TimeGPT", "name": "H165_TimeGPT", "type": "line", "color": "pink-400", "strokeWidth": 1 },
+        { "columns": { "high": "H165_TimeGPT-hi-80", "low": "H165_TimeGPT-lo-80" }, "name": "TimeGPT_level_80", "type": "area", "color": "pink-300", "strokeWidth": 1 },
+        { "columns": { "high": "H165_TimeGPT-hi-90", "low": "H165_TimeGPT-lo-90" }, "name": "TimeGPT_level_90", "type": "area", "color": "pink-200", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-2",
+      "series": [
+        { "column": "H263_y", "name": "y_H263", "type": "line", "color": "blue-800", "strokeWidth": 1 },
+        { "column": "H263_TimeGPT", "name": "H263_TimeGPT", "type": "line", "color": "pink-400", "strokeWidth": 1 },
+        { "columns": { "high": "H263_TimeGPT-hi-80", "low": "H263_TimeGPT-lo-80" }, "name": "TimeGPT_level_80", "type": "area", "color": "pink-300", "strokeWidth": 1 },
+        { "columns": { "high": "H263_TimeGPT-hi-90", "low": "H263_TimeGPT-lo-90" }, "name": "TimeGPT_level_90", "type": "area", "color": "pink-200", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-3",
+      "series": [
+        { "column": "H25_y", "name": "y_H25", "type": "line", "color": "blue-800", "strokeWidth": 1 },
+        { "column": "H25_TimeGPT", "name": "H25_TimeGPT", "type": "line", "color": "pink-400", "strokeWidth": 1 },
+        { "columns": { "high": "H25_TimeGPT-hi-80", "low": "H25_TimeGPT-lo-80" }, "name": "TimeGPT_level_80", "type": "area", "color": "pink-300", "strokeWidth": 1 },
+        { "columns": { "high": "H25_TimeGPT-hi-90", "low": "H25_TimeGPT-lo-90" }, "name": "TimeGPT_level_90", "type": "area", "color": "pink-200", "strokeWidth": 1 }
+      ]
+    },
+    {
+      "id": "chart-inner-4",
+      "series": [
+        { "column": "H299_y", "name": "y_H299", "type": "line", "color": "blue-800", "strokeWidth": 1 },
+        { "column": "H299_TimeGPT", "name": "H299_TimeGPT", "type": "line", "color": "pink-400", "strokeWidth": 1 },
+        { "columns": { "high": "H299_TimeGPT-hi-80", "low": "H299_TimeGPT-lo-80" }, "name": "TimeGPT_level_80", "type": "area", "color": "pink-300", "strokeWidth": 1 },
+        { "columns": { "high": "H299_TimeGPT-hi-90", "low": "H299_TimeGPT-lo-90" }, "name": "TimeGPT_level_90", "type": "area", "color": "pink-200", "strokeWidth": 1 }
+      ]
+    }
+  ]
+}
+```
 
 Compare the performance of the different TimeGPT variants:
 
@@ -518,7 +808,7 @@ metrics_tgpt
 ```
 
 |       | TimeGPT_zero_shot | TimeGPT_finetuned | TimeGPT_2 |
-|-------|-------------------|-------------------|-----------|
+| ----- | ----------------- | ----------------- | --------- |
 | mase  | 1.119019          | 0.831670          | 0.428494  |
 | rmse  | 53.228989         | 53.755869         | 27.029288 |
 | smape | 0.056423          | 0.064954          | 0.035599  |
@@ -539,17 +829,36 @@ Compare all approaches including statistical models and TimeGPT-2:
 plot_metric_bar_multi(dfs=[metrics_base, metrics_sf_best, metrics_tgpt], metric='mase')
 ```
 
-![Final Comparison with TimeGPT](/images/statsforecast-automatic-model-selection/final-comparison-timegpt.svg)
+```chart
+{
+  "id": "chart-3",
+  "title": "MASE Comparison Accross Model Groups",
+  "dataSource": "chart-8.csv",
+  "xAxis": {
+    "key": "model"
+  },
+  "yAxis": {
+    "label": "MASE"
+  },
+  "series": [
+    {
+      "column": "mase",
+      "type": "bar"
+    }
+  ],
+  "showLabels": true
+}
+```
 
 The results show both accuracy and computational performance:
 
-| Model | MASE | Inference Time |
-|-------|------|----------------|
-| TimeGPT-2 | 0.43 | 2.5 s |
-| Best StatsForecast | 0.71 | 180 s |
-| TimeGPT-1 (10 finetune steps) | 0.83 | 1.7 s |
-| SeasonalNaive | 0.99 | - |
-| Naive | 8.03 | - |
+| Model                         | MASE | Inference Time |
+| ----------------------------- | ---- | -------------- |
+| TimeGPT-2                     | 0.43 | 2.5 s          |
+| Best StatsForecast            | 0.71 | 180 s          |
+| TimeGPT-1 (10 finetune steps) | 0.83 | 1.7 s          |
+| SeasonalNaive                 | 0.99 | -              |
+| Naive                         | 8.03 | -              |
 
 **Key findings:**
 
@@ -562,19 +871,21 @@ The results show both accuracy and computational performance:
 
 This article demonstrated two powerful approaches to automatic forecasting:
 
-| Aspect | TimeGPT | StatsForecast |
-|--------|---------|---------------|
-| **Type** | Foundation model | Classical statistical models |
-| **Speed** | Fast, no training required: zero-shot or fine-tuning via API | Medium, requires fitting models locally or in batch |
-| **Scalability** | Handles thousands of series instantly via API, no need for local compute | Scales efficiently with local compute using parallel processing (n_jobs, ray) |
-| **Accuracy** | High accuracy result from strong generalization, especially for complex, noisy, or non-seasonal data | Accurate for structured, seasonal, or stable patterns |
+| Aspect          | TimeGPT                                                                                              | StatsForecast                                                                 |
+| --------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| **Type**        | Foundation model                                                                                     | Classical statistical models                                                  |
+| **Speed**       | Fast, no training required: zero-shot or fine-tuning via API                                         | Medium, requires fitting models locally or in batch                           |
+| **Scalability** | Handles thousands of series instantly via API, no need for local compute                             | Scales efficiently with local compute using parallel processing (n_jobs, ray) |
+| **Accuracy**    | High accuracy result from strong generalization, especially for complex, noisy, or non-seasonal data | Accurate for structured, seasonal, or stable patterns                         |
 
 **Choose TimeGPT when you:**
+
 - Need instant forecasts with minimal setup
 - Want to leverage foundation model intelligence for complex patterns
 - Prefer API-based forecasting without local infrastructure
 
 **Choose StatsForecast when you:**
+
 - Prefer interpretable statistical methods
 - Need full control over model selection
 - Want to run everything locally with transparent optimization
