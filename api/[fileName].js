@@ -51,7 +51,13 @@ export default function handler(req, res) {
     }
 
     // Use maxPoints from query param or default to 2000
-    const parsedMaxPoints = maxPoints ? parseInt(maxPoints) : 2000;
+    const parsedMaxPoints = maxPoints ? parseInt(maxPoints, 10) : 2000;
+
+    if (maxPoints && Number.isNaN(parsedMaxPoints)) {
+      return res.status(400).json({
+        error: "Invalid maxPoints parameter - must be a number",
+      });
+    }
 
     const postSlug = sanitizeFileName(fileName);
     const mdPath = findMarkdownFile(postSlug);

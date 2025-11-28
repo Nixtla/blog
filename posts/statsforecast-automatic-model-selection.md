@@ -122,7 +122,6 @@ plot_series(df_train, df_test.rename(columns={"y": "actual"}), max_ids=4)
   "id": "chart-multiple-1",
   "title": "Selected Series",
   "dataSource": "chart-1.csv",
-  "maxPoints": 80,
   "columns": 2,
   "legendConfig": {
     "displaySeries": [{ "name": "Y", "color": "blue-500" }, { "name": "Actual", "color": "cyan-500" }]
@@ -200,7 +199,6 @@ plot_series(df_train, eval_base, max_ids=4, max_insample_length=5*24)
   "id": "chart-multiple-2",
   "title": "Selected Series",
   "dataSource": "chart-2.csv",
-  "maxPoints": 65,
   "columns": 2,
   "legendConfig": {
     "displaySeries": [
@@ -326,7 +324,6 @@ plot_series(df_train, eval_sf_models, max_ids=4, max_insample_length=5*24)
   "id": "chart-multiple-3",
   "title": "Selected Series",
   "dataSource": "chart-3.csv",
-  "maxPoints": 65,
   "columns": 2,
   "legendConfig": {
     "displaySeries": [
@@ -521,7 +518,6 @@ plot_series(df_train, eval_best_sf, level=[90], max_insample_length=5*24, max_id
   "id": "chart-multiple-4",
   "title": "Forecasts with Prediction Intervals",
   "dataSource": "chart-5.csv",
-  "maxPoints": 65,
   "columns": 2,
   "legendConfig": {
     "displaySeries": [
@@ -742,7 +738,6 @@ fig = nixtla_client.plot(
   "id": "chart-multiple-5",
   "title": "TimeGPT-2 - The Latest Foundation Model",
   "dataSource": "chart-7.csv",
-  "maxPoints": 70,
   "columns": 2,
   "legendConfig": {
     "displaySeries": [

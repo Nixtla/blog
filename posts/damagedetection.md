@@ -313,44 +313,43 @@ def plot_random_temperatures(timeseries_data, temperature_values, n_temps=6, see
         { "name": "Temperature", "color": "cyan-500" }
     ]
   },
-  "maxPoints": 80,
   "xAxis": { "key": "time_step" },
   "yAxis": { "label": "Target (y)" },
   "charts": [
     {
       "id": "chart-inner-1",
       "series": [
-        { "column": "temp_0.838", "name": "temp_0.838", "type": "line", "strokeWidth": 2, "color": "cyan-500" }
+        { "column": "temp_0.838", "name": "temp_0.838", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     },
     {
       "id": "chart-inner-2",
       "series": [
-        { "column": "temp_0.535", "name": "temp_0.535", "type": "line", "strokeWidth": 2, "color": "cyan-500" }
+        { "column": "temp_0.535", "name": "temp_0.535", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     },
     {
       "id": "chart-inner-3",
       "series": [
-        { "column": "temp_0.707", "name": "temp_0.707", "type": "line", "strokeWidth": 2, "color": "cyan-500" }
+        { "column": "temp_0.707", "name": "temp_0.707", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     },
     {
       "id": "chart-inner-4",
       "series": [
-        { "column": "temp_0.455", "name": "temp_0.455", "type": "line", "strokeWidth": 2, "color": "cyan-500" }
+        { "column": "temp_0.455", "name": "temp_0.455", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     },
     {
       "id": "chart-inner-5",
       "series": [
-        { "column": "temp_0.444", "name": "temp_0.444", "type": "line", "strokeWidth": 2, "color": "cyan-500" }
+        { "column": "temp_0.444", "name": "temp_0.444", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     },
     {
       "id": "chart-inner-6",
       "series": [
-        { "column": "temp_0.394", "name": "temp_0.394", "type": "line", "strokeWidth": 2, "color": "cyan-500" }
+        { "column": "temp_0.394", "name": "temp_0.394", "type": "line", "strokeWidth": 1, "color": "cyan-500" }
       ]
     }
   ]
@@ -404,7 +403,6 @@ plt.show()
         { "name": "Time Step Polynomial 22", "color": "cyan-500" }
     ]
   },
-  "maxPoints": 90,
   "xAxis": { "key": "temperature" },
   "yAxis": { "label": "Target (y)" },
   "charts": [
