@@ -29,7 +29,7 @@ In the real world, we often face forecasting problems in environments where seve
 
 These characteristics appear across industries. In manufacturing, production lines accumulate defect rates or output volumes over quarters. In finance, regional offices accumulate sales targets. In logistics, distribution centers accumulate delivery performance metrics. Understanding how to forecast these **cumulative, competitive time series** has broad applications beyond sports.
 
-In this blog post, we'll use a championship tournament as our example system to demonstrate how **Nixtla's forecasting algorithms** can predict final outcomes by analyzing **cumulative performance time series**. The same methodology applies whenever you need to forecast how multiple entities will perform relative to each other over a defined period.
+In this blog post, we'll use a championship tournament as our example system to demonstrate how **StatsForecast**, a very powerful **Nixtla's statistical forecasting library**, can predict final outcomes by analyzing **cumulative performance time series**. The same methodology applies whenever you need to forecast how multiple entities will perform relative to each other over a defined period.
 
 To accomplish this, we'll follow a systematic approach:
 
@@ -272,9 +272,9 @@ Thanks to the power of StatsForecast and AutoARIMA, we are able to predict the f
 
 Let's recap what we covered in this post:
 
-- **Panel time series forecasting enables multi-entity predictions**: By structuring our data as a panel (multiple entities tracked over time), we can forecast outcomes for all teams simultaneously using a single modeling pipeline. This approach scales efficiently to hundreds of entities—whether teams, branches, plants, or regions.
+- **Forecast many entities at once with panel data structure**: Instead of building separate models for each team, we organize our data so that all 20 teams are stacked together with shared columns (`unique_id`, `ds`, `y`).
 
-- **Cumulative metrics create predictable patterns**: When performance accumulates over time (points, sales, production output), historical trajectories become informative for future outcomes. Teams that establish strong early-season patterns tend to maintain them, making cumulative time series particularly suitable for forecasting competitive rankings.
+- **Tracked cumulative metrics which create predictable patterns**: When performance accumulates over time (points, sales, production output), historical trajectories become informative for future outcomes. 
 
 - **AutoARIMA automates model selection**: Rather than manually tuning ARIMA parameters for each entity, StatsForecast's AutoARIMA automatically identifies the optimal model configuration per team. This automation is crucial when forecasting across many entities simultaneously, saving time while maintaining forecast accuracy.
 
