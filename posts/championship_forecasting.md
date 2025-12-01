@@ -112,10 +112,10 @@ matches_df = full_season_results["matches_df"]
 full_season_ts = full_season_results["ts_df"]  # (unique_id, ds, y) ready for StatsForecast/TimeGPT
 standings_df = full_season_results["standings_df"]
 
-# 2) Train on first 20 matchdays, forecast remaining 18
+# 2) Train on first 35 matchdays, forecast remaining 3
 train_data = prepare_forecasting_data(teams, season, strengths, seed=777, cutoff_matchday=35)
-train_ts = train_data["ts_df"]  # ds ∈ [1..20]
-forecast_horizon = train_data["h"]  # 18 matchdays remaining
+train_ts = train_data["ts_df"]  # ds ∈ [1..35]
+forecast_horizon = train_data["h"]  # 3 matchdays remaining
 ``` 
 
 The following assumptions are made:
