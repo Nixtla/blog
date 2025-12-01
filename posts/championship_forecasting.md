@@ -1,7 +1,7 @@
 ---
 title: "Forecasting Championship Results using Time Series and Nixtla"
 description: "Learn how to forecast championship standings using Nixtla's StatsForecast library."
-image: "/images/title_image.svg"
+image: "/images/championship_forecasting/title-image.svg"
 categories: ["TimeGPT Forecasting"]
 tags:
   - StatsForecast
