@@ -74,7 +74,16 @@ The data contains 100 time series, each with two static features (`store_id` and
 
 Static features represent time-invariant characteristics of each series. In retail forecasting, these might include store type, product category, or geographic region.
 
-Without MLForecast, you would need to manually replicate these values when constructing features for prediction. MLForecast handles this automatically when you specify the `static_features` parameter:
+Without MLForecast, you would need to manually replicate these values when constructing features for prediction:
+
+```python
+# Manual approach: merge static features for prediction
+static_cols = series.groupby('unique_id')[['store_id', 'product_id']].first().reset_index()
+future_dates = pd.DataFrame({'unique_id': ids, 'ds': future_timestamps})
+future_with_static = future_dates.merge(static_cols, on='unique_id')
+```
+
+MLForecast handles this automatically. First, configure the forecasting pipeline:
 
 ```{python}
 import lightgbm as lgb
@@ -91,7 +100,21 @@ fcst = MLForecast(
     },
     num_threads=2,
 )
+```
 
+Key parameters:
+
+- `models`: Any scikit-learn compatible regressor. Here we use LightGBM.
+- `freq`: Time series frequency. `'D'` for daily data.
+- `lags`: Which past values to use as features. `[7]` uses the value from 7 days ago.
+- `lag_transforms`: Rolling statistics applied to lagged values. `ExpandingMean()` computes the cumulative mean; `RollingMean(window_size=14)` computes a 14-day rolling average.
+- `num_threads`: Parallel processing threads for feature computation.
+
+For a complete list of parameters including `date_features` and `target_transforms`, see the [MLForecast API documentation](https://nixtlaverse.nixtla.io/mlforecast/forecast.html#mlforecast).
+
+Now fit the model, specifying which columns are static:
+
+```{python}
 fcst.fit(series, static_features=['store_id', 'product_id'])
 ```
 
@@ -106,14 +129,15 @@ preds = fcst.predict(h=7)
 preds.head()
 ```
 
-```text
-   unique_id         ds  LGBMRegressor
-0          0 2000-08-10       4.265591
-1          0 2000-08-11       5.245531
-2          0 2000-08-12       3.892297
-3          0 2000-08-13       3.752329
-4          0 2000-08-14       4.193262
-```
+
+|   | unique_id | ds         | LGBMRegressor |
+|---|-----------|------------|---------------|
+| 0 | id_00     | 2001-05-15 | 418.961670    |
+| 1 | id_00     | 2001-05-16 | 500.962133    |
+| 2 | id_00     | 2001-05-17 | 19.935077     |
+| 3 | id_00     | 2001-05-18 | 102.535201    |
+| 4 | id_00     | 2001-05-19 | 184.815386    |
+
 
 ## Dynamic Exogenous Variables
 
