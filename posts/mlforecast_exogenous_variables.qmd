@@ -32,23 +32,18 @@ Mishandle these categories and you'll either leak future data or waste predictiv
 
 ## Introduction to MLForecast Exogenous Variables
 
-MLForecast distinguishes between two categories of exogenous features based on how they behave over time:
+MLForecast brings machine learning models to time series forecasting. You can use LightGBM, XGBoost, scikit-learn regressors, or any model with a fit/predict interface. The library handles feature engineering, lag creation, and multi-series alignment automatically.
 
-**Static features** remain constant for each time series. Store metadata, product categories, and geographic regions fall into this category. MLForecast replicates these values automatically when generating predictions.
+When working with exogenous variables, MLForecast distinguishes between two categories:
 
-**Dynamic features** change at each timestamp. Prices, promotional flags, and weather forecasts are dynamic. Since these values are known in advance (you set next week's prices today), you provide them at prediction time through the `X_df` parameter.
+- **Static features** stay constant across a series: store metadata, product categories, geographic regions.
+- **Dynamic features** vary over time but are known ahead: prices, promotional flags, weather forecasts.
 
-The workflow is straightforward:
-
-1. Merge your time series with exogenous data
-2. Specify static columns in the `fit()` call
-3. Provide future dynamic values in the `predict()` call
-
-All columns not marked as static are treated as dynamic exogenous variables by default.
+In the following sections, we'll walk through each category and how to use them with MLForecast.
 
 ## Setup
 
-Install the required libraries:
+Install the required libraries for this article:
 
 ```bash
 pip install mlforecast lightgbm utilsforecast
