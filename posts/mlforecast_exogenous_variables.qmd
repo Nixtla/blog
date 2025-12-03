@@ -56,20 +56,19 @@ from mlforecast.utils import generate_daily_series, generate_prices_for_series
 
 series = generate_daily_series(
     100, equal_ends=True, n_static_features=2
-).rename(columns={'static_1': 'product_id'})
+).rename(columns={'static_0': 'store_id', 'static_1': 'product_id'})
 series.head()
 ```
 
-```text
-   unique_id         ds          y  static_0  product_id
-0          0 2000-01-01  17.519033         4          82
-1          0 2000-01-02   0.276729         4          82
-2          0 2000-01-03   6.617829         4          82
-3          0 2000-01-04   2.844439         4          82
-4          0 2000-01-05   7.249720         4          82
-```
+|   | unique_id | ds         | y          | store_id | product_id |
+|---|-----------|------------|------------|----------|------------|
+| 0 | id_00     | 2000-10-05 | 39.811983  | 79       | 45         |
+| 1 | id_00     | 2000-10-06 | 103.274013 | 79       | 45         |
+| 2 | id_00     | 2000-10-07 | 176.574744 | 79       | 45         |
+| 3 | id_00     | 2000-10-08 | 258.987900 | 79       | 45         |
+| 4 | id_00     | 2000-10-09 | 344.940404 | 79       | 45         |
 
-The data contains 100 time series, each with two static features (`static_0` and `product_id`) that remain constant across all timestamps for a given series.
+The data contains 100 time series, each with two static features (`store_id` and `product_id`) that remain constant across all timestamps for a given series.
 
 ## Static Features
 
@@ -93,14 +92,14 @@ fcst = MLForecast(
     num_threads=2,
 )
 
-fcst.fit(series, static_features=['static_0', 'product_id'])
+fcst.fit(series, static_features=['store_id', 'product_id'])
 ```
 
 ```text
 MLForecast(models=[LGBMRegressor], freq=D, lag_features=['lag7', 'expanding_mean_lag1', 'rolling_mean_lag7_window_size14'], date_features=[], num_threads=2)
 ```
 
-The model now uses `static_0` and `product_id` as features alongside the generated lag features. During prediction, these static values are automatically carried forward:
+The model now uses `store_id` and `product_id` as features alongside the generated lag features. During prediction, these static values are automatically carried forward:
 
 ```{python}
 preds = fcst.predict(h=7)
@@ -144,7 +143,7 @@ series_with_prices.head()
 ```
 
 ```text
-   unique_id         ds          y  static_0  product_id     price
+   unique_id         ds          y  store_id  product_id     price
 0          0 2000-01-01  17.519033         4          82  0.548814
 1          0 2000-01-02   0.276729         4          82  0.715189
 2          0 2000-01-03   6.617829         4          82  0.602763
@@ -166,7 +165,7 @@ fcst = MLForecast(
     num_threads=2,
 )
 
-fcst.fit(series_with_prices, static_features=['static_0', 'product_id'])
+fcst.fit(series_with_prices, static_features=['store_id', 'product_id'])
 ```
 
 ```text
@@ -180,7 +179,7 @@ fcst.ts.features_order_
 ```
 
 ```text
-['static_0', 'product_id', 'price', 'lag7', 'expanding_mean_lag1', 'rolling_mean_lag7_window_size14']
+['store_id', 'product_id', 'price', 'lag7', 'expanding_mean_lag1', 'rolling_mean_lag7_window_size14']
 ```
 
 For prediction, provide future price values through the `X_df` parameter:
@@ -220,7 +219,7 @@ fcst = MLForecast(
     num_threads=2,
 )
 
-fcst.fit(series_with_prices, static_features=['static_0', 'product_id'])
+fcst.fit(series_with_prices, static_features=['store_id', 'product_id'])
 ```
 
 ```text
@@ -250,12 +249,12 @@ fcst = MLForecast(
     num_threads=2,
 )
 
-fcst.fit(series, static_features=['static_0', 'product_id'])
+fcst.fit(series, static_features=['store_id', 'product_id'])
 fcst.ts.features_order_
 ```
 
 ```text
-['static_0', 'product_id', 'lag7', 'dayofweek', 'month', 'is_weekend']
+['store_id', 'product_id', 'lag7', 'dayofweek', 'month', 'is_weekend']
 ```
 
 Calendar features are generated automatically for both training and prediction periods.
@@ -281,7 +280,7 @@ transformed_df.head()
 ```
 
 ```text
-   unique_id         ds          y  static_0  product_id  sin1_7    cos1_7    sin2_7    cos2_7
+   unique_id         ds          y  store_id  product_id  sin1_7    cos1_7    sin2_7    cos2_7
 0          0 2000-01-01  17.519033         4          82  0.7818   0.6235   0.9749  -0.2225
 1          0 2000-01-02   0.276729         4          82  0.9749   0.2225   0.4339  -0.9010
 2          0 2000-01-03   6.617829         4          82  0.4339  -0.9010  -0.7818  -0.6235
@@ -297,7 +296,7 @@ Train a model with Fourier features:
 
 ```{python}
 fcst2 = MLForecast(models=LinearRegression(), freq='D')
-fcst2.fit(transformed_df, static_features=['static_0', 'product_id'])
+fcst2.fit(transformed_df, static_features=['store_id', 'product_id'])
 ```
 
 ```text
