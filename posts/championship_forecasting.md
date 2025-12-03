@@ -231,7 +231,47 @@ plot_team_cumpoints_with_forecast(
 
 This is the output for `Team01`:
 
-![Cumulative Points Forecast Example](/images/championship_forecasting/title-image.svg)
+```chart
+  {
+    "id": "chart-1",
+    "title": "Team01: Championship Points Forecast",
+    "dataSource": "chart-1.csv",
+    "xAxis": {
+      "key": "ds",
+      "label": "Match Day"
+    },
+    "yAxis": {
+      "label": "Championship Points"
+    },
+    "series": [
+      {
+        "type": "area",
+        "columns": {
+          "high": "forecast_hi_95",
+          "low": "forecast_lo_95"
+        },
+        "name": "95% Prediction Interval",
+        "zIndex": 2,
+        "color": "cyan-900"
+      },
+      {
+        "column": "actual",
+        "name": "Actual Points",
+        "type": "line",
+        "color": "blue-700",
+        "zIndex": 3
+      },
+      {
+        "column": "forecast",
+        "name": "Forecast",
+        "type": "line",
+        "color": "cyan-400",
+        "strokeDashArray": "5 5",
+        "zIndex": 4
+      }
+    ]
+  }
+```
 
 And this is how the predictions look (`forecast` for the full championship):
 
