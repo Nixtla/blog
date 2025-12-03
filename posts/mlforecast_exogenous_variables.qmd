@@ -1,0 +1,342 @@
+---
+title: "Supercharge Your Sales Forecasts: A Complete Guide to Exogenous Variables in MLForecast"
+description: Learn how to incorporate external factors like prices, promotions, and calendar patterns into your time series forecasts using MLForecast's exogenous variables.
+image: "/images/intermittent_demand/intermittent_demand.svg"
+categories: ["MLForecast"]
+tags:
+- mlforecast
+- time-series
+- forecasting
+- python
+- lightgbm
+- nixtla
+author_name: Khuyen Tran
+author_image: "/images/authors/khuyen.jpeg"
+author_position: Developer Advocate - Nixtla
+publication_date: 2025-12-05
+---
+
+## Introduction
+
+Time series forecasting rarely depends on historical values alone. Sales are influenced by prices, promotions affect demand, and holidays create predictable spikes. Incorporating these external factors can dramatically improve forecast accuracy.
+
+The challenge is that different types of external data require different handling:
+
+- **Static features** like store location or product category never change
+- **Dynamic features** like prices or promotions change over time and are known in advance
+- **Calendar patterns** like day-of-week effects repeat predictably
+
+Traditional approaches require manual feature engineering to handle each type correctly. You need to replicate static features across timestamps, align future values with prediction horizons, and extract calendar attributes without data leakage.
+
+[MLForecast](https://github.com/Nixtla/mlforecast) simplifies this workflow with a unified API that handles all three types of exogenous variables automatically. You specify which columns are static, provide future values for dynamic features, and let the library handle the rest.
+
+## Introduction to MLForecast Exogenous Variables
+
+MLForecast distinguishes between two categories of exogenous features based on how they behave over time:
+
+**Static features** remain constant for each time series. Store metadata, product categories, and geographic regions fall into this category. MLForecast replicates these values automatically when generating predictions.
+
+**Dynamic features** change at each timestamp. Prices, promotional flags, and weather forecasts are dynamic. Since these values are known in advance (you set next week's prices today), you provide them at prediction time through the `X_df` parameter.
+
+The workflow is straightforward:
+
+1. Merge your time series with exogenous data
+2. Specify static columns in the `fit()` call
+3. Provide future dynamic values in the `predict()` call
+
+All columns not marked as static are treated as dynamic exogenous variables by default.
+
+## Setup
+
+Install the required libraries:
+
+```bash
+pip install mlforecast lightgbm utilsforecast
+```
+
+Generate sample time series data with static features:
+
+```{python}
+from mlforecast.utils import generate_daily_series, generate_prices_for_series
+
+series = generate_daily_series(
+    100, equal_ends=True, n_static_features=2
+).rename(columns={'static_1': 'product_id'})
+series.head()
+```
+
+```text
+   unique_id         ds          y  static_0  product_id
+0          0 2000-01-01  17.519033         4          82
+1          0 2000-01-02   0.276729         4          82
+2          0 2000-01-03   6.617829         4          82
+3          0 2000-01-04   2.844439         4          82
+4          0 2000-01-05   7.249720         4          82
+```
+
+The data contains 100 time series, each with two static features (`static_0` and `product_id`) that remain constant across all timestamps for a given series.
+
+## Static Features
+
+Static features represent time-invariant characteristics of each series. In retail forecasting, these might include store type, product category, or geographic region.
+
+Without MLForecast, you would need to manually replicate these values when constructing features for prediction. MLForecast handles this automatically when you specify the `static_features` parameter:
+
+```{python}
+import lightgbm as lgb
+from mlforecast import MLForecast
+from mlforecast.lag_transforms import ExpandingMean, RollingMean
+
+fcst = MLForecast(
+    models=lgb.LGBMRegressor(n_jobs=1, random_state=0, verbosity=-1),
+    freq='D',
+    lags=[7],
+    lag_transforms={
+        1: [ExpandingMean()],
+        7: [RollingMean(window_size=14)],
+    },
+    num_threads=2,
+)
+
+fcst.fit(series, static_features=['static_0', 'product_id'])
+```
+
+```text
+MLForecast(models=[LGBMRegressor], freq=D, lag_features=['lag7', 'expanding_mean_lag1', 'rolling_mean_lag7_window_size14'], date_features=[], num_threads=2)
+```
+
+The model now uses `static_0` and `product_id` as features alongside the generated lag features. During prediction, these static values are automatically carried forward:
+
+```{python}
+preds = fcst.predict(h=7)
+preds.head()
+```
+
+```text
+   unique_id         ds  LGBMRegressor
+0          0 2000-08-10       4.265591
+1          0 2000-08-11       5.245531
+2          0 2000-08-12       3.892297
+3          0 2000-08-13       3.752329
+4          0 2000-08-14       4.193262
+```
+
+## Dynamic Exogenous Variables
+
+Dynamic exogenous variables change over time but their future values are known in advance. Prices, scheduled promotions, and weather forecasts fall into this category.
+
+Generate a price catalog for each series:
+
+```{python}
+prices_catalog = generate_prices_for_series(series)
+prices_catalog.head()
+```
+
+```text
+   unique_id         ds     price
+0          0 2000-01-01  0.548814
+1          0 2000-01-02  0.715189
+2          0 2000-01-03  0.602763
+3          0 2000-01-04  0.544883
+4          0 2000-01-05  0.423655
+```
+
+Merge the price data with your time series:
+
+```{python}
+series_with_prices = series.merge(prices_catalog, how='left')
+series_with_prices.head()
+```
+
+```text
+   unique_id         ds          y  static_0  product_id     price
+0          0 2000-01-01  17.519033         4          82  0.548814
+1          0 2000-01-02   0.276729         4          82  0.715189
+2          0 2000-01-03   6.617829         4          82  0.602763
+3          0 2000-01-04   2.844439         4          82  0.544883
+4          0 2000-01-05   7.249720         4          82  0.423655
+```
+
+Train the model with both static and dynamic features:
+
+```{python}
+fcst = MLForecast(
+    models=lgb.LGBMRegressor(n_jobs=1, random_state=0, verbosity=-1),
+    freq='D',
+    lags=[7],
+    lag_transforms={
+        1: [ExpandingMean()],
+        7: [RollingMean(window_size=14)],
+    },
+    num_threads=2,
+)
+
+fcst.fit(series_with_prices, static_features=['static_0', 'product_id'])
+```
+
+```text
+MLForecast(models=[LGBMRegressor], freq=D, lag_features=['lag7', 'expanding_mean_lag1', 'rolling_mean_lag7_window_size14'], date_features=[], num_threads=2)
+```
+
+The `price` column is automatically treated as a dynamic exogenous variable since it wasn't listed in `static_features`. Verify which features the model uses:
+
+```{python}
+fcst.ts.features_order_
+```
+
+```text
+['static_0', 'product_id', 'price', 'lag7', 'expanding_mean_lag1', 'rolling_mean_lag7_window_size14']
+```
+
+For prediction, provide future price values through the `X_df` parameter:
+
+```{python}
+preds = fcst.predict(h=7, X_df=prices_catalog)
+preds.head()
+```
+
+```text
+   unique_id         ds  LGBMRegressor
+0          0 2000-08-10       4.458432
+1          0 2000-08-11       5.364521
+2          0 2000-08-12       3.987612
+3          0 2000-08-13       3.852117
+4          0 2000-08-14       4.291834
+```
+
+MLForecast automatically aligns the future prices with the correct forecast horizons for each series.
+
+## Calendar Features
+
+Calendar patterns like day-of-week and month effects are common in time series data. Retail sales spike on weekends, energy consumption varies by season, and traffic patterns follow weekly cycles.
+
+MLForecast's `date_features` parameter extracts these patterns automatically:
+
+```{python}
+fcst = MLForecast(
+    models=lgb.LGBMRegressor(n_jobs=1, random_state=0, verbosity=-1),
+    freq='D',
+    lags=[7],
+    lag_transforms={
+        1: [ExpandingMean()],
+        7: [RollingMean(window_size=14)],
+    },
+    date_features=['dayofweek', 'month'],
+    num_threads=2,
+)
+
+fcst.fit(series_with_prices, static_features=['static_0', 'product_id'])
+```
+
+```text
+MLForecast(models=[LGBMRegressor], freq=D, lag_features=['lag7', 'expanding_mean_lag1', 'rolling_mean_lag7_window_size14'], date_features=['dayofweek', 'month'], num_threads=2)
+```
+
+The `date_features` parameter accepts any pandas datetime attribute. Common options include:
+
+- `dayofweek` - Day of week (0=Monday, 6=Sunday)
+- `month` - Month of year (1-12)
+- `dayofyear` - Day of year (1-366)
+- `quarter` - Quarter of year (1-4)
+- `is_month_end` - Boolean for last day of month
+- `is_month_start` - Boolean for first day of month
+
+You can also pass custom functions that take a datetime index and return a feature:
+
+```{python}
+def is_weekend(dates):
+    return dates.dayofweek >= 5
+
+fcst = MLForecast(
+    models=lgb.LGBMRegressor(n_jobs=1, random_state=0, verbosity=-1),
+    freq='D',
+    lags=[7],
+    date_features=['dayofweek', 'month', is_weekend],
+    num_threads=2,
+)
+
+fcst.fit(series, static_features=['static_0', 'product_id'])
+fcst.ts.features_order_
+```
+
+```text
+['static_0', 'product_id', 'lag7', 'dayofweek', 'month', 'is_weekend']
+```
+
+Calendar features are generated automatically for both training and prediction periods.
+
+## Fourier Terms for Seasonality
+
+Complex seasonal patterns require many features to capture accurately. Weekly seasonality needs 7 dummy variables, yearly patterns need 365. Fourier terms provide a more compact representation using sine and cosine waves.
+
+The `fourier` function from utilsforecast generates these terms:
+
+```{python}
+from sklearn.linear_model import LinearRegression
+from utilsforecast.feature_engineering import fourier
+
+transformed_df, future_df = fourier(
+    series,
+    freq='D',
+    season_length=7,  # Weekly pattern
+    k=2,              # Number of sine/cosine pairs
+    h=7               # Forecast horizon
+)
+transformed_df.head()
+```
+
+```text
+   unique_id         ds          y  static_0  product_id  sin1_7    cos1_7    sin2_7    cos2_7
+0          0 2000-01-01  17.519033         4          82  0.7818   0.6235   0.9749  -0.2225
+1          0 2000-01-02   0.276729         4          82  0.9749   0.2225   0.4339  -0.9010
+2          0 2000-01-03   6.617829         4          82  0.4339  -0.9010  -0.7818  -0.6235
+3          0 2000-01-04   2.844439         4          82 -0.4339  -0.9010  -0.7818   0.6235
+4          0 2000-01-05   7.249720         4          82 -0.9749   0.2225   0.4339   0.9010
+```
+
+The function returns two DataFrames:
+- `transformed_df` contains the original data with Fourier features for training
+- `future_df` contains the Fourier features for the prediction horizon
+
+Train a model with Fourier features:
+
+```{python}
+fcst2 = MLForecast(models=LinearRegression(), freq='D')
+fcst2.fit(transformed_df, static_features=['static_0', 'product_id'])
+```
+
+```text
+MLForecast(models=[LinearRegression], freq=D, lag_features=[], date_features=[], num_threads=1)
+```
+
+Predict using the future Fourier values:
+
+```{python}
+preds = fcst2.predict(h=7, X_df=future_df)
+preds.head()
+```
+
+```text
+   unique_id         ds  LinearRegression
+0          0 2000-08-10          4.521893
+1          0 2000-08-11          4.891234
+2          0 2000-08-12          4.234567
+3          0 2000-08-13          4.123456
+4          0 2000-08-14          4.567891
+```
+
+The `k` parameter controls complexity: higher values capture finer seasonal details but risk overfitting. Start with `k=2` for weekly patterns and `k=4-6` for yearly patterns.
+
+## Conclusion
+
+MLForecast provides a clean API for incorporating external factors into your forecasts:
+
+- **Static features**: Specify in `static_features` parameter during `fit()`. Use for store metadata, product categories, and geographic attributes.
+
+- **Dynamic exogenous variables**: All non-static columns are treated as dynamic. Provide future values via `X_df` in `predict()`. Use for prices, promotions, and scheduled events.
+
+- **Calendar features**: Add via `date_features` parameter. Use built-in pandas attributes or custom functions for day-of-week effects, holidays, and seasonal patterns.
+
+- **Fourier terms**: Generate with `utilsforecast.feature_engineering.fourier()`. Use for compact representation of complex seasonal patterns.
+
+Start with calendar features and static metadata since they require no additional data preparation. Add dynamic exogenous variables when you have reliable forecasts of external factors like planned prices or scheduled promotions.
