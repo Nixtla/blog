@@ -18,15 +18,15 @@ publication_date: 2025-12-05
 
 ## Introduction
 
-Time series forecasting rarely depends on historical values alone. Sales are influenced by prices, promotions affect demand, and holidays create predictable spikes. Incorporating these external factors can dramatically improve forecast accuracy.
+Time series forecasting rarely depends on historical values alone. External variables, such as prices, promotions, and calendar events, capture the context that shapes your predictions.
 
-The challenge is that different types of external data require different handling:
+These variables aren't just "extra columns." They fall into three distinct categories that determine how you use them:
 
-- **Static features** like store location or product category never change
-- **Dynamic features** like prices or promotions change over time and are known in advance
-- **Calendar patterns** like day-of-week effects repeat predictably
+- **Static**: Store ID, product category. Constant, replicated across time.
+- **Dynamic**: Prices, promotions. Time-varying but known ahead.
+- **Calendar**: Weekday, holiday. Derived from the timestamp itself.
 
-Traditional approaches require manual feature engineering to handle each type correctly. You need to replicate static features across timestamps, align future values with prediction horizons, and extract calendar attributes without data leakage.
+Mishandle these categories and you'll either leak future data or waste predictive signal. Traditional approaches require you to engineer each type manually.
 
 [MLForecast](https://github.com/Nixtla/mlforecast) simplifies this workflow with a unified API that handles all three types of exogenous variables automatically. You specify which columns are static, provide future values for dynamic features, and let the library handle the rest.
 
