@@ -303,6 +303,56 @@ Number of anomalies with 99% confidence interval: 89
 Number of anomalies with 70% confidence interval: 505
 ```
 
+Let's visualize the anomalies detected with 70% confidence interval:
+
+```python
+nixtla_client.plot(wikipedia, anomalies_df_70)
+```
+
+```chart
+{
+  "id": "chart-5",
+  "title": "Anomaly Detection with 70% Confidence Interval",
+  "dataSource": "chart-4.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target (y)"
+  },
+  "series": [
+    {
+      "type": "area",
+      "columns": {
+        "high": "TimeGPT-hi-70",
+        "low": "TimeGPT-lo-70"
+      },
+      "name": "TimeGPT Level 70",
+      "zIndex": 3,
+      "color": "cyan-900"
+    },
+    {
+      "column": "y",
+      "name": "Actual Data",
+      "type": "line",
+      "color": "blue-700",
+      "zIndex": 4
+    },
+    {
+      "column": "TimeGPT",
+      "name": "TimeGPT Forecast",
+      "type": "line",
+      "color": "cyan-400",
+      "zIndex": 5
+    }
+  ],
+  "anomalies": {
+    "column": "anomaly",
+    "seriesColumn": "y"
+  }
+}
+```
+
 Reducing the confidence interval from 99% to 70% narrows the range of expected values, making the model more sensitive to deviations and resulting in many more anomalies being flagged.
 
 This is useful when you want to flag **more subtle deviations** or prefer a higher sensitivity in anomaly detection, especially for use cases where catching borderline anomalies is more important than minimizing false positives.
