@@ -38,10 +38,10 @@ Mishandle these categories and you'll either leak future data or waste predictiv
 
 MLForecast brings machine learning models to time series forecasting. You can use LightGBM, XGBoost, scikit-learn regressors, or any model with a fit/predict interface. The library handles feature engineering, lag creation, and multi-series alignment automatically.
 
-When working with exogenous variables, MLForecast distinguishes between two categories:
+When working with [exogenous variables](https://nixtlaverse.nixtla.io/mlforecast/docs/how-to-guides/exogenous_features.html), MLForecast distinguishes between two categories:
 
-- **Static features** stay constant across a series: store metadata, product categories, geographic regions.
-- **Dynamic features** vary over time but are known ahead: prices, promotional flags, weather forecasts.
+- **[Static features](https://nixtlaverse.nixtla.io/mlforecast/docs/how-to-guides/exogenous_features.html)** stay constant across a series: store metadata, product categories, geographic regions.
+- **[Dynamic features](https://nixtlaverse.nixtla.io/mlforecast/docs/how-to-guides/exogenous_features.html)** vary over time but are known ahead: prices, promotional flags, weather forecasts.
 
 In the following sections, we'll walk through each category and how to use them with MLForecast.
 
@@ -350,7 +350,7 @@ The forecasts now show variation instead of flat lines. Promotion counts and oil
 
 Calendar patterns like day-of-week and month effects are common in time series data. Retail sales spike on weekends, energy consumption varies by season, and traffic patterns follow weekly cycles.
 
-MLForecast's `date_features` parameter extracts these patterns automatically. You can pass pandas datetime attributes or custom functions:
+MLForecast's [`date_features` parameter](https://nixtlaverse.nixtla.io/mlforecast/docs/how-to-guides/custom_date_features.html) extracts these patterns automatically. You can pass pandas datetime attributes or custom functions:
 
 ```python
 def is_weekend(dates):
@@ -425,7 +425,7 @@ The forecasts now capture the weekly rhythm visible in the training data. Day-of
 
 ## Feature Importance with SHAP
 
-Understanding which features drive your forecasts helps validate model behavior and guide feature engineering. SHAP (SHapley Additive exPlanations) values show how each feature contributes to predictions across your dataset.
+Understanding which features drive your forecasts helps validate model behavior and guide feature engineering. [SHAP](https://shap.readthedocs.io/) (SHapley Additive exPlanations) values show how each feature contributes to predictions across your dataset.
 
 First, extract the preprocessed features used during training:
 
