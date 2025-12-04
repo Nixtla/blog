@@ -26,7 +26,7 @@ This manual process creates several problems:
 
 MLforecast eliminates this pain with automated feature engineering that's faster, more reliable, and consistent across all your forecasting models.
 
-> Before diving into automated feature engineering, establishing [baseline model performance](https://www.nixtla.io/blog/baseline_forecasts) provides essential context for measuring improvement and avoiding over-engineering.
+> Before diving into automated feature engineering, establishing [baseline model performance](https://www.nixtla.io/blog/baseline-forecasts) provides essential context for measuring improvement and avoiding over-engineering.
 
 > The source code of this article can be found in the [interactive Jupyter notebook](https://github.com/Nixtla/nixtla_blog_examples/blob/main/notebooks/automated-time-series-feature-engineering-with-mlforecast.ipynb).
 
