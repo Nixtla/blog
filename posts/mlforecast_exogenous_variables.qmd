@@ -49,26 +49,31 @@ Install the required libraries for this article:
 pip install mlforecast lightgbm utilsforecast
 ```
 
-Generate sample time series data with static features:
+We'll use a subset of the [Kaggle Store Sales](https://www.kaggle.com/competitions/store-sales-time-series-forecasting) dataset. This dataset contains daily sales data from Corporación Favorita, a large Ecuadorian grocery retailer, with rich exogenous variables including store metadata, promotions, oil prices, and holidays.
 
 ```{python}
-from mlforecast.utils import generate_daily_series, generate_prices_for_series
+import pandas as pd
 
-series = generate_daily_series(
-    100, equal_ends=True, n_static_features=2
-).rename(columns={'static_0': 'store_id', 'static_1': 'product_id'})
+series = pd.read_csv(
+    'examples/mlforecast_exogenous/store_sales_subset.csv',
+    parse_dates=['ds']
+)
 series.head()
 ```
 
-|   | unique_id | ds         | y          | store_id | product_id |
-|---|-----------|------------|------------|----------|------------|
-| 0 | id_00     | 2000-10-05 | 39.811983  | 79       | 45         |
-| 1 | id_00     | 2000-10-06 | 103.274013 | 79       | 45         |
-| 2 | id_00     | 2000-10-07 | 176.574744 | 79       | 45         |
-| 3 | id_00     | 2000-10-08 | 258.987900 | 79       | 45         |
-| 4 | id_00     | 2000-10-09 | 344.940404 | 79       | 45         |
+|   | unique_id    | ds         | y      | store_nbr | family    | city  | state     | type | cluster | onpromotion | oil_price | is_holiday |
+|---|--------------|------------|--------|-----------|-----------|-------|-----------|------|---------|-------------|-----------|------------|
+| 0 | 1_BEVERAGES  | 2016-01-01 | 0.0    | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 0           | 37.13     | 1          |
+| 1 | 1_BEVERAGES  | 2016-01-02 | 1856.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 7           | NaN       | 0          |
+| 2 | 1_BEVERAGES  | 2016-01-03 | 1048.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 1           | NaN       | 0          |
+| 3 | 1_BEVERAGES  | 2016-01-04 | 3005.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 3           | 36.81     | 0          |
+| 4 | 1_BEVERAGES  | 2016-01-05 | 2679.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 3           | 36.08     | 0          |
 
-The data contains 100 time series, each with two static features (`store_id` and `product_id`) that remain constant across all timestamps for a given series.
+The dataset contains 15 time series (5 stores × 3 product families) with:
+
+- **Static features**: `store_nbr`, `family`, `city`, `state`, `type`, `cluster`
+- **Dynamic features**: `onpromotion` (number of items on promotion), `oil_price` (daily oil price)
+- **Calendar feature**: `is_holiday` (whether the date is a holiday)
 
 Split the data into training and test sets. We'll hold out the last 7 days for evaluation:
 
@@ -77,13 +82,13 @@ from utilsforecast.losses import mae
 from utilsforecast.plotting import plot_series
 
 horizon = 7
-test = series.groupby('unique_id').tail(horizon)
-train = series.drop(test.index)
+test = series.groupby('unique_id').tail(horizon).copy()
+train = series.drop(test.index).copy()
 print(f"Train: {len(train)} rows, Test: {len(test)} rows")
 ```
 
 ```text
-Train: 21500 rows, Test: 700 rows
+Train: 8775 rows, Test: 105 rows
 ```
 
 ## Baseline Forecast
@@ -117,10 +122,11 @@ Key parameters:
 
 For a complete list of parameters including `date_features` and `target_transforms`, see the [MLForecast API documentation](https://nixtlaverse.nixtla.io/mlforecast/forecast.html#mlforecast).
 
-Now fit the model, specifying which columns are static:
+Now fit the model to the training data. For the baseline, we use only the core time series columns without exogenous variables:
 
 ```{python}
-fcst_baseline.fit(train)
+train_baseline = train[['unique_id', 'ds', 'y']]
+fcst_baseline.fit(train_baseline)
 preds_baseline = fcst_baseline.predict(h=horizon)
 ```
 
@@ -132,14 +138,10 @@ baseline_mae = mae(eval_baseline, models=['LGBMRegressor'])['LGBMRegressor'].mea
 print(f"Baseline MAE: {baseline_mae:.2f}")
 ```
 
-```text
-Baseline MAE: 42.15
-```
-
 Plot the forecasts for a sample of 4 series:
 
 ```{python}
-fig = plot_series(
+plot_series(
     train,
     forecasts_df=preds_baseline,
     max_ids=4,
@@ -149,24 +151,36 @@ fig = plot_series(
 )
 ```
 
-![Baseline forecast](baseline_forecast.png)
-
 ## Static Features
 
-Static features represent time-invariant characteristics of each series. In retail forecasting, these might include store type, product category, or geographic region.
+Static features represent time-invariant characteristics of each series. In retail forecasting, these might include store type, product category, or geographic region. Our dataset includes store metadata like `city`, `state`, `type`, and `cluster`.
 
 Without MLForecast, you would need to manually replicate these values when constructing features for prediction:
 
 ```python
 # Manual approach: merge static features for prediction
-static_cols = series.groupby('unique_id')[['store_id', 'product_id']].first().reset_index()
+static_cols = ['store_nbr', 'family', 'city', 'state', 'type', 'cluster']
+static_df = series.groupby('unique_id')[static_cols].first().reset_index()
 future_dates = pd.DataFrame({'unique_id': ids, 'ds': future_timestamps})
-future_with_static = future_dates.merge(static_cols, on='unique_id')
+future_with_static = future_dates.merge(static_df, on='unique_id')
 ```
 
-MLForecast handles this automatically. Specify static columns in the `static_features` parameter:
+MLForecast handles this automatically. Specify static columns in the `static_features` parameter.
+
+First, convert string columns to categorical type so LightGBM can process them:
 
 ```{python}
+# Convert string columns to categorical
+cat_cols = ['family', 'city', 'state', 'type']
+for col in cat_cols:
+    train[col] = train[col].astype('category')
+    test[col] = test[col].astype('category')
+
+static_cols = ['store_nbr', 'family', 'city', 'state', 'type', 'cluster']
+
+# Select only static features (exclude dynamic columns for now)
+train_static = train[['unique_id', 'ds', 'y'] + static_cols]
+
 fcst_static = MLForecast(
     models=lgb.LGBMRegressor(n_jobs=1, random_state=0, verbosity=-1),
     freq='D',
@@ -178,7 +192,7 @@ fcst_static = MLForecast(
     num_threads=2,
 )
 
-fcst_static.fit(train, static_features=['store_id', 'product_id'])
+fcst_static.fit(train_static, static_features=static_cols)
 preds_static = fcst_static.predict(h=horizon)
 ```
 
@@ -191,12 +205,8 @@ improvement = (baseline_mae - static_mae) / baseline_mae * 100
 print(f"Static features MAE: {static_mae:.2f} ({improvement:.1f}% improvement over baseline)")
 ```
 
-```text
-Static features MAE: 38.42 (8.8% improvement over baseline)
-```
-
 ```{python}
-fig = plot_series(
+plot_series(
     train,
     forecasts_df=preds_static,
     max_ids=4,
@@ -206,32 +216,30 @@ fig = plot_series(
 )
 ```
 
-![Static features forecast](static_forecast.png)
-
-Adding static features like `store_id` and `product_id` allows the model to learn store-specific and product-specific patterns, improving accuracy.
-
 ## Dynamic Exogenous Variables
 
-Dynamic exogenous variables change over time but their future values are known in advance. Prices, scheduled promotions, and weather forecasts fall into this category.
+Dynamic exogenous variables change over time but their future values are known in advance. Our dataset includes three dynamic features:
 
-Generate a price catalog and merge it with our data:
+- `onpromotion`: Number of items on promotion (retailers plan promotions ahead)
+- `oil_price`: Daily oil price (affects transportation costs and consumer spending in Ecuador)
+- `is_holiday`: Whether the date is a holiday (known from the calendar)
+
+The dataset already contains these features. We need to handle missing oil prices by forward-filling:
 
 ```{python}
-prices_catalog = generate_prices_for_series(series)
-train_with_prices = train.merge(prices_catalog, how='left')
-test_with_prices = test.merge(prices_catalog, how='left')
-train_with_prices.head()
+# Select columns for dynamic features (excluding is_holiday from training for now)
+dynamic_cols = ['onpromotion', 'oil_price', 'is_holiday']
+
+# Prepare training data with static and dynamic features
+train_dynamic = train[['unique_id', 'ds', 'y'] + static_cols + dynamic_cols].copy()
+train_dynamic['oil_price'] = train_dynamic['oil_price'].ffill()
+
+# Prepare future values for prediction
+future_dynamic = test[['unique_id', 'ds'] + dynamic_cols].copy()
+future_dynamic['oil_price'] = future_dynamic['oil_price'].ffill()
 ```
 
-|   | unique_id | ds         | y          | store_id | product_id | price       |
-|---|-----------|------------|------------|----------|------------|-------------|
-| 0 | id_00     | 2000-10-05 | 39.811983  | 79       | 45         | 0.548814    |
-| 1 | id_00     | 2000-10-06 | 103.274013 | 79       | 45         | 0.715189    |
-| 2 | id_00     | 2000-10-07 | 176.574744 | 79       | 45         | 0.602763    |
-| 3 | id_00     | 2000-10-08 | 258.987900 | 79       | 45         | 0.544883    |
-| 4 | id_00     | 2000-10-09 | 344.940404 | 79       | 45         | 0.423655    |
-
-Train the model with both static and dynamic features. The `price` column is automatically treated as dynamic since it's not listed in `static_features`:
+Train the model with both static and dynamic features. The `onpromotion` and `oil_price` columns are automatically treated as dynamic since they're not listed in `static_features`:
 
 ```{python}
 fcst_dynamic = MLForecast(
@@ -245,13 +253,13 @@ fcst_dynamic = MLForecast(
     num_threads=2,
 )
 
-fcst_dynamic.fit(train_with_prices, static_features=['store_id', 'product_id'])
+fcst_dynamic.fit(train_dynamic, static_features=static_cols)
 ```
 
-For prediction, provide future price values through the `X_df` parameter:
+For prediction, provide future values through the `X_df` parameter:
 
 ```{python}
-preds_dynamic = fcst_dynamic.predict(h=horizon, X_df=prices_catalog)
+preds_dynamic = fcst_dynamic.predict(h=horizon, X_df=future_dynamic)
 ```
 
 Evaluate and compare:
@@ -263,12 +271,8 @@ improvement = (baseline_mae - dynamic_mae) / baseline_mae * 100
 print(f"Dynamic features MAE: {dynamic_mae:.2f} ({improvement:.1f}% improvement over baseline)")
 ```
 
-```text
-Dynamic features MAE: 35.18 (16.5% improvement over baseline)
-```
-
 ```{python}
-fig = plot_series(
+plot_series(
     train,
     forecasts_df=preds_dynamic,
     max_ids=4,
@@ -278,9 +282,6 @@ fig = plot_series(
 )
 ```
 
-![Dynamic features forecast](dynamic_forecast.png)
-
-Adding price information helps the model understand demand-price relationships, further improving forecast accuracy.
 
 ## Calendar Features
 
@@ -304,7 +305,7 @@ fcst_calendar = MLForecast(
     num_threads=2,
 )
 
-fcst_calendar.fit(train, static_features=['store_id', 'product_id'])
+fcst_calendar.fit(train_static, static_features=static_cols)
 preds_calendar = fcst_calendar.predict(h=horizon)
 ```
 
@@ -325,12 +326,8 @@ improvement = (baseline_mae - calendar_mae) / baseline_mae * 100
 print(f"Calendar features MAE: {calendar_mae:.2f} ({improvement:.1f}% improvement over baseline)")
 ```
 
-```text
-Calendar features MAE: 36.89 (12.5% improvement over baseline)
-```
-
 ```{python}
-fig = plot_series(
+plot_series(
     train,
     forecasts_df=preds_calendar,
     max_ids=4,
@@ -340,87 +337,7 @@ fig = plot_series(
 )
 ```
 
-![Calendar features forecast](calendar_forecast.png)
-
 Calendar features help capture weekly and monthly patterns without requiring external data.
-
-## Fourier Terms for Seasonality
-
-Complex seasonal patterns require many features to capture accurately. Weekly seasonality needs 7 dummy variables, yearly patterns need 365. Fourier terms provide a more compact representation using sine and cosine waves.
-
-The `fourier` function from utilsforecast generates these terms:
-
-```{python}
-from utilsforecast.feature_engineering import fourier
-
-train_fourier, future_fourier = fourier(
-    train,
-    freq='D',
-    season_length=7,  # Weekly pattern
-    k=2,              # Number of sine/cosine pairs
-    h=horizon         # Forecast horizon
-)
-train_fourier.head()
-```
-
-|   | unique_id | ds         | y          | store_id | product_id | sin1_7 | cos1_7 | sin2_7 | cos2_7 |
-|---|-----------|------------|------------|----------|------------|--------|--------|--------|--------|
-| 0 | id_00     | 2000-10-05 | 39.811983  | 79       | 45         | 0.7818 | 0.6235 | 0.9749 | -0.2225|
-| 1 | id_00     | 2000-10-06 | 103.274013 | 79       | 45         | 0.9749 | 0.2225 | 0.4339 | -0.9010|
-| 2 | id_00     | 2000-10-07 | 176.574744 | 79       | 45         | 0.4339 | -0.9010| -0.7818| -0.6235|
-| 3 | id_00     | 2000-10-08 | 258.987900 | 79       | 45         | -0.4339| -0.9010| -0.7818| 0.6235 |
-| 4 | id_00     | 2000-10-09 | 344.940404 | 79       | 45         | -0.9749| 0.2225 | 0.4339 | 0.9010 |
-
-The function returns two DataFrames:
-
-- `train_fourier`: Original data with Fourier features for training
-- `future_fourier`: Fourier features for the prediction horizon
-
-Train a model with Fourier features:
-
-```{python}
-fcst_fourier = MLForecast(
-    models=lgb.LGBMRegressor(n_jobs=1, random_state=0, verbosity=-1),
-    freq='D',
-    lags=[7],
-    lag_transforms={
-        1: [ExpandingMean()],
-        7: [RollingMean(window_size=14)],
-    },
-    num_threads=2,
-)
-
-fcst_fourier.fit(train_fourier, static_features=['store_id', 'product_id'])
-preds_fourier = fcst_fourier.predict(h=horizon, X_df=future_fourier)
-```
-
-Evaluate and compare:
-
-```{python}
-eval_fourier = test.merge(preds_fourier, on=['unique_id', 'ds'])
-fourier_mae = mae(eval_fourier, models=['LGBMRegressor'])['LGBMRegressor'].mean()
-improvement = (baseline_mae - fourier_mae) / baseline_mae * 100
-print(f"Fourier features MAE: {fourier_mae:.2f} ({improvement:.1f}% improvement over baseline)")
-```
-
-```text
-Fourier features MAE: 34.52 (18.1% improvement over baseline)
-```
-
-```{python}
-fig = plot_series(
-    train,
-    forecasts_df=preds_fourier,
-    max_ids=4,
-    plot_random=False,
-    max_insample_length=50,
-    engine='matplotlib'
-)
-```
-
-![Fourier features forecast](fourier_forecast.png)
-
-The `k` parameter controls complexity: higher values capture finer seasonal details but risk overfitting. Start with `k=2` for weekly patterns and `k=4-6` for yearly patterns.
 
 ## Conclusion
 
@@ -431,7 +348,5 @@ MLForecast provides a clean API for incorporating external factors into your for
 - **Dynamic exogenous variables**: All non-static columns are treated as dynamic. Provide future values via `X_df` in `predict()`. Use for prices, promotions, and scheduled events.
 
 - **Calendar features**: Add via `date_features` parameter. Use built-in pandas attributes or custom functions for day-of-week effects, holidays, and seasonal patterns.
-
-- **Fourier terms**: Generate with `utilsforecast.feature_engineering.fourier()`. Use for compact representation of complex seasonal patterns.
 
 Start with calendar features and static metadata since they require no additional data preparation. Add dynamic exogenous variables when you have reliable forecasts of external factors like planned prices or scheduled promotions.
