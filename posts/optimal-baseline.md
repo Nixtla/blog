@@ -1,5 +1,6 @@
 ---
 title: Simple Anomaly Detection in Time Series via Optimal Baseline Subtraction (OBS)
+seo_title: Simple Anomaly Detection via Optimal Baseline Subtraction
 description: Discover how to detect anomalies using Optimal Baseline Subtraction and enhance your forecasts with Nixtla’s TimeGPT on real-world weather data.
 image: /images/optimal_baseline/main_image.svg
 categories: ["Anomaly Detection"]

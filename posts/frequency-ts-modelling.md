@@ -1,5 +1,6 @@
 ---
 title: Time Series Frequency Modelling with Fourier Transform and TimeGPT-1
+seo_title: Time Series Frequency Modeling: Fourier & TimeGPT-1
 description: Discover how to decompose your time series in multiple components with Fourier Transform and model each component with TimeGPT-1.
 image: /images/fourier_modelling/main_picture.svg
 categories: ["Time Series Forecasting"]

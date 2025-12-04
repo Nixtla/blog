@@ -1,5 +1,6 @@
 ---
 title: Performance Evaluation of Anomaly Detection through Synthetic Anomalies
+seo_title: Evaluate Anomaly Detection with Synthetic Anomalies
 description: Discover how to find the minimum detectable anomaly in absence of a ground truth labelled dataset using synthetic anomalies.
 image: /images/anomaly_detection_performance_evaluation/main_image.svg
 categories: ["Anomaly Detection"]

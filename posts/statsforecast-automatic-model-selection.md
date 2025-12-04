@@ -1,5 +1,6 @@
 ---
 title: "Automatic Model Selection with StatsForecast for Time Series Forecasting"
+seo_title: Automated Model Selection with StatsForecast
 description: "Stop testing statistical models manually. Use StatsForecast to automatically fit AutoARIMA, AutoETS, AutoCES, and AutoTheta models, then select the best performer for each series through cross-validation."
 categories: ["Time Series Forecasting"]
 tags:

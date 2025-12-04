@@ -1,5 +1,6 @@
 ---
 title: Savitzky Golay Filtering for Time Series Denoising
+seo_title: Savitzky Golay Filtering for Time Series Denoising
 description: Denoise your time series with Polynomial Smoothing using Saviztky-Goaly filter
 image: /images/Polynomial_Filtering/Noise_Definition.svg
 author_name: Piero Paialunga
@@ -98,7 +99,7 @@ We are assuming that the underlying signal has a given analytical definition. Th
 
 For this blogpost, we will use the following analytical expression:
 
-![png](/images/Polynomial_Filtering/sine_wave.png)
+![png](/images/Polynomial_Filtering/Sine_Wave.png)
 
 With x (time) defined in the 0-10 range, and y defined as the amplitude of our time series. We can quickly plot this function using the following block of code.
 

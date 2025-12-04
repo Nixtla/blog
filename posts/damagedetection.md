@@ -1,5 +1,6 @@
 ---
 title: "Damage Detection in Engineering Structures Using Nixtla"
+seo_title: Damage Detection in Engineering Structures Using Nixtla
 description: "Learn how to detect cracks and structural damage using Nixtla's Anomaly Detection pipeline while accounting for temperature-induced variations in sensor data."
 image: "/images/damage_detection/anomaly_detection.svg"
 categories: ["TimeGPT Anomalies"]

@@ -76,6 +76,7 @@ export default function handler(req, res) {
 
     const response = {
       title: frontmatter.title || null,
+      seo_title: frontmatter.seo_title || null,
       author_name: frontmatter.author_name || null,
       author_image: frontmatter.author_image || null,
       author_position: frontmatter.author_position || null,
