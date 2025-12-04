@@ -95,6 +95,7 @@ For displaying multiple synchronized charts in a grid layout, sharing the same d
 | `dataSource`   | `string`             | Yes      | CSV filename shared by all charts                                     | `"chart-1.csv"`                             |
 | `columns`      | `number`             | Yes      | Number of columns in the grid layout                                  | `2`, `3`, `4`                               |
 | `legendConfig` | `object`             | Yes      | Shared legend configuration for all charts                            | `{"displaySeries": [...]}`                  |
+| `maxPoints`    | `number`             | No       | Maximum number of points to load from the CSV file                    | `60 (default is 1000)`                      |
 | `xAxis`        | `string` or `object` | Yes      | X-axis configuration (shared by all charts)                           | `"date"` or `{"key": "date"}`               |
 | `yAxis`        | `string` or `object` | Yes      | Y-axis configuration (shared by all charts)                           | `"Target (y)"` or `{"label": "Target (y)"}` |
 | `charts`       | `array`              | Yes      | Array of individual chart configurations (each follows series schema) | See Charts Array Configuration below        |
