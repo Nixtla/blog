@@ -2,7 +2,7 @@
 title: "Supercharge Your Sales Forecasts: A Complete Guide to Exogenous Variables in MLForecast"
 seo_title: Exogenous Variables in MLForecast for Sales
 description: Learn how to incorporate external factors like prices, promotions, and calendar patterns into your time series forecasts using MLForecast's exogenous variables.
-image: "/images/mlforecast_exogenous_variables/calendar-features-forecast.svg"
+image: "/images/mlforecast-exogenous-variables/calendar-features-forecast.svg"
 categories: ["MLForecast"]
 tags:
   - mlforecast
@@ -32,17 +32,17 @@ Mishandle these categories and you'll either leak future data or waste predictiv
 [MLForecast](https://github.com/Nixtla/mlforecast) simplifies this workflow with a unified API that handles all three types of exogenous variables automatically. You specify which columns are static, provide future values for dynamic features, and let the library handle the rest.
 
 ::: {.callout-note appearance="simple"}
-**Get the Code**: The complete source code and Jupyter notebook for this tutorial are available on [GitHub](https://github.com/Nixtla/blog/blob/main/examples/notebooks/mlforecast_exogenous_variables.ipynb). Clone it to follow along!
+**Get the Code**: The complete source code and Jupyter notebook for this tutorial are available on [GitHub](https://github.com/Nixtla/blog/blob/main/examples/notebooks/mlforecast-exogenous-variables.ipynb). Clone it to follow along!
 :::
 
 ## Introduction to MLForecast Exogenous Variables
 
 MLForecast brings machine learning models to time series forecasting. You can use LightGBM, XGBoost, scikit-learn regressors, or any model with a fit/predict interface. The library handles feature engineering, lag creation, and multi-series alignment automatically.
 
-When working with exogenous variables, MLForecast distinguishes between two categories:
+When working with [exogenous variables](https://nixtlaverse.nixtla.io/mlforecast/docs/how-to-guides/exogenous_features.html), MLForecast distinguishes between two categories:
 
-- **Static features** stay constant across a series: store metadata, product categories, geographic regions.
-- **Dynamic features** vary over time but are known ahead: prices, promotional flags, weather forecasts.
+- **[Static features](https://nixtlaverse.nixtla.io/mlforecast/docs/how-to-guides/exogenous_features.html)** stay constant across a series: store metadata, product categories, geographic regions.
+- **[Dynamic features](https://nixtlaverse.nixtla.io/mlforecast/docs/how-to-guides/exogenous_features.html)** vary over time but are known ahead: prices, promotional flags, weather forecasts.
 
 In the following sections, we'll walk through each category and how to use them with MLForecast.
 
@@ -157,10 +157,10 @@ plot_series(
   "xAxis": { "key": "ds" },
   "yAxis": { "label": "Sales" },
   "charts": [
-    { "id": "chart-1-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-1-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-1-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-1-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] }
+    { "id": "chart-1-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-1-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-1-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-1-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] }
   ]
 }
 ```
@@ -249,10 +249,10 @@ plot_series(
   "xAxis": { "key": "ds" },
   "yAxis": { "label": "Sales" },
   "charts": [
-    { "id": "chart-2-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-2-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-2-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-2-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] }
+    { "id": "chart-2-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-2-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-2-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-2-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] }
   ]
 }
 ```
@@ -336,10 +336,10 @@ plot_series(
   "xAxis": { "key": "ds" },
   "yAxis": { "label": "Sales" },
   "charts": [
-    { "id": "chart-3-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-3-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-3-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-3-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] }
+    { "id": "chart-3-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-3-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-3-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-3-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] }
   ]
 }
 ```
@@ -350,7 +350,7 @@ The forecasts now show variation instead of flat lines. Promotion counts and oil
 
 Calendar patterns like day-of-week and month effects are common in time series data. Retail sales spike on weekends, energy consumption varies by season, and traffic patterns follow weekly cycles.
 
-MLForecast's `date_features` parameter extracts these patterns automatically. You can pass pandas datetime attributes or custom functions:
+MLForecast's [`date_features` parameter](https://nixtlaverse.nixtla.io/mlforecast/docs/how-to-guides/custom_date_features.html) extracts these patterns automatically. You can pass pandas datetime attributes or custom functions:
 
 ```python
 def is_weekend(dates):
@@ -413,15 +413,74 @@ plot_series(
   "xAxis": { "key": "ds" },
   "yAxis": { "label": "Sales" },
   "charts": [
-    { "id": "chart-4-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-4-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-4-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
-    { "id": "chart-4-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] }
+    { "id": "chart-4-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-4-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-4-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] },
+    { "id": "chart-4-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "blue-500" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "orange-400", "strokeDashArray": "5 5" }] }
   ]
 }
 ```
 
 The forecasts now capture the weekly rhythm visible in the training data. Day-of-week features let the model distinguish high-traffic days from slower ones.
+
+## Feature Importance with SHAP
+
+Understanding which features drive your forecasts helps validate model behavior and guide feature engineering. [SHAP](https://shap.readthedocs.io/) (SHapley Additive exPlanations) values show how each feature contributes to predictions across your dataset.
+
+First, extract the preprocessed features used during training:
+
+```python
+prep = fcst_calendar.preprocess(train_static)
+X = prep.drop(columns=['unique_id', 'ds', 'y'])
+X.head()
+```
+
+|   | store_nbr | family    | city  | state     | type | cluster | lag1   | dayofweek | month | is_weekend |
+|---|-----------|-----------|-------|-----------|------|---------|--------|-----------|-------|------------|
+| 1 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 0.0    | 5         | 1     | True       |
+| 2 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 1856.0 | 6         | 1     | True       |
+| 3 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 1048.0 | 0         | 1     | False      |
+| 4 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 3005.0 | 1         | 1     | False      |
+| 5 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 2374.0 | 2         | 1     | False      |
+
+Compute SHAP values using TreeExplainer, which is optimized for tree-based models like LightGBM:
+
+```python
+import shap
+
+explainer = shap.TreeExplainer(fcst_calendar.models_['LGBMRegressor'])
+shap_values = explainer(X)
+```
+
+Visualize feature importance with a bar plot:
+
+```python
+shap.plots.bar(shap_values)
+```
+
+```chart
+{
+  "id": "chart-5",
+  "title": "Feature Importance (SHAP)",
+  "dataSource": "chart-5.csv",
+  "xAxis": { "key": "mean_abs_shap" },
+  "yAxis": { "label": "Features" },
+  "series": [
+    {
+      "column": "mean_abs_shap",
+      "type": "bar",
+      "horizontal": true
+    }
+  ]
+}
+```
+
+The results validate our earlier findings:
+
+- `lag1` confirms yesterday's sales as the strongest predictor
+- `dayofweek` provides the most value among calendar features, matching the 44.5% accuracy improvement
+- Static features `city`, `state`, and `type` have zero impact, explaining why they didn't improve the baseline
+- `is_weekend` adds nothing since the model already captures weekly patterns through `dayofweek`
 
 ## Conclusion
 
