@@ -95,34 +95,21 @@ Train: 8775 rows, Test: 105 rows
 
 ## Baseline Forecast
 
-Before adding exogenous variables, let's establish a baseline using only lag features. This gives us a reference point to measure improvement.
+Before adding exogenous variables, let's establish a baseline. This model uses only a single lag feature (yesterday's value), giving us a reference point to measure the impact of each exogenous variable type.
 
 ```{python}
 import lightgbm as lgb
 from mlforecast import MLForecast
-from mlforecast.lag_transforms import ExpandingMean, RollingMean
 
 fcst_baseline = MLForecast(
     models=lgb.LGBMRegressor(n_jobs=1, random_state=0, verbosity=-1),
     freq='D',
-    lags=[7],
-    lag_transforms={
-        1: [ExpandingMean()],
-        7: [RollingMean(window_size=14)],
-    },
+    lags=[1],
     num_threads=2,
 )
 ```
 
-Key parameters:
-
-- `models`: Any scikit-learn compatible regressor. Here we use LightGBM.
-- `freq`: Time series frequency. `'D'` for daily data.
-- `lags`: Which past values to use as features. `[7]` uses the value from 7 days ago.
-- `lag_transforms`: Rolling statistics applied to lagged values. `ExpandingMean()` computes the cumulative mean; `RollingMean(window_size=14)` computes a 14-day rolling average.
-- `num_threads`: Parallel processing threads for feature computation.
-
-For a complete list of parameters including `date_features` and `target_transforms`, see the [MLForecast API documentation](https://nixtlaverse.nixtla.io/mlforecast/forecast.html#mlforecast).
+For a complete list of parameters including `lags`, `date_features`, and `target_transforms`, see the [MLForecast API documentation](https://nixtlaverse.nixtla.io/mlforecast/forecast.html#mlforecast).
 
 Now fit the model to the training data. For the baseline, we use only the core time series columns without exogenous variables:
 
@@ -138,6 +125,10 @@ Evaluate the baseline model:
 eval_baseline = test.merge(preds_baseline, on=['unique_id', 'ds'])
 baseline_mae = mae(eval_baseline, models=['LGBMRegressor'])['LGBMRegressor'].mean()
 print(f"Baseline MAE: {baseline_mae:.2f}")
+```
+
+```text
+Baseline MAE: 694.14
 ```
 
 Plot the forecasts for a sample of 4 series:
@@ -190,11 +181,7 @@ Now train the model with static features:
 fcst_static = MLForecast(
     models=lgb.LGBMRegressor(n_jobs=1, random_state=0, verbosity=-1),
     freq='D',
-    lags=[7],
-    lag_transforms={
-        1: [ExpandingMean()],
-        7: [RollingMean(window_size=14)],
-    },
+    lags=[1],
     num_threads=2,
 )
 
@@ -212,10 +199,10 @@ print(f"Static features MAE: {static_mae:.2f} ({improvement:.1f}% improvement ov
 ```
 
 ```text
-Static features MAE: 615.56 (-0.2% improvement over baseline)
+Static features MAE: 804.22 (-15.9% improvement over baseline)
 ```
 
-Static features alone don't improve accuracy here since the baseline already captures series-specific patterns through lag features. The value of static features becomes apparent when combined with other exogenous variables.
+Static features alone don't improve accuracy here because all stores in our subset are from Quito with similar characteristics. The model overfits to categorical noise rather than learning useful patterns.
 
 ## Dynamic Exogenous Variables
 
@@ -246,11 +233,7 @@ Train the model with both static and dynamic features. The `onpromotion` and `oi
 fcst_dynamic = MLForecast(
     models=lgb.LGBMRegressor(n_jobs=1, random_state=0, verbosity=-1),
     freq='D',
-    lags=[7],
-    lag_transforms={
-        1: [ExpandingMean()],
-        7: [RollingMean(window_size=14)],
-    },
+    lags=[1],
     num_threads=2,
 )
 
@@ -272,9 +255,9 @@ improvement = (baseline_mae - dynamic_mae) / baseline_mae * 100
 print(f"Dynamic features MAE: {dynamic_mae:.2f} ({improvement:.1f}% improvement over baseline)")
 ```
 
-Dynamic features MAE: 607.79 (1.0% improvement over baseline)
+Dynamic features MAE: 537.92 (22.5% improvement over baseline)
 
-Promotions and oil prices provide modest gains. In retail, promotion effects are often already reflected in the target variable's patterns, while oil price impacts consumer behavior indirectly over longer time horizons.
+Promotions and oil prices deliver significant gains. Products on promotion see predictable demand spikes, and oil prices affect transportation costs and consumer spending patterns in Ecuador's economy.
 
 ## Calendar Features
 
@@ -289,11 +272,7 @@ def is_weekend(dates):
 fcst_calendar = MLForecast(
     models=lgb.LGBMRegressor(n_jobs=1, random_state=0, verbosity=-1),
     freq='D',
-    lags=[7],
-    lag_transforms={
-        1: [ExpandingMean()],
-        7: [RollingMean(window_size=14)],
-    },
+    lags=[1],
     date_features=['dayofweek', 'month', is_weekend],
     num_threads=2,
 )
@@ -320,19 +299,17 @@ print(f"Calendar features MAE: {calendar_mae:.2f} ({improvement:.1f}% improvemen
 ```
 
 ```text
-Calendar features MAE: 591.17 (3.7% improvement over baseline)
+Calendar features MAE: 385.40 (44.5% improvement over baseline)
 ```
 
-Calendar features outperform all other exogenous variables. Unlike oil prices with gaps or promotion counts that vary unpredictably, day-of-week and month contain no noise or missing values. The model learns from these perfectly reliable signals consistently.
+Calendar features deliver the largest improvement at 44.5%. Grocery shopping follows strong weekly rhythms: customers stock up before weekends, avoid certain weekdays, and shift behavior around month boundaries. These patterns are consistent and directly encoded in the timestamp.
 
 ## Conclusion
 
 MLForecast provides a clean API for incorporating external factors into your forecasts:
 
 - **Static features**: Specify in `static_features` parameter during `fit()`. Use for store metadata, product categories, and geographic attributes.
-
 - **Dynamic exogenous variables**: All non-static columns are treated as dynamic. Provide future values via `X_df` in `predict()`. Use for prices, promotions, and scheduled events.
-
 - **Calendar features**: Add via `date_features` parameter. Use built-in pandas attributes or custom functions for day-of-week effects, holidays, and seasonal patterns.
 
 Start with calendar features and static metadata since they require no additional data preparation. Add dynamic exogenous variables when you have reliable forecasts of external factors like planned prices or scheduled promotions.
