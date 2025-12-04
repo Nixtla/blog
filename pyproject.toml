@@ -10,3 +10,9 @@ dependencies = [
     "matplotlib>=3.10.3",
     "mlforecast>=1.0.2",
 ]
+
+[dependency-groups]
+dev = [
+    "nbstripout>=0.8.2",
+    "pre-commit>=4.5.0",
+]
