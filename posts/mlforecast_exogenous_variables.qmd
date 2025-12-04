@@ -319,18 +319,11 @@ improvement = (baseline_mae - calendar_mae) / baseline_mae * 100
 print(f"Calendar features MAE: {calendar_mae:.2f} ({improvement:.1f}% improvement over baseline)")
 ```
 
-```{python}
-plot_series(
-    train,
-    forecasts_df=preds_calendar,
-    max_ids=4,
-    plot_random=False,
-    max_insample_length=50,
-    engine='matplotlib'
-)
+```text
+Calendar features MAE: 591.17 (3.7% improvement over baseline)
 ```
 
-Calendar features help capture weekly and monthly patterns without requiring external data.
+Calendar features outperform all other exogenous variables. Unlike oil prices with gaps or promotion counts that vary unpredictably, day-of-week and month contain no noise or missing values. The model learns from these perfectly reliable signals consistently.
 
 ## Conclusion
 
