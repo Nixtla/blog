@@ -272,17 +272,9 @@ improvement = (baseline_mae - dynamic_mae) / baseline_mae * 100
 print(f"Dynamic features MAE: {dynamic_mae:.2f} ({improvement:.1f}% improvement over baseline)")
 ```
 
-```{python}
-plot_series(
-    train,
-    forecasts_df=preds_dynamic,
-    max_ids=4,
-    plot_random=False,
-    max_insample_length=50,
-    engine='matplotlib'
-)
-```
+Dynamic features MAE: 607.79 (1.0% improvement over baseline)
 
+Promotions and oil prices provide modest gains. In retail, promotion effects are often already reflected in the target variable's patterns, while oil price impacts consumer behavior indirectly over longer time horizons.
 
 ## Calendar Features
 
