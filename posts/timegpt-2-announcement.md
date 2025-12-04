@@ -1,5 +1,6 @@
 ---
 title: "TimeGPT 2: The Next Generation of Foundation Models for Time Series Forecasting"
+seo_title: TimeGPT-2: Next Generation Time Series Model
 description: "Announcing the private preview of TimeGPT-2 Mini, TimeGPT-2, and TimeGPT-2 Pro—enterprise-grade foundation models with up to 60% accuracy improvement, built for mission-critical time series forecasting."
 categories: ["Time Series Forecasting"]
 tags:
@@ -56,7 +57,6 @@ This combination of accuracy, flexibility, and operational readiness makes TimeG
 
 ## Get Early Access
 
-We're currently launching pilot programs with selected organizations. If you'd like to be among the first to leverage TimeGPT-2 in production, [join our waitlist](https://www.nixtla.io/timegpt-2-waitlist?utm_campaign=timegpt2_announcement&utm_source=nixtla.io/blog&utm_medium=referral
-) to request early access.
+We're currently launching pilot programs with selected organizations. If you'd like to be among the first to leverage TimeGPT-2 in production, [join our waitlist](https://www.nixtla.io/timegpt-2-waitlist?utm_campaign=timegpt2_announcement&utm_source=nixtla.io/blog&utm_medium=referral) to request early access.
 
 **This announcement is the first of three releases rolling out in the coming weeks. Stay tuned for more updates.**

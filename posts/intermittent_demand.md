@@ -1,5 +1,6 @@
 ---
 title: "Understanding Intermittent Demand"
+seo_title: Understanding Intermittent Demand
 description: Learn how to forecast intermittent demand using Python and Nixtla's TimeGPT. This step-by-step guide covers handling sparse time series, fine-tuning, and using exogenous variables to improve accuracy.
 image: "/images/intermittent_demand/intermittent_demand.svg"
 categories: ["Time Series Forecasting"]

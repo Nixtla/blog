@@ -1,5 +1,6 @@
 ---
 title: "Effortless Accuracy Unlocking the Power of Baseline Forecasts"
+seo_title: Unlocking the Power of Baseline Forecasts
 description: "Understand what are baseline forecasts, why they are important and learn to create them easily with Nixtla's statsforecast package."
 image: "/images/baseline_forecasts/forecast_featured.png"
 categories: ["Time Series Forecasting"]
