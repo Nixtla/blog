@@ -464,7 +464,7 @@ MAE by product and validation window:
 
 The MAE values show consistent performance across different validation windows, with errors around 12-25 units. This indicates the model generalizes well across time periods rather than overfitting to specific patterns.
 
-> Once you've mastered automated feature engineering, apply similar time series techniques to [anomaly detection workflows](https://nixtla.io/blog/anomaly_detection) for comprehensive data monitoring.
+> Once you've mastered automated feature engineering, apply similar time series techniques to [anomaly detection workflows](https://nixtla.io/blog/anomaly-detection) for comprehensive data monitoring.
 
 ## Complete Automated Workflow - End-to-End Pipeline Without Manual Features
 
@@ -632,6 +632,6 @@ Stop spending hours on manual feature engineering. With MLforecast, you can focu
 
 ## Related Resources
 
-For production-scale implementations, consider [TimeGPT's performance advantages](https://nixtla.io/blog/timegpt_in_snowflake) when deploying automated forecasting pipelines at enterprise scale.
+For production-scale implementations, consider [TimeGPT's performance advantages](https://nixtla.io/blog/timegpt-in-snowflake) when deploying automated forecasting pipelines at enterprise scale.
 
 For different forecasting scenarios, explore [multi-horizon forecasting approaches](https://nixtla.io/blog/multilevelforecasting) that complement MLforecast's machine learning methods. When working with sparse or irregular data patterns, our [intermittent demand forecasting guide](https://nixtla.io/blog/intermittent_demand) provides specialized techniques.
