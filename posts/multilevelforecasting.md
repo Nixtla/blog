@@ -1,7 +1,7 @@
 ---
 title: Long Term Mid Term and Short Term Forecasting with Polynomial Regression AutoARIMA and TimeGPT-1
 seo_title: Multi-Horizon Forecasting: Polynomial, AutoARIMA & TimeGPT
-description: Learn how to match forecasting models to your time horizon for better accuracy. Compare polynomial regression for long-term trends, AutoARIMA for mid-term cycles, and TimeGPT-1 for short-term predictions using real currency exchange data. Includes code examples for multi-horizon forecasting strategies.,
+description: Learn how to match forecasting models to your time horizon for better accuracy. Compare polynomial regression for long-term trends, AutoARIMA for mid-term cycles, and TimeGPT-1 for short-term predictions using real currency exchange data. Includes code examples for multi-horizon forecasting strategies.
 image: /images/MultiLevelForecasting/main_image.svg
 categories: ["Time Series Forecasting"]
 tags:
