@@ -1,15 +1,16 @@
 ---
 title: "Supercharge Your Sales Forecasts: A Complete Guide to Exogenous Variables in MLForecast"
+seo_title: Exogenous Variables in MLForecast for Sales
 description: Learn how to incorporate external factors like prices, promotions, and calendar patterns into your time series forecasts using MLForecast's exogenous variables.
 image: "/images/mlforecast_exogenous_variables/calendar-features-forecast.svg"
 categories: ["MLForecast"]
 tags:
-- mlforecast
-- time-series
-- forecasting
-- python
-- lightgbm
-- nixtla
+  - mlforecast
+  - time-series
+  - forecasting
+  - python
+  - lightgbm
+  - nixtla
 author_name: Khuyen Tran
 author_image: "/images/authors/khuyen.jpeg"
 author_position: Developer Advocate - Nixtla
@@ -66,14 +67,13 @@ series = pd.read_csv(DATA_URL, parse_dates=['ds'])
 series.head()
 ```
 
-|   | unique_id   | ds         | y      | store_nbr | family    | city  | state     | type | cluster | onpromotion | oil_price | is_holiday |
-|---|-------------|------------|--------|-----------|-----------|-------|-----------|------|---------|-------------|-----------|------------|
-| 0 | 1_BEVERAGES | 2016-01-01 | 0.0    | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 0           | 37.13     | 1          |
-| 1 | 1_BEVERAGES | 2016-01-02 | 1856.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 7           | NaN       | 0          |
-| 2 | 1_BEVERAGES | 2016-01-03 | 1048.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 1           | NaN       | 0          |
-| 3 | 1_BEVERAGES | 2016-01-04 | 3005.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 3           | 36.81     | 0          |
-| 4 | 1_BEVERAGES | 2016-01-05 | 2374.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 9           | 35.97     | 0          |
-
+|     | unique_id   | ds         | y      | store_nbr | family    | city  | state     | type | cluster | onpromotion | oil_price | is_holiday |
+| --- | ----------- | ---------- | ------ | --------- | --------- | ----- | --------- | ---- | ------- | ----------- | --------- | ---------- |
+| 0   | 1_BEVERAGES | 2016-01-01 | 0.0    | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 0           | 37.13     | 1          |
+| 1   | 1_BEVERAGES | 2016-01-02 | 1856.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 7           | NaN       | 0          |
+| 2   | 1_BEVERAGES | 2016-01-03 | 1048.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 1           | NaN       | 0          |
+| 3   | 1_BEVERAGES | 2016-01-04 | 3005.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 3           | 36.81     | 0          |
+| 4   | 1_BEVERAGES | 2016-01-05 | 2374.0 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 9           | 35.97     | 0          |
 
 The dataset contains 15 time series (5 stores × 3 product families) with:
 
