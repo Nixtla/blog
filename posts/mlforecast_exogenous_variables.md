@@ -1,7 +1,7 @@
 ---
 title: "Supercharge Your Sales Forecasts: A Complete Guide to Exogenous Variables in MLForecast"
 description: Learn how to incorporate external factors like prices, promotions, and calendar patterns into your time series forecasts using MLForecast's exogenous variables.
-image: "/images/intermittent_demand/intermittent_demand.svg"
+image: "/images/mlforecast_exogenous_variables/calendar-features-forecast.svg"
 categories: ["MLForecast"]
 tags:
 - mlforecast
@@ -148,6 +148,23 @@ plot_series(
 )
 ```
 
+```chart-multiple
+{
+  "id": "chart-1",
+  "title": "Baseline Forecast",
+  "dataSource": "chart-1.csv",
+  "columns": 2,
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Sales" },
+  "charts": [
+    { "id": "chart-1-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-1-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-1-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-1-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] }
+  ]
+}
+```
+
 The baseline forecasts flatten quickly after the first step. With only yesterday's value as input, the model can't anticipate the weekly spikes and dips visible in the historical data.
 
 ## Static Features
@@ -223,6 +240,23 @@ plot_series(
 )
 ```
 
+```chart-multiple
+{
+  "id": "chart-2",
+  "title": "Static Features Forecast",
+  "dataSource": "chart-2.csv",
+  "columns": 2,
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Sales" },
+  "charts": [
+    { "id": "chart-2-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-2-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-2-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-2-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] }
+  ]
+}
+```
+
 The flat predictions persist despite adding store metadata. With all stores from Quito sharing similar characteristics, the categorical features add noise rather than signal.
 
 ## Dynamic Exogenous Variables
@@ -293,6 +327,23 @@ plot_series(
 )
 ```
 
+```chart-multiple
+{
+  "id": "chart-3",
+  "title": "Dynamic Features Forecast",
+  "dataSource": "chart-3.csv",
+  "columns": 2,
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Sales" },
+  "charts": [
+    { "id": "chart-3-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-3-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-3-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-3-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] }
+  ]
+}
+```
+
 The forecasts now show variation instead of flat lines. Promotion counts and oil prices give the model actionable signals about when demand will shift.
 
 ## Calendar Features
@@ -351,6 +402,23 @@ plot_series(
     max_insample_length=50,
     engine='matplotlib'
 )
+```
+
+```chart-multiple
+{
+  "id": "chart-4",
+  "title": "Calendar Features Forecast",
+  "dataSource": "chart-4.csv",
+  "columns": 2,
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Sales" },
+  "charts": [
+    { "id": "chart-4-1", "title": "1_BEVERAGES", "series": [{ "column": "1_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-4-2", "title": "1_GROCERY I", "series": [{ "column": "1_GROCERY I_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_GROCERY I_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-4-3", "title": "1_PRODUCE", "series": [{ "column": "1_PRODUCE_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "1_PRODUCE_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] },
+    { "id": "chart-4-4", "title": "2_BEVERAGES", "series": [{ "column": "2_BEVERAGES_y", "name": "Actual", "type": "line", "color": "chart-1" }, { "column": "2_BEVERAGES_LGBMRegressor", "name": "Forecast", "type": "line", "color": "chart-2", "strokeDashArray": "5 5" }] }
+  ]
+}
 ```
 
 The forecasts now capture the weekly rhythm visible in the training data. Day-of-week features let the model distinguish high-traffic days from slower ones.
