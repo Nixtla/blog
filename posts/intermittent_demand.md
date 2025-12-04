@@ -113,55 +113,60 @@ To understand the demand patterns, we plot the time series data.
   "title": "Demand Patterns",
   "dataSource": "chart-3.csv",
   "columns": 2,
+  "legendConfig": {
+    "displaySeries": [
+        { "name": "Target (Y)" }
+    ]
+  },
   "xAxis": { "key": "ds" },
   "yAxis": { "label": "Target (y)" },
   "charts": [
     {
       "id": "chart-inner-1",
       "series": [
-        { "column": "FOODS_1_001", "name": "FOODS_1_001", "type": "line" }
+        { "column": "FOODS_1_001", "name": "FOODS_1_001", "type": "line", "strokeWidth": 1 }
       ]
     },
     {
       "id": "chart-inner-2",
       "series": [
-        { "column": "FOODS_1_002", "name": "FOODS_1_002", "type": "line" }
+        { "column": "FOODS_1_002", "name": "FOODS_1_002", "type": "line", "strokeWidth": 1 }
       ]
     },
     {
       "id": "chart-inner-3",
       "series": [
-        { "column": "FOODS_1_003", "name": "FOODS_1_003", "type": "line" }
+        { "column": "FOODS_1_003", "name": "FOODS_1_003", "type": "line", "strokeWidth": 1 }
       ]
     },
     {
       "id": "chart-inner-4",
       "series": [
-        { "column": "FOODS_1_004", "name": "FOODS_1_004", "type": "line" }
+        { "column": "FOODS_1_004", "name": "FOODS_1_004", "type": "line", "strokeWidth": 1 }
       ]
     },
     {
       "id": "chart-inner-5",
       "series": [
-        { "column": "FOODS_1_005", "name": "FOODS_1_005", "type": "line" }
+        { "column": "FOODS_1_005", "name": "FOODS_1_005", "type": "line", "strokeWidth": 1 }
       ]
     },
     {
       "id": "chart-inner-6",
       "series": [
-        { "column": "FOODS_1_006", "name": "FOODS_1_006", "type": "line" }
+        { "column": "FOODS_1_006", "name": "FOODS_1_006", "type": "line", "strokeWidth": 1 }
       ]
     },
     {
       "id": "chart-inner-7",
       "series": [
-        { "column": "FOODS_1_008", "name": "FOODS_1_008", "type": "line" }
+        { "column": "FOODS_1_008", "name": "FOODS_1_008", "type": "line", "strokeWidth": 1 }
       ]
     },
     {
       "id": "chart-inner-8",
       "series": [
-        { "column": "FOODS_1_009", "name": "FOODS_1_009", "type": "line" }
+        { "column": "FOODS_1_009", "name": "FOODS_1_009", "type": "line", "strokeWidth": 1 }
       ]
     }
   ]

@@ -247,37 +247,46 @@ sf.plot(df, pred_df)
   "title": "Baseline Forecast",
   "dataSource": "chart-1.csv",
   "columns": 2,
+  "legendConfig": {
+    "displaySeries": [
+        { "name": "Y", "color": "cyan-500" },
+        { "name": "Historic Average", "color": "green-500" },
+        { "name": "Naive", "color": "purple-500" },
+        { "name": "Seasonal Naive", "color": "orange-500" },
+        { "name": "Window Average", "color": "pink-500" }
+    ]
+  },
   "xAxis": { "key": "ds" },
   "yAxis": { "label": "Target (y)" },
   "charts": [
     {
       "id": "chart-inner-1",
       "series": [
-        { "column": "Adelaide_y", "name": "Adelaide_y", "type": "line" },
-        { "column": "Adelaide_HistoricAverage", "name": "Adelaide_HistoricAverage", "type": "line" },
-        { "column": "Adelaide_Naive", "name": "Adelaide_Naive", "type": "line" },
-        { "column": "Adelaide_SeasonalNaive", "name": "Adelaide_SeasonalNaive", "type": "line" },
-        { "column": "Adelaide_WindowAverage", "name": "Adelaide_WindowAverage", "type": "line" }
+        { "column": "Adelaide_y", "name": "Adelaide_y", "type": "line", "color": "cyan-500" },
+        { "column": "Adelaide_HistoricAverage", "name": "Adelaide_HistoricAverage", "type": "line", "color": "green-500" },
+        { "column": "Adelaide_Naive", "name": "Adelaide_Naive", "type": "line", "color": "purple-500" },
+        { "column": "Adelaide_SeasonalNaive", "name": "Adelaide_SeasonalNaive", "type": "line", "color": "orange-500" },
+        { "column": "Adelaide_WindowAverage", "name": "Adelaide_WindowAverage", "type": "line", "color": "pink-500" }
       ]
     },
     {
       "id": "chart-inner-2",
       "series": [
-        { "column": "Brisbane_y", "name": "Brisbane_y", "type": "line" },
-        { "column": "Brisbane_HistoricAverage", "name": "Brisbane_HistoricAverage", "type": "line" },
-        { "column": "Brisbane_Naive", "name": "Brisbane_Naive", "type": "line" },
-        { "column": "Brisbane_SeasonalNaive", "name": "Brisbane_SeasonalNaive", "type": "line" },
-        { "column": "Brisbane_WindowAverage", "name": "Brisbane_WindowAverage", "type": "line" }
+        { "column": "Brisbane_y", "name": "Brisbane_y", "type": "line", "color": "cyan-500" },
+        { "column": "Brisbane_HistoricAverage", "name": "Brisbane_HistoricAverage", "type": "line", "color": "green-500" },
+        { "column": "Brisbane_Naive", "name": "Brisbane_Naive", "type": "line", "color": "purple-500" },
+        { "column": "Brisbane_SeasonalNaive", "name": "Brisbane_SeasonalNaive", "type": "line", "color": "orange-500" },
+        { "column": "Brisbane_WindowAverage", "name": "Brisbane_WindowAverage", "type": "line", "color": "pink-500" }
       ]
     },
     {
       "id": "chart-inner-3",
       "series": [
-        { "column": "Melbourne_y", "name": "Melbourne_y", "type": "line" },
-        { "column": "Melbourne_HistoricAverage", "name": "Melbourne_HistoricAverage", "type": "line" },
-        { "column": "Melbourne_Naive", "name": "Melbourne_Naive", "type": "line" },
-        { "column": "Melbourne_SeasonalNaive", "name": "Melbourne_SeasonalNaive", "type": "line" },
-        { "column": "Melbourne_WindowAverage", "name": "Melbourne_WindowAverage", "type": "line" }
+        { "column": "Melbourne_y", "name": "Melbourne_y", "type": "line", "color": "cyan-500" },
+        { "column": "Melbourne_HistoricAverage", "name": "Melbourne_HistoricAverage", "type": "line", "color": "green-500" },
+        { "column": "Melbourne_Naive", "name": "Melbourne_Naive", "type": "line", "color": "purple-500" },
+        { "column": "Melbourne_SeasonalNaive", "name": "Melbourne_SeasonalNaive", "type": "line", "color": "orange-500" },
+        { "column": "Melbourne_WindowAverage", "name": "Melbourne_WindowAverage", "type": "line", "color": "pink-500" }
       ]
     }
   ]
