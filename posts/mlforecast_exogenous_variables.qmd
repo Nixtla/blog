@@ -131,7 +131,7 @@ print(f"Baseline MAE: {baseline_mae:.2f}")
 Baseline MAE: 694.14
 ```
 
-Plot the forecasts for a sample of 4 series:
+Visualize how the baseline model performs without exogenous variables:
 
 ```{python}
 plot_series(
@@ -143,6 +143,8 @@ plot_series(
     engine='matplotlib'
 )
 ```
+
+The baseline forecasts flatten quickly after the first step. With only yesterday's value as input, the model can't anticipate the weekly spikes and dips visible in the historical data.
 
 ## Static Features
 
@@ -204,6 +206,21 @@ Static features MAE: 804.22 (-15.9% improvement over baseline)
 
 Static features alone don't improve accuracy here because all stores in our subset are from Quito with similar characteristics. The model overfits to categorical noise rather than learning useful patterns.
 
+Visualize how static features affect the predictions:
+
+```{python}
+plot_series(
+    train,
+    forecasts_df=preds_static,
+    max_ids=4,
+    plot_random=False,
+    max_insample_length=50,
+    engine='matplotlib'
+)
+```
+
+The flat predictions persist despite adding store metadata. With all stores from Quito sharing similar characteristics, the categorical features add noise rather than signal.
+
 ## Dynamic Exogenous Variables
 
 Dynamic exogenous variables change over time but their future values are known in advance. Our dataset includes three dynamic features:
@@ -259,6 +276,21 @@ Dynamic features MAE: 537.92 (22.5% improvement over baseline)
 
 Promotions and oil prices deliver significant gains. Products on promotion see predictable demand spikes, and oil prices affect transportation costs and consumer spending patterns in Ecuador's economy.
 
+Visualize how dynamic features improve the forecasts:
+
+```{python}
+plot_series(
+    train,
+    forecasts_df=preds_dynamic,
+    max_ids=4,
+    plot_random=False,
+    max_insample_length=50,
+    engine='matplotlib'
+)
+```
+
+The forecasts now show variation instead of flat lines. Promotion counts and oil prices give the model actionable signals about when demand will shift.
+
 ## Calendar Features
 
 Calendar patterns like day-of-week and month effects are common in time series data. Retail sales spike on weekends, energy consumption varies by season, and traffic patterns follow weekly cycles.
@@ -303,6 +335,21 @@ Calendar features MAE: 385.40 (44.5% improvement over baseline)
 ```
 
 Calendar features deliver the largest improvement at 44.5%. Grocery shopping follows strong weekly rhythms: customers stock up before weekends, avoid certain weekdays, and shift behavior around month boundaries. These patterns are consistent and directly encoded in the timestamp.
+
+Visualize how calendar features capture weekly patterns:
+
+```{python}
+plot_series(
+    train,
+    forecasts_df=preds_calendar,
+    max_ids=4,
+    plot_random=False,
+    max_insample_length=50,
+    engine='matplotlib'
+)
+```
+
+The forecasts now capture the weekly rhythm visible in the training data. Day-of-week features let the model distinguish high-traffic days from slower ones.
 
 ## Conclusion
 
