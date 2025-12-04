@@ -290,7 +290,82 @@ nixtla_client.plot(
 )
 ```
 
-![Forecast with historical data](/images/production-ready-forecasting-pipeline-with-timegpt-and-polars/simple_plot.svg)
+```chart-multiple
+{
+  "id": "chart-1",
+  "title": "Multi-Series Forecast with TimeGPT",
+  "dataSource": "chart-1.csv",
+  "columns": 2,
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-1-H148",
+      "title": "H148",
+      "series": [
+        { "column": "H148_y", "name": "Actual", "type": "line" },
+        { "column": "H148_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" }
+      ]
+    },
+    {
+      "id": "chart-1-H206",
+      "title": "H206",
+      "series": [
+        { "column": "H206_y", "name": "Actual", "type": "line" },
+        { "column": "H206_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" }
+      ]
+    },
+    {
+      "id": "chart-1-H22",
+      "title": "H22",
+      "series": [
+        { "column": "H22_y", "name": "Actual", "type": "line" },
+        { "column": "H22_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" }
+      ]
+    },
+    {
+      "id": "chart-1-H240",
+      "title": "H240",
+      "series": [
+        { "column": "H240_y", "name": "Actual", "type": "line" },
+        { "column": "H240_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" }
+      ]
+    },
+    {
+      "id": "chart-1-H334",
+      "title": "H334",
+      "series": [
+        { "column": "H334_y", "name": "Actual", "type": "line" },
+        { "column": "H334_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" }
+      ]
+    },
+    {
+      "id": "chart-1-H42",
+      "title": "H42",
+      "series": [
+        { "column": "H42_y", "name": "Actual", "type": "line" },
+        { "column": "H42_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" }
+      ]
+    },
+    {
+      "id": "chart-1-H59",
+      "title": "H59",
+      "series": [
+        { "column": "H59_y", "name": "Actual", "type": "line" },
+        { "column": "H59_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" }
+      ]
+    },
+    {
+      "id": "chart-1-H65",
+      "title": "H65",
+      "series": [
+        { "column": "H65_y", "name": "Actual", "type": "line" },
+        { "column": "H65_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" }
+      ]
+    }
+  ]
+}
+```
 
 The plot shows 8 different time series (H314, H188, H355, H390, H406, H414, H277, H76) with clear patterns:
 
@@ -368,7 +443,98 @@ nixtla_client.plot(
 )
 ```
 
-![Forecast with confidence intervals](/images/production-ready-forecasting-pipeline-with-timegpt-and-polars/plot_with_interval.svg)
+```chart-multiple
+{
+  "id": "chart-2",
+  "title": "Forecast with Confidence Intervals",
+  "dataSource": "chart-2.csv",
+  "columns": 2,
+  "xAxis": { "key": "ds" },
+  "yAxis": { "label": "Target (y)" },
+  "charts": [
+    {
+      "id": "chart-2-H148",
+      "title": "H148",
+      "series": [
+        { "column": "H148_y", "name": "Actual", "type": "line" },
+        { "column": "H148_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" },
+        { "type": "area", "columns": { "high": "H148_TimeGPT-hi-95", "low": "H148_TimeGPT-lo-95" }, "name": "95% CI", "color": "chart-2" },
+        { "type": "area", "columns": { "high": "H148_TimeGPT-hi-80", "low": "H148_TimeGPT-lo-80" }, "name": "80% CI", "color": "chart-3" }
+      ]
+    },
+    {
+      "id": "chart-2-H206",
+      "title": "H206",
+      "series": [
+        { "column": "H206_y", "name": "Actual", "type": "line" },
+        { "column": "H206_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" },
+        { "type": "area", "columns": { "high": "H206_TimeGPT-hi-95", "low": "H206_TimeGPT-lo-95" }, "name": "95% CI", "color": "chart-2" },
+        { "type": "area", "columns": { "high": "H206_TimeGPT-hi-80", "low": "H206_TimeGPT-lo-80" }, "name": "80% CI", "color": "chart-3" }
+      ]
+    },
+    {
+      "id": "chart-2-H22",
+      "title": "H22",
+      "series": [
+        { "column": "H22_y", "name": "Actual", "type": "line" },
+        { "column": "H22_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" },
+        { "type": "area", "columns": { "high": "H22_TimeGPT-hi-95", "low": "H22_TimeGPT-lo-95" }, "name": "95% CI", "color": "chart-2" },
+        { "type": "area", "columns": { "high": "H22_TimeGPT-hi-80", "low": "H22_TimeGPT-lo-80" }, "name": "80% CI", "color": "chart-3" }
+      ]
+    },
+    {
+      "id": "chart-2-H240",
+      "title": "H240",
+      "series": [
+        { "column": "H240_y", "name": "Actual", "type": "line" },
+        { "column": "H240_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" },
+        { "type": "area", "columns": { "high": "H240_TimeGPT-hi-95", "low": "H240_TimeGPT-lo-95" }, "name": "95% CI", "color": "chart-2" },
+        { "type": "area", "columns": { "high": "H240_TimeGPT-hi-80", "low": "H240_TimeGPT-lo-80" }, "name": "80% CI", "color": "chart-3" }
+      ]
+    },
+    {
+      "id": "chart-2-H334",
+      "title": "H334",
+      "series": [
+        { "column": "H334_y", "name": "Actual", "type": "line" },
+        { "column": "H334_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" },
+        { "type": "area", "columns": { "high": "H334_TimeGPT-hi-95", "low": "H334_TimeGPT-lo-95" }, "name": "95% CI", "color": "chart-2" },
+        { "type": "area", "columns": { "high": "H334_TimeGPT-hi-80", "low": "H334_TimeGPT-lo-80" }, "name": "80% CI", "color": "chart-3" }
+      ]
+    },
+    {
+      "id": "chart-2-H42",
+      "title": "H42",
+      "series": [
+        { "column": "H42_y", "name": "Actual", "type": "line" },
+        { "column": "H42_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" },
+        { "type": "area", "columns": { "high": "H42_TimeGPT-hi-95", "low": "H42_TimeGPT-lo-95" }, "name": "95% CI", "color": "chart-2" },
+        { "type": "area", "columns": { "high": "H42_TimeGPT-hi-80", "low": "H42_TimeGPT-lo-80" }, "name": "80% CI", "color": "chart-3" }
+      ]
+    },
+    {
+      "id": "chart-2-H59",
+      "title": "H59",
+      "series": [
+        { "column": "H59_y", "name": "Actual", "type": "line" },
+        { "column": "H59_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" },
+        { "type": "area", "columns": { "high": "H59_TimeGPT-hi-95", "low": "H59_TimeGPT-lo-95" }, "name": "95% CI", "color": "chart-2" },
+        { "type": "area", "columns": { "high": "H59_TimeGPT-hi-80", "low": "H59_TimeGPT-lo-80" }, "name": "80% CI", "color": "chart-3" }
+      ]
+    },
+    {
+      "id": "chart-2-H65",
+      "title": "H65",
+      "series": [
+        { "column": "H65_y", "name": "Actual", "type": "line" },
+        { "column": "H65_TimeGPT", "name": "TimeGPT", "type": "line", "strokeDashArray": "5 5" },
+        { "type": "area", "columns": { "high": "H65_TimeGPT-hi-95", "low": "H65_TimeGPT-lo-95" }, "name": "95% CI", "color": "chart-2" },
+        { "type": "area", "columns": { "high": "H65_TimeGPT-hi-80", "low": "H65_TimeGPT-lo-80" }, "name": "80% CI", "color": "chart-3" }
+      ]
+    }
+  ]
+}
+```
 
 The plot reveals key insights about forecast uncertainty:
 
