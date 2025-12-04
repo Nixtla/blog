@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 630 420" width="630" height="420">
+  <defs>
+    <style>
+      .subtitle { font-family: monospace; font-size: 11px; fill: #666; }
+      .axis-label { font-family: monospace; font-size: 9px; fill: #555; }
+      .actual-line { stroke: #fff; stroke-width: 1.5; fill: none; }
+      .forecast-line { stroke: #9370DB; stroke-width: 1.5; fill: none; stroke-dasharray: 5,3; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="630" height="420" fill="#1a1a2e"/>
+
+  <!-- Chart 1: 1_BEVERAGES (top-left) -->
+  <g transform="translate(30, 20)">
+    <text x="130" y="0" text-anchor="middle" class="subtitle">1_BEVERAGES</text>
+    <rect x="0" y="10" width="260" height="150" fill="none" stroke="#333" stroke-width="0.5"/>
+
+    <!-- Actual line - 1_BEVERAGES (scaled: y_min=968, y_max=2977, range=2009) -->
+    <polyline class="actual-line" points="
+      0,67 5,88 10,123 16,98 21,82 26,143 31,108 36,115 42,110 47,114 52,99 57,95 63,139 68,93 73,104 78,81 84,104 89,95 94,101 100,136 105,102 110,100 115,97 121,107 126,94 131,109 136,141 147,99 152,94 157,100 163,114 168,85 173,103 178,141 184,113 189,99 194,98 200,105 205,111 210,131 216,98 221,91 226,90 232,116 237,95 242,107 247,144 253,104 258,96
+    "/>
+    <!-- Forecast line - 1_BEVERAGES -->
+    <polyline class="forecast-line" points="
+      258,96 264,101 269,120 274,112 280,117 285,142 291,117 296,119
+    "/>
+
+    <!-- X-axis labels -->
+    <text x="50" y="172" class="axis-label">2017-07-07</text>
+    <text x="150" y="172" class="axis-label">2017-07-24</text>
+    <text x="230" y="172" class="axis-label">2017-08-15</text>
+  </g>
+
+  <!-- Chart 2: 1_GROCERY I (top-right) -->
+  <g transform="translate(330, 20)">
+    <text x="130" y="0" text-anchor="middle" class="subtitle">1_GROCERY I</text>
+    <rect x="0" y="10" width="260" height="150" fill="none" stroke="#333" stroke-width="0.5"/>
+
+    <!-- Actual line - 1_GROCERY I (scaled: y_min=1025, y_max=4575, range=3550) -->
+    <polyline class="actual-line" points="
+      0,10 5,80 10,97 16,90 21,76 26,130 31,66 36,81 42,66 47,83 52,70 57,72 63,130 68,68 73,76 78,60 84,85 89,68 94,73 100,137 105,67 110,78 115,56 121,85 126,57 131,96 136,145 147,78 152,52 157,62 163,81 168,78 173,65 178,136 184,82 189,77 194,79 200,87 205,85 210,143 216,68 221,72 226,55 232,92 237,76 242,85 247,148 253,80 258,63
+    "/>
+    <!-- Forecast line - 1_GROCERY I -->
+    <polyline class="forecast-line" points="
+      258,63 264,66 269,87 274,92 280,97 285,149 291,97 296,96
+    "/>
+
+    <!-- X-axis labels -->
+    <text x="50" y="172" class="axis-label">2017-07-07</text>
+    <text x="150" y="172" class="axis-label">2017-07-24</text>
+    <text x="230" y="172" class="axis-label">2017-08-15</text>
+  </g>
+
+  <!-- Chart 3: 1_PRODUCE (bottom-left) -->
+  <g transform="translate(30, 220)">
+    <text x="130" y="0" text-anchor="middle" class="subtitle">1_PRODUCE</text>
+    <rect x="0" y="10" width="260" height="150" fill="none" stroke="#333" stroke-width="0.5"/>
+
+    <!-- Actual line - 1_PRODUCE (scaled: y_min=1027, y_max=4394, range=3367) -->
+    <polyline class="actual-line" points="
+      0,88 5,10 10,93 16,82 21,82 26,144 31,96 36,88 42,12 47,93 52,96 57,83 63,140 68,64 73,95 78,29 84,98 89,98 94,80 100,137 105,76 110,103 115,13 121,94 126,89 131,100 136,147 147,81 152,88 157,38 163,99 168,79 173,84 178,140 184,88 189,93 194,80 200,79 205,93 210,147 216,78 221,82 226,10 232,109 237,75 242,95 247,150 253,88 258,101
+    "/>
+    <!-- Forecast line - 1_PRODUCE -->
+    <polyline class="forecast-line" points="
+      258,101 264,28 269,110 274,95 280,96 285,150 291,95 296,100
+    "/>
+
+    <!-- X-axis labels -->
+    <text x="50" y="172" class="axis-label">2017-07-07</text>
+    <text x="150" y="172" class="axis-label">2017-07-24</text>
+    <text x="230" y="172" class="axis-label">2017-08-15</text>
+  </g>
+
+  <!-- Chart 4: 2_BEVERAGES (bottom-right) -->
+  <g transform="translate(330, 220)">
+    <text x="130" y="0" text-anchor="middle" class="subtitle">2_BEVERAGES</text>
+    <rect x="0" y="10" width="260" height="150" fill="none" stroke="#333" stroke-width="0.5"/>
+
+    <!-- Actual line - 2_BEVERAGES (scaled: y_min=2248, y_max=4879, range=2631) -->
+    <polyline class="actual-line" points="
+      0,101 5,132 10,139 16,91 21,60 26,17 31,120 36,146 42,128 47,150 52,122 57,42 63,10 68,93 73,112 78,112 84,115 89,76 94,92 100,34 105,92 110,124 115,116 121,145 126,109 131,57 136,33 147,100 152,119 157,110 163,127 168,81 173,62 178,44 184,81 189,104 194,114 200,93 205,70 210,37 216,107 221,94 226,84 232,150 237,121 242,131 247,79 253,133 258,138
+    "/>
+    <!-- Forecast line - 2_BEVERAGES -->
+    <polyline class="forecast-line" points="
+      258,138 264,127 269,151 274,109 280,91 285,30 291,115 296,137
+    "/>
+
+    <!-- X-axis labels -->
+    <text x="50" y="172" class="axis-label">2017-07-07</text>
+    <text x="150" y="172" class="axis-label">2017-07-24</text>
+    <text x="230" y="172" class="axis-label">2017-08-15</text>
+  </g>
+</svg>
