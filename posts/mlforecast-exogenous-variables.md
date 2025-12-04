@@ -435,13 +435,13 @@ X = prep.drop(columns=['unique_id', 'ds', 'y'])
 X.head()
 ```
 
-|   | store_nbr | family    | city  | state     | type | cluster | lag1   | dayofweek | month | is_weekend |
-|---|-----------|-----------|-------|-----------|------|---------|--------|-----------|-------|------------|
-| 1 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 0.0    | 5         | 1     | True       |
-| 2 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 1856.0 | 6         | 1     | True       |
-| 3 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 1048.0 | 0         | 1     | False      |
-| 4 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 3005.0 | 1         | 1     | False      |
-| 5 | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 2374.0 | 2         | 1     | False      |
+|     | store_nbr | family    | city  | state     | type | cluster | lag1   | dayofweek | month | is_weekend |
+| --- | --------- | --------- | ----- | --------- | ---- | ------- | ------ | --------- | ----- | ---------- |
+| 1   | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 0.0    | 5         | 1     | True       |
+| 2   | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 1856.0 | 6         | 1     | True       |
+| 3   | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 1048.0 | 0         | 1     | False      |
+| 4   | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 3005.0 | 1         | 1     | False      |
+| 5   | 1         | BEVERAGES | Quito | Pichincha | D    | 13      | 2374.0 | 2         | 1     | False      |
 
 Compute SHAP values using TreeExplainer, which is optimized for tree-based models like LightGBM:
 
