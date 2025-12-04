@@ -129,7 +129,6 @@ preds = fcst.predict(h=7)
 preds.head()
 ```
 
-
 |   | unique_id | ds         | LGBMRegressor |
 |---|-----------|------------|---------------|
 | 0 | id_00     | 2001-05-15 | 418.961670    |
@@ -137,7 +136,6 @@ preds.head()
 | 2 | id_00     | 2001-05-17 | 19.935077     |
 | 3 | id_00     | 2001-05-18 | 102.535201    |
 | 4 | id_00     | 2001-05-19 | 184.815386    |
-
 
 ## Dynamic Exogenous Variables
 
@@ -150,14 +148,13 @@ prices_catalog = generate_prices_for_series(series)
 prices_catalog.head()
 ```
 
-```text
-   unique_id         ds     price
-0          0 2000-01-01  0.548814
-1          0 2000-01-02  0.715189
-2          0 2000-01-03  0.602763
-3          0 2000-01-04  0.544883
-4          0 2000-01-05  0.423655
-```
+|   | unique_id | ds         | price       |
+|---|-----------|------------|-------------|
+| 0 | id_00     | 2000-01-01 | 0.548814    |
+| 1 | id_00     | 2000-01-02 | 0.715189    |
+| 2 | id_00     | 2000-01-03 | 0.602763    |
+| 3 | id_00     | 2000-01-04 | 0.544883    |
+| 4 | id_00     | 2000-01-05 | 0.423655    |
 
 Merge the price data with your time series:
 
@@ -166,14 +163,13 @@ series_with_prices = series.merge(prices_catalog, how='left')
 series_with_prices.head()
 ```
 
-```text
-   unique_id         ds          y  store_id  product_id     price
-0          0 2000-01-01  17.519033         4          82  0.548814
-1          0 2000-01-02   0.276729         4          82  0.715189
-2          0 2000-01-03   6.617829         4          82  0.602763
-3          0 2000-01-04   2.844439         4          82  0.544883
-4          0 2000-01-05   7.249720         4          82  0.423655
-```
+|   | unique_id | ds         | y          | store_id | product_id | price       |
+|---|-----------|------------|------------|----------|------------|-------------|
+| 0 | id_00     | 2000-10-05 | 39.811983  | 79       | 45         | 0.548814    |
+| 1 | id_00     | 2000-10-06 | 103.274013 | 79       | 45         | 0.715189    |
+| 2 | id_00     | 2000-10-07 | 176.574744 | 79       | 45         | 0.602763    |
+| 3 | id_00     | 2000-10-08 | 258.987900 | 79       | 45         | 0.544883    |
+| 4 | id_00     | 2000-10-09 | 344.940404 | 79       | 45         | 0.423655    |
 
 Train the model with both static and dynamic features:
 
@@ -203,8 +199,19 @@ fcst.ts.features_order_
 ```
 
 ```text
-['store_id', 'product_id', 'price', 'lag7', 'expanding_mean_lag1', 'rolling_mean_lag7_window_size14']
+['store_id',
+ 'product_id',
+ 'price',
+ 'lag7',
+ 'expanding_mean_lag1',
+ 'rolling_mean_lag7_window_size14']
 ```
+
+The model uses three types of features:
+
+- **Static features** (`store_id`, `product_id`): Carried from the training data, constant for each series.
+- **Dynamic exogenous** (`price`): Provided via `X_df`, varies over time.
+- **Lag features** (`lag7`, `expanding_mean_lag1`, `rolling_mean_lag7_window_size14`): Auto-generated from historical values based on `lags` and `lag_transforms`.
 
 For prediction, provide future price values through the `X_df` parameter:
 
@@ -213,14 +220,13 @@ preds = fcst.predict(h=7, X_df=prices_catalog)
 preds.head()
 ```
 
-```text
-   unique_id         ds  LGBMRegressor
-0          0 2000-08-10       4.458432
-1          0 2000-08-11       5.364521
-2          0 2000-08-12       3.987612
-3          0 2000-08-13       3.852117
-4          0 2000-08-14       4.291834
-```
+|   | unique_id | ds         | LGBMRegressor |
+|---|-----------|------------|---------------|
+| 0 | id_00     | 2001-05-15 | 425.289536    |
+| 1 | id_00     | 2001-05-16 | 499.363551    |
+| 2 | id_00     | 2001-05-17 | 21.152481     |
+| 3 | id_00     | 2001-05-18 | 102.144971    |
+| 4 | id_00     | 2001-05-19 | 185.067341    |
 
 MLForecast automatically aligns the future prices with the correct forecast horizons for each series.
 
