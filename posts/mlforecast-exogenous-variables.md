@@ -60,8 +60,7 @@ The subset contains 5 stores and 3 product families (GROCERY I, BEVERAGES, PRODU
 ```python
 import pandas as pd
 
-# DATA_URL = 'https://raw.githubusercontent.com/Nixtla/nixtla_blog/main/examples/data/mlforecast_exogenous/store_sales_subset.csv'
-DATA_URL = 'data/mlforecast_exogenous/store_sales_subset.csv'
+DATA_URL = 'https://raw.githubusercontent.com/Nixtla/blog/refs/heads/main/examples/data/mlforecast_exogenous/store_sales_subset.csv'
 series = pd.read_csv(DATA_URL, parse_dates=['ds'])
 series.head()
 ```
