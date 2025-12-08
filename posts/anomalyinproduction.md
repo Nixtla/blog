@@ -1,5 +1,6 @@
 ---
 title: "Anomaly Detection for Cloud Cost Monitoring with Nixtla"
+seo_title: Anomaly Detection for Cloud Cost Monitoring with Nixtla
 description: "Learn how to build a synthetic cloud cost dataset and use Nixtla's algorithms to detect spikes, drifts, and level shifts. This approach helps teams monitor performance and prevent unexpected billing surprises."
 image: "/images/anomaly_detection_monitoring/CloudCostTimeSeries.svg"
 categories: ["Anomaly Detection"]
