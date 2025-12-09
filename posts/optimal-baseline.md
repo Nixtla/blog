@@ -1,5 +1,6 @@
 ---
 title: Simple Anomaly Detection in Time Series via Optimal Baseline Subtraction (OBS)
+seo_title: Simple Anomaly Detection via Optimal Baseline Subtraction
 description: Discover how to detect anomalies using Optimal Baseline Subtraction and enhance your forecasts with Nixtla’s TimeGPT on real-world weather data.
 image: /images/optimal_baseline/main_image.svg
 categories: ["Anomaly Detection"]
@@ -178,6 +179,7 @@ data.plot_target_and_candidates()
   "charts": [
     {
       "id": "chart-inner-1",
+      "title": "Candidate 1",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
         { "column": "candidate_3", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
@@ -185,6 +187,7 @@ data.plot_target_and_candidates()
     },
     {
       "id": "chart-inner-2",
+      "title": "Candidate 2",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
         { "column": "candidate_4", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
@@ -192,6 +195,7 @@ data.plot_target_and_candidates()
     },
     {
       "id": "chart-inner-3",
+      "title": "Candidate 3",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
         { "column": "candidate_5", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
@@ -199,6 +203,7 @@ data.plot_target_and_candidates()
     },
     {
       "id": "chart-inner-4",
+      "title": "Candidate 4",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
         { "column": "candidate_6", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
@@ -206,6 +211,7 @@ data.plot_target_and_candidates()
     },
     {
       "id": "chart-inner-5",
+      "title": "Candidate 5",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
         { "column": "candidate_7", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
@@ -213,6 +219,7 @@ data.plot_target_and_candidates()
     },
     {
       "id": "chart-inner-6",
+      "title": "Candidate 6",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
         { "column": "candidate_8", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
@@ -220,6 +227,7 @@ data.plot_target_and_candidates()
     },
     {
       "id": "chart-inner-7",
+      "title": "Candidate 7",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
         { "column": "candidate_9", "name": "Possible Candidate", "type": "line", "color": "lime-500" }
@@ -227,6 +235,7 @@ data.plot_target_and_candidates()
     },
     {
       "id": "chart-inner-8",
+      "title": "Candidate 8",
       "series": [
         { "column": "target_curve", "name": "Target Time Series", "type": "line" },
         { "column": "candidate_10", "name": "Possible Candidate", "type": "line", "color": "lime-500" }

@@ -1,5 +1,6 @@
 ---
 title: "Automated Time Series Feature Engineering with MLforecast"
+seo_title: Automated Time Series Feature Engineering with MLforecast
 description: "Replace hours of custom feature engineering code with MLforecast's automated lag features, rolling statistics, and target transformations for faster, more reliable time series forecasting."
 categories: ["Time Series Forecasting"]
 tags:
@@ -25,7 +26,7 @@ This manual process creates several problems:
 
 MLforecast eliminates this pain with automated feature engineering that's faster, more reliable, and consistent across all your forecasting models.
 
-> Before diving into automated feature engineering, establishing [baseline model performance](https://nixtla.github.io/web/blog/baseline_forecasts) provides essential context for measuring improvement and avoiding over-engineering.
+> Before diving into automated feature engineering, establishing [baseline model performance](https://www.nixtla.io/blog/baseline-forecasts) provides essential context for measuring improvement and avoiding over-engineering.
 
 > The source code of this article can be found in the [interactive Jupyter notebook](https://github.com/Nixtla/nixtla_blog_examples/blob/main/notebooks/automated-time-series-feature-engineering-with-mlforecast.ipynb).
 
@@ -463,7 +464,7 @@ MAE by product and validation window:
 
 The MAE values show consistent performance across different validation windows, with errors around 12-25 units. This indicates the model generalizes well across time periods rather than overfitting to specific patterns.
 
-> Once you've mastered automated feature engineering, apply similar time series techniques to [anomaly detection workflows](https://nixtla.github.io/web/blog/anomaly_detection) for comprehensive data monitoring.
+> Once you've mastered automated feature engineering, apply similar time series techniques to [anomaly detection workflows](https://nixtla.io/blog/anomaly-detection) for comprehensive data monitoring.
 
 ## Complete Automated Workflow - End-to-End Pipeline Without Manual Features
 
@@ -631,6 +632,6 @@ Stop spending hours on manual feature engineering. With MLforecast, you can focu
 
 ## Related Resources
 
-For production-scale implementations, consider [TimeGPT's performance advantages](https://nixtla.github.io/web/blog/timegpt_in_snowflake) when deploying automated forecasting pipelines at enterprise scale.
+For production-scale implementations, consider [TimeGPT's performance advantages](https://nixtla.io/blog/timegpt-in-snowflake) when deploying automated forecasting pipelines at enterprise scale.
 
-For different forecasting scenarios, explore [multi-horizon forecasting approaches](https://nixtla.github.io/web/blog/multilevelforecasting) that complement MLforecast's machine learning methods. When working with sparse or irregular data patterns, our [intermittent demand forecasting guide](https://nixtla.github.io/web/blog/intermittent_demand) provides specialized techniques.
+For different forecasting scenarios, explore [multi-horizon forecasting approaches](https://nixtla.io/blog/multilevelforecasting) that complement MLforecast's machine learning methods. When working with sparse or irregular data patterns, our [intermittent demand forecasting guide](https://nixtla.io/blog/intermittent-demand) provides specialized techniques.

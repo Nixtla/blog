@@ -1,5 +1,6 @@
 ---
 title: "TimeGPT vs Snowflake - 50x Faster Forecasting with Better Accuracy"
+seo_title: TimeGPT vs Snowflake: 50x Faster with Better Accuracy
 description: Discover SQL-native time series forecasting for Snowflake that's 10x faster than native tools. Nixtla provides state-of-the-art accuracy without Python, ML infrastructure, or complex setup.
 image: /images/timegpt_in_snowflake/performance_accuracy_quadrant.svg
 categories: ["Time Series Forecasting"]

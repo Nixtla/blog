@@ -1,5 +1,6 @@
 ---
 title: "Effortless Accuracy Unlocking the Power of Baseline Forecasts"
+seo_title: Unlocking the Power of Baseline Forecasts
 description: "Understand what are baseline forecasts, why they are important and learn to create them easily with Nixtla's statsforecast package."
 image: "/images/baseline_forecasts/forecast_featured.png"
 categories: ["Time Series Forecasting"]
@@ -261,6 +262,7 @@ sf.plot(df, pred_df)
   "charts": [
     {
       "id": "chart-inner-1",
+      "title": "Adelaide",
       "series": [
         { "column": "Adelaide_y", "name": "Adelaide_y", "type": "line", "color": "cyan-500" },
         { "column": "Adelaide_HistoricAverage", "name": "Adelaide_HistoricAverage", "type": "line", "color": "green-500" },
@@ -271,6 +273,7 @@ sf.plot(df, pred_df)
     },
     {
       "id": "chart-inner-2",
+      "title": "Brisbane",
       "series": [
         { "column": "Brisbane_y", "name": "Brisbane_y", "type": "line", "color": "cyan-500" },
         { "column": "Brisbane_HistoricAverage", "name": "Brisbane_HistoricAverage", "type": "line", "color": "green-500" },
@@ -281,6 +284,7 @@ sf.plot(df, pred_df)
     },
     {
       "id": "chart-inner-3",
+      "title": "Melbourne",
       "series": [
         { "column": "Melbourne_y", "name": "Melbourne_y", "type": "line", "color": "cyan-500" },
         { "column": "Melbourne_HistoricAverage", "name": "Melbourne_HistoricAverage", "type": "line", "color": "green-500" },
