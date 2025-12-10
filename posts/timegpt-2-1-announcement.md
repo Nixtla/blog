@@ -1,6 +1,6 @@
 ---
 title: "TimeGPT 2.1: The Next Generation of Foundation Models for Time Series Forecasting"
-description: "Announcing the private preview of TimeGPT-2.1, a single model that supports deployments at any scale and in any environment, including on-premise and fully self-hosted setups."
+description: "Announcing the private preview of TimeGPT-2.1, the first multivariate model in the TimeGPT family."
 categories: ["Time Series Forecasting"]
 tags:
   - TimeGPT-2
