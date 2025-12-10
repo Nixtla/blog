@@ -67,6 +67,6 @@ Combined with its modular design and enhanced feature set, TimeGPT 2.1 provides 
 
 ## **Get Early Access**
 
-We are launching private preview programs for organizations looking to adopt TimeGPT 2.1 ahead of general availability. If you’d like to be among the first to bring the next generation of time-series forecasting into production, (join our waitlist)[https://nixtla.io/timegpt-2-waitlist].
+We are launching private preview programs for organizations looking to adopt TimeGPT 2.1 ahead of general availability. If you’d like to be among the first to bring the next generation of time-series forecasting into production, [join our waitlist](https://www.nixtla.io/timegpt-2-waitlist).
 
 More releases are planned over the coming weeks, stay tuned for more updates.
