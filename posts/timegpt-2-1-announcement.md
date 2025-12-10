@@ -12,11 +12,11 @@ author_name: Cristian Challu
 author_image: "/images/authors/cristian.jpeg"
 author_position: cofounder - Nixtla
 publication_date: 2025-12-10
------
+---
 
 ## Introducing TimeGPT 2.1
 
-At Nixtla, our mission is to push the limits of time-series forecasting and make cutting-edge models accessible to every organization. 
+At Nixtla, our mission is to push the limits of time-series forecasting and make cutting-edge models accessible to every organization.
 
 Today, we are excited to welcome **TimeGPT 2.1** as the latest member of the TimeGPT 2 model family, the next step in enterprise-grade forecasting performance, reliability, and flexibility.
 
