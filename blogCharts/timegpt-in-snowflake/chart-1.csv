@@ -1,0 +1,5 @@
+model,mape,isHighlight
+TimeGPT LH: Finetuned,0.078,true
+TimeGPT LH: 0 Shot,0.089,true
+Snowflake Best,0.091,false
+Snowflake Fast,0.099,false

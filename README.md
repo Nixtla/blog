@@ -13,7 +13,7 @@ for example:
 
 ```bash
 bun i
-vercel dev
+vercel dev --listen 127.0.0.1:3001
 ```
 
 ## Development

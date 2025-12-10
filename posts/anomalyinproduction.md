@@ -1,5 +1,6 @@
 ---
 title: "Anomaly Detection for Cloud Cost Monitoring with Nixtla"
+seo_title: Anomaly Detection for Cloud Cost Monitoring with Nixtla
 description: "Learn how to build a synthetic cloud cost dataset and use Nixtla's algorithms to detect spikes, drifts, and level shifts. This approach helps teams monitor performance and prevent unexpected billing surprises."
 image: "/images/anomaly_detection_monitoring/CloudCostTimeSeries.svg"
 categories: ["Anomaly Detection"]
@@ -179,7 +180,26 @@ print("Rows:", len(cloud_cost_df))
 
 If we display the time series using the following block we get this output:
 
-![Anomaly Example](/images/anomaly_detection_monitoring/CloudCostTimeSeries.svg)
+```chart
+{
+  "id": "chart-1",
+  "title": "Cloud Cost Time Series",
+  "dataSource": "chart-1.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Target [y]"
+  },
+  "series": [
+    {
+      "column": "value",
+      "name": "Time",
+      "type": "line"
+    }
+  ]
+}
+```
 
 A very important thing to notice is that, as stated above, this function does have **spikes** and an anomaly detection algorithm would typically detect them. Even though these anomalies are injected and they are the results of our business decision, we expect our monitoring algorithm to **detect them**.
 
@@ -230,7 +250,73 @@ The output of this function is the following plot:
 
 2. The bottom plot is a zoomed in version of the top plot.
 
-![Anomaly Example](/images/anomaly_detection_monitoring/ForecastingOnCloud.svg)
+```chart
+{
+  "id": "chart-2",
+  "title": "Cloud Cost, 1-week forecasts",
+  "dataSource": "chart-2.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Cloud Cost"
+  },
+  "series": [
+    {
+      "type": "area",
+      "columns": {
+        "high": "forecast_hi",
+        "low": "forecast_lo"
+      },
+      "name": "Forecast interval (± 99%)"
+    },
+    {
+      "column": "actual",
+      "type": "line",
+      "name": "Observed"
+    },
+    {
+      "column": "forecast_mean",
+      "type": "line",
+      "name": "Forecast mean"
+    }
+  ]
+}
+```
+
+```chart
+{
+  "id": "chart-3",
+  "title": "Cloud Cost, 1-week forecasts (Zoom)",
+  "dataSource": "chart-3.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "Cloud Cost (zoom)"
+  },
+  "series": [
+    {
+      "type": "area",
+      "columns": {
+        "high": "forecast_hi",
+        "low": "forecast_lo"
+      },
+      "name": "Forecast interval (± 99%)"
+    },
+    {
+      "column": "actual",
+      "type": "line",
+      "name": "Observed"
+    },
+    {
+      "column": "forecast_mean",
+      "type": "line",
+      "name": "Forecast mean"
+    }
+  ]
+}
+```
 
 This experiment leads us to two considerations:
 
@@ -257,7 +343,83 @@ results = simulate_and_plot_last_k_next_day_anomalies(
 
 This is what it looks like:
 
-![Monitoring Example](/images/anomaly_detection_monitoring/MonitoringAlgorithm.svg)
+```chart
+{
+  "id": "chart-4",
+  "title": "Cloud Cost — next-day anomalies (last 30 daysss)",
+  "dataSource": "chart-4.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "y"
+  },
+  "series": [
+    {
+      "column": "actual",
+      "type": "line",
+      "name": "Observed"
+    },
+    {
+      "column": "forecast_mean",
+      "type": "line",
+      "name": "Forecast mean",
+      "showDots": true
+    },
+    {
+      "type": "area",
+      "columns": {
+        "high": "forecast_hi",
+        "low": "forecast_lo"
+      },
+      "name": "± 99% interval"
+    }
+  ],
+  "anomalies": {
+    "column": "is_anomaly",
+    "seriesColumn": "actual"
+  }
+}
+```
+
+```chart
+{
+  "id": "chart-5",
+  "title": "Cloud Cost — next-day anomalies (last 30 days) (zoom)",
+  "dataSource": "chart-5.csv",
+  "xAxis": {
+    "key": "ds"
+  },
+  "yAxis": {
+    "label": "y (zoom)"
+  },
+  "series": [
+    {
+      "type": "area",
+      "columns": {
+        "high": "forecast_hi",
+        "low": "forecast_lo"
+      },
+      "name": "± 99% interval"
+    },
+    {
+      "column": "actual",
+      "type": "line",
+      "name": "Observed"
+    },
+    {
+      "column": "forecast_mean",
+      "type": "line",
+      "name": "Forecast mean",
+      "showDots": true
+    }
+  ],
+  "anomalies": {
+    "column": "is_anomaly",
+    "seriesColumn": "actual"
+  }
+}
+```
 
 1. **The top plot** shows the full history of cloud costs over the last 30 days.
 
