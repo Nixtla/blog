@@ -22,7 +22,7 @@ Today, we are excited to welcome **TimeGPT 2.1** as the latest member of the Tim
 
 ---
 
-## **Built for Real-World Forecasting**
+## Built for Real-World Forecasting
 
 TimeGPT 2.1 is a single model that supports deployments at any scale and in any environment, including on-premise and fully self-hosted setups.
 
@@ -39,7 +39,7 @@ This combination makes TimeGPT 2.1 a highly versatile and production-ready relea
 
 ---
 
-## **Top Performance**
+## Top Performance
 
 TimeGPT 2.1 consistently ranks among the top models on widely used industry benchmarks, including:
 
@@ -51,7 +51,7 @@ Reproducible benchmark results are available on request
 
 ---
 
-## **Enterprise-Ready from Day One**
+## Enterprise-Ready from Day One
 
 TimeGPT 2.1 is engineered for seamless production deployment, whether in the cloud, on-premise, or fully air-gapped environments.
 
@@ -65,7 +65,7 @@ Combined with its modular design and enhanced feature set, TimeGPT 2.1 provides 
 
 ---
 
-## **Get Early Access**
+## Get Early Access
 
 We are launching private preview programs for organizations looking to adopt TimeGPT 2.1 ahead of general availability. If you’d like to be among the first to bring the next generation of time-series forecasting into production, [join our waitlist](https://www.nixtla.io/timegpt-2-waitlist).
 
