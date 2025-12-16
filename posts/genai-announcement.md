@@ -15,7 +15,7 @@ author_position: Co-Founder - Nixtla
 publication_date: 2025-12-16
 ---
 
-### Introduction:
+### Introduction
 
 Time series are everywhere : It powers decisions in energy, finance, retail, and beyond. The rise of foundation models has revolutionized how we approach time series problems, making it faster and more accessible than ever. Despite recent advancements, the field still needs a unified ecosystem that brings together multiple foundation models, understands natural language, and reasons about data seamlessly — and that’s exactly what we’re bringing to life at Nixtla.
 
