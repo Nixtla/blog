@@ -10,8 +10,8 @@ tags:
   - private preview
 image: "/images/automated-time-series-feature-engineering-with-mlforecast/automated-feature-engineering-rolling-expanding-comparison.svg"
 author_name: Cristian Challu
-author_image: "/images/authors/cristian.jpg"
-author_position: Co-Founder - Nixtla
+author_image: "/images/authors/han.jpeg"
+author_position: CTO - Nixtla
 publication_date: 2025-12-16
 ---
 
