@@ -8,7 +8,7 @@ tags:
   - foundation models
   - enterprise forecasting
   - private preview
-image: "/images/automated-time-series-feature-engineering-with-mlforecast/automated-feature-engineering-rolling-expanding-comparison.svg"
+image: "/images/genai-announcement/screenshot.png"
 author_name: Han Wang
 author_image: "/images/authors/han.jpeg"
 author_position: CTO - Nixtla
