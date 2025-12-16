@@ -8,7 +8,7 @@ tags:
   - foundation models
   - enterprise forecasting
   - private preview
-image: "/images/genai-announcement/screenshot.png"
+image: "/images/genai-announcement/logo.svg"
 author_name: Han Wang
 author_image: "/images/authors/han.jpeg"
 author_position: CTO - Nixtla
