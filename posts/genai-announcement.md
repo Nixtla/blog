@@ -15,8 +15,6 @@ author_position: CTO - Nixtla
 publication_date: 2025-12-18
 ---
 
-# Nixtla Enterprise Expands with Foundation Models, MCP, and Agentic Capabilities
-
 ## Introduction
 
 Time series power decisions across energy, finance, retail, and beyond. In recent years, foundation models have transformed how we approach time series problems, making forecasting and analysis faster, more powerful, and more accessible than ever.
