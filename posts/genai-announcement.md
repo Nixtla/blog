@@ -1,6 +1,6 @@
 ---
-title: "Nixtla MCP: The Next Generation of Foundation Models for Time Series Forecasting"
-description: "Announcing the private preview of Nixtla MCP, the next generation of foundation models for time series forecasting."
+title: "Nixtla Enterprise Expands with Leading Foundation Models, MCP, and Agentic Capabilities"
+description: "This release introduces three major capabilities that together expand Nixtla from a single-model offering into a full time series intelligence platform"
 categories: ["Artificial Intelligence"]
 tags:
   - TimeGPT-2
@@ -15,23 +15,73 @@ author_position: Data Scientist - Nixtla
 publication_date: 2025-12-16
 ---
 
-### Introduction
+# Nixtla Enterprise Expands with Foundation Models, MCP, and Agentic Capabilities
 
-Time series are everywhere : It powers decisions in energy, finance, retail, and beyond. The rise of foundation models has revolutionized how we approach time series problems, making it faster and more accessible than ever. Despite recent advancements, the field still needs a unified ecosystem that brings together multiple foundation models, understands natural language, and reasons about data seamlessly — and that’s exactly what we’re bringing to life at Nixtla.
+## Introduction
 
-At Nixtla, we saw an opportunity to build an ecosystem where models, agents, and time series intelligence work together seamlessly.
+Time series power decisions across energy, finance, retail, and beyond. In recent years, foundation models have transformed how we approach time series problems, making forecasting and analysis faster, more powerful, and more accessible than ever.
 
-## Introducing Nixtla MCP
+Despite this progress, teams still face a fragmented ecosystem: different models live in different tools, workflows are brittle, and applying intelligence beyond single predictions remains hard. What's missing is a unified platform that brings together leading foundation models, understands natural language, and can reason about time series data end to end.
 
-At the core of this launch is Nixtla MCP, our system designed to bring intelligence and interoperability to time series forecasting and analysis. We’re excited to introduce two major capabilities now available through the Nixtla MCP:
+Today, we're excited to introduce a major step toward that vision at Nixtla.
 
-1. **Access multiple foundation models directly from NixtlaClient:** You can now work with models such as TimeGPT, Chronos, and TimesFM, all from a single, unified interface. This makes it effortless to experiment across models, compare performance, and select the best one for your use case — without switching tools or managing separate integrations.
-2. **Run full analytical workflows automatically:** Nixtla MCP provides essential time series knowledge and a fully integrated execution environment, enabling agents to reason about data, generate code, run analysis, and refine results. It empowers your AI agent to not just understand your instructions, but act on them — bridging the gap between intelligence and execution in time series workflows.
+## What's New in Nixtla Enterprise
+
+This release introduces three major capabilities that together expand Nixtla from a single-model offering into a full time series intelligence platform:
+
+1. Access to leading foundation models beyond TimeGPT
+2. A standardized interoperability layer via Model Context Protocol (MCP)
+3. Native agentic capabilities for end-to-end analytical workflows
+
+Together, these unlock a new way to build, compare, and operationalize time series intelligence.
+
+## Access Multiple Foundation Models from a Single Interface
+
+![tsmp.gif](/images/genai-announcement/tsmp.gif)
+
+Nixtla Enterprise now lets you work with multiple leading time series foundation models directly from the NixtlaClient. In addition to TimeGPT, you can now access models such as Chronos and TimesFM through a unified interface.
+
+This makes it easy to:
+
+- Experiment across different model families
+- Benchmark performance on your own data
+- Select the right model for each use case
+
+All without switching tools, managing separate APIs, or rewriting pipelines.
+
+## Introducing MCP & Agentic Capabilities for Time Series Workflows
+
+To support this multi-model ecosystem, Nixtla now integrates with Model Context Protocol (MCP). MCP provides a standardized way for models and agents to access time series data, tools, and execution environments.
+
+Rather than hard-coding workflows around individual models, MCP enables:
+
+- Consistent access to datasets and metadata
+- Reusable analytical tools across models
+- A shared context for reasoning and execution
+
+Nixtla’s MCP tools work seamlessly with **Claude Desktop**, **Claude Code**, and **Cursor**, and our dedicated installers make them safer and easier to use in production and local environments.
+
+MCP acts as the connective tissue that allows models and agents to work together seamlessly inside Nixtla. Built on top of multi-model access and MCP, Nixtla now supports agentic workflows for time series analysis.
+
+Agents can:
+
+- Interpret natural language instructions
+- Reason about time series structure and objectives
+- Execute code in a fully hosted environment and generate business insights
+- Evaluate results and iteratively refine solutions
+
+This moves beyond static forecasting APIs toward autonomous analytical systems that can operate end to end — from exploration to production-ready insights.
 
 ## Real-World Results
 
-We have been testing these tools through the [VN1 competition](https://www.datasource.ai/en/home/data-science-competitions-for-startups/vn1-forecasting-accuracy-challenge-phase-1/description), where Nixtla MCP demonstrated their capability to autonomously generate and refine forecasting solutions. With only a basic research plan as guidance, the system achieved first place, outperforming the original competition winner and subsequently published solutions. This showcases how the combination of intelligent control and multi-model access can fully leverage the power of foundation models for time series tasks.
+We've been testing these capabilities in real settings, including the VN1 forecasting competition. Using a combination of multi-model access and agentic reasoning, Nixtla's system autonomously generated and refined forecasting solutions with minimal human guidance.
+
+[https://youtu.be/mrQV8vUdSGU](https://youtu.be/mrQV8vUdSGU)
+
+The result: first place, outperforming the original competition winner and previously published solutions. This demonstrates how combining foundation models with intelligent control and execution can unlock substantially better outcomes in time series tasks.
 
 ## Looking Ahead
 
-This launch marks a new chapter in Nixtla’s mission: building an autonomous time series ecosystem where anyone can explore, forecast, and make decisions effortlessly. Nixtla MCP is just the beginning. Together, they set the foundation for a future where time series intelligence is not only automated but truly adaptive.
+This release marks an important milestone in Nixtla's mission to build an inclusive and autonomous time series ecosystem. By bringing together leading foundation models, a standardized intelligence layer, and agentic capabilities, we're enabling a future where time series analysis is not only automated, but adaptive.
+
+This is just the beginning.
