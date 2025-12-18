@@ -9,9 +9,9 @@ tags:
   - enterprise forecasting
   - private preview
 image: "/images/genai-announcement/logo.svg"
-author_name: Han Wang
-author_image: "/images/authors/han.jpeg"
-author_position: CTO - Nixtla
+author_name: Yibei Hu
+author_image: "/images/authors/yibei.jpeg"
+author_position: Data Scientist - Nixtla
 publication_date: 2025-12-16
 ---
 
