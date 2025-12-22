@@ -1,5 +1,6 @@
 ---
 title: "TimeGPT 2.1: The Next Generation of Foundation Models for Time Series Forecasting"
+seo_title: TimeGPT 2.1: Next-Gen Time Series Forecasting
 description: "Announcing the private preview of TimeGPT-2.1, the first multivariate model in the TimeGPT family."
 categories: ["Time Series Forecasting"]
 tags:
