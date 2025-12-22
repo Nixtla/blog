@@ -1,5 +1,6 @@
 ---
 title: "Nixtla Enterprise Expands with Leading Foundation Models, MCP, and Agentic Capabilities"
+seo_title: Nixtla Enterprise Expands Foundation Models & AI Agents
 description: "This release introduces three major capabilities that together expand Nixtla from a single-model offering into a full time series intelligence platform"
 categories: ["Artificial Intelligence"]
 tags:
