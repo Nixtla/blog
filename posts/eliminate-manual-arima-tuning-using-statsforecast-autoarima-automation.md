@@ -390,7 +390,7 @@ Cross-validation results shape: (120, 5)
 | books     | 2022-04-01 | 2021-12-01 | 54350.389275 | 41653.470486 |
 | books     | 2022-05-01 | 2021-12-01 | 61674.121108 | 41453.767096 |
 
-Calculate [MAPE (Mean Absolute Percentage Error)](https://nixtlaverse.nixtla.io/statsforecast/src/utils.html#evaluation) for each product category to measure forecasting accuracy:
+Calculate [MAPE (Mean Absolute Percentage Error)](https://nixtlaverse.nixtla.io/statsforecast/docs/getting-started/getting_started_complete.html) for each product category to measure forecasting accuracy:
 
 ```python
 # Calculate mean absolute percentage error (MAPE) for each category
