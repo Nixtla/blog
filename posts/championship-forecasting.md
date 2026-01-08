@@ -98,7 +98,7 @@ The key transformation is converting match-by-match results into a **cumulative 
 
 This structure is exactly what Nixtla's forecasting libraries expect and is analogous to tracking cumulative sales across branches, production output across facilities, or any competitive metric across entities.
 
-> **Full implementation**: For the complete code covering team setup, calendar generation, match simulation, and data transformation, see the [championship_forecasting.ipynb notebook](../examples/notebooks/championship_forecasting.ipynb).
+> **Full implementation**: For the complete code covering team setup, calendar generation, match simulation, and data transformation, see the [championship_forecasting.ipynb notebook](https://raw.githubusercontent.com/Nixtla/blog/refs/heads/semrush-fixes/examples/notebooks/championship_forecasting.ipynb).
 
 **Running the simulation:**
 
