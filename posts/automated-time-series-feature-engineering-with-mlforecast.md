@@ -1,6 +1,6 @@
 ---
 title: "Automated Time Series Feature Engineering with MLforecast"
-seo_title: Automated Time Series Feature Engineering with MLforecast
+seo_title: Time Series Feature Engineering with MLforecast: Automated
 description: "Replace hours of custom feature engineering code with MLforecast's automated lag features, rolling statistics, and target transformations for faster, more reliable time series forecasting."
 categories: ["Time Series Forecasting"]
 tags:
