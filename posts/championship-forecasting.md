@@ -46,7 +46,7 @@ The setup is summarized in the following chart:
 
 It seems like we have a lot to cover. Let's get to it!
 
-### 1. Setup Championship Teams and Matches
+## 1. Setup Championship Teams and Matches
 
 To generate realistic championship data, we need to model teams with different strengths and simulate match outcomes. The key concepts are:
 
@@ -62,7 +62,7 @@ The core logic uses a Poisson process where expected goals depend on:
 
 Match outcomes translate to points: **Win = 3 points**, **Draw = 1 point**, **Loss = 0 points**.
 
-### 2. Generate Championship Schedule
+## 2. Generate Championship Schedule
 
 For a valid championship, each team must play every other team exactly twice (once home, once away). We use the **circle method** algorithm:
 
@@ -86,7 +86,7 @@ Team11 vs Team07
 ...
 ```
 
-### 3. Simulate Results and Build Time Series
+## 3. Simulate Results and Build Time Series
 
 Now we put everything together: simulate matches, track cumulative statistics, and transform the data into a **panel time series** ready for forecasting.
 
@@ -157,7 +157,7 @@ The following assumptions are made:
 | 678 | Team20 | 34 | 19 | 1 | Team15 | H | 0 | 0 | D | 28 | 95 | -67 | 4 | 7 | 23 |
 | 683 | Team20 | 35 | 19 | 0 | Team04 | A | 1 | 5 | L | 29 | 100 | -71 | 4 | 7 | 24 |
 
-### 4. Predict and Forecast with StatsForecast
+## 4. Predict and Forecast with StatsForecast
 
 Now that we have all the data, we can let StatsForecast do the magic. In particular, we will use the AutoARIMA feature to train and forecast the last three matches for the entire championship.
 
@@ -173,7 +173,7 @@ sf.fit(train_ts)
 forecast_raw = sf.predict(h=forecast_horizon, level=[95])
 ```
 
-### 5. Evaluate the Results
+## 5. Evaluate the Results
 
 The championship forecast outputs are stored in `forecast_raw`. To properly evaluate and visualize our predictions, we need two key steps:
 
@@ -309,7 +309,7 @@ And this is how the predictions look (`forecast` for the full championship):
 
 Thanks to the power of StatsForecast and AutoARIMA, we are able to predict the full championship in a few seconds, together with the prediction intervals and the average prediction for each team in the championship.
 
-### Conclusions
+## Conclusions
 
 Let's recap what we covered in this post:
 
