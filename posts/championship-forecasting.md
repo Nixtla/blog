@@ -202,7 +202,7 @@ For visualization, we'll use helper functions that plot cumulative points over t
 - Displaying 95% prediction intervals
 - Marking the train/test split point
 
-> **Plotting utilities**: For the complete plotting functions (`plot_team_cumpoints_with_forecast` and helpers), see the [championship_forecasting.ipynb notebook](../examples/notebooks/championship_forecasting.ipynb).
+> **Plotting utilities**: For the complete plotting functions (`plot_team_cumpoints_with_forecast` and helpers), see the [championship_forecasting.ipynb notebook](https://raw.githubusercontent.com/Nixtla/blog/refs/heads/main/examples/notebooks/championship_forecasting.ipynb).
 
 And display the results using the following block of code:
 
