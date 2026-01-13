@@ -232,7 +232,7 @@ The plot shows multiple time series (cyan), each with an anomaly of the same siz
 
 ## Anomaly Detection with TimeGPT
 
-To use the [TimeGPT-1](https://www.nixtla.io/docs) anomaly detector, we will need to load Nixtla's API. To do that, we need to have an API key in the first place. You can get one following the instructions [here](https://www.nixtla.io/docs/getting-started-setting_up_your_api_key). Once you have your API Key, store it in your system using:
+To use the [TimeGPT-1](https://www.nixtla.io/docs) anomaly detector, we will need to load Nixtla's API. To do that, we need to have an API key in the first place. You can get one following the instructions [here](https://www.nixtla.io/docs/setup/setting_up_your_api_key). Once you have your API Key, store it in your system using:
 
 ```bash
 export NIXTLA_API_KEY = "your_api_key"
