@@ -1,9 +1,9 @@
 ---
 title: "TimeGPT in Snowflake Just Got a Full Upgrade: Anomaly Detection, Explainability, and a One-Command Install"
 description: "The Nixtla Snowflake integration is now part of the official nixtla package. Run forecasting, anomaly detection, SHAP-based explainability, and evaluation — all from pure SQL, all inside Snowflake."
-author: "Nixtla Team"
+author_name: "Nixtla Team"
 readTimeMinutes: 8
-date: "2026-02-23"
+publication_date: "2026-02-23"
 ---
 
 ## Introduction
