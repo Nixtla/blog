@@ -45,7 +45,7 @@ The first two parameters (**kind** and **anomaly detection algorithm**) are fixe
 
 As stated earlier, a reasonable assumption for the **"kind"** of anomaly is a localized **spike**. For example, in a weather dataset, where the amplitude (y-axis) represents temperature in Kelvin and the x-axis represents time in hours, the **spike** corresponds to a temperature that is significantly higher than average.
 
-The **anomaly detection algorithm** that we will be testing is the [TimeGPT-1](https://www.nixtla.io/docs) model, developed by the [Nixtla](https://www.nixtla.io/) team. The idea behind TimeGPT-1 is to use the **transformer** algorithm and conformal probabilities to get accurate predictions and uncertainty boundaries. You can read more about it in the original [paper](https://arxiv.org/abs/2310.03589), while another application of anomaly detection through TimeGPT-1 can be found in this [blog post](https://www.nixtla.io/blog/anomaly-detection-in-time-series-with-timegpt-and-python).
+The **anomaly detection algorithm** that we will be testing is the [TimeGPT-1](https://www.nixtla.io/docs) model, developed by the [Nixtla](https://www.nixtla.io/) team. The idea behind TimeGPT-1 is to use the **transformer** algorithm and conformal probabilities to get accurate predictions and uncertainty boundaries. You can read more about it in the original [paper](https://arxiv.org/abs/2310.03589), while another application of anomaly detection through TimeGPT-1 can be found in this [blog post](https://www.nixtla.io/blog/anomaly-detection).
 
 The **size** and **location** parameters are not fixed and will be considered as **variables**. A visual representation of injected anomalies at varying sizes and locations can be seen below:
 
@@ -232,7 +232,7 @@ The plot shows multiple time series (cyan), each with an anomaly of the same siz
 
 ## Anomaly Detection with TimeGPT
 
-To use the [TimeGPT-1](https://www.nixtla.io/docs) anomaly detector, we will need to load Nixtla's API. To do that, we need to have an API key in the first place. You can get one following the instructions [here](https://www.nixtla.io/docs/getting-started-setting_up_your_api_key). Once you have your API Key, store it in your system using:
+To use the [TimeGPT-1](https://www.nixtla.io/docs) anomaly detector, we will need to load Nixtla's API. To do that, we need to have an API key in the first place. You can get one following the instructions [here](https://www.nixtla.io/docs/setup/setting_up_your_api_key). Once you have your API Key, store it in your system using:
 
 ```bash
 export NIXTLA_API_KEY = "your_api_key"
