@@ -2,6 +2,7 @@
 title: "TimeGPT in Snowflake Just Got a Full Upgrade: Anomaly Detection, Explainability, and a One-Command Install"
 description: "The Nixtla Snowflake integration is now part of the official nixtla package. Run forecasting, anomaly detection, SHAP-based explainability, and evaluation — all from pure SQL, all inside Snowflake."
 author_name: "Nixtla Team"
+image: "/images/timegpt-snowflake-integration/preview-1.png"
 readTimeMinutes: 8
 publication_date: "2026-02-23"
 ---
@@ -18,13 +19,13 @@ Today, we're taking it further. The Snowflake integration is now officially part
 
 The previous integration focused on `NIXTLA_FORECAST`. You can now run the full TimeGPT suite directly in Snowflake:
 
-| Procedure | What it does |
-| --- | --- |
-| `NIXTLA_FORECAST` | Zero-shot time series forecasting |
-| `NIXTLA_DETECT_ANOMALIES` | Flag anomalous observations with confidence bounds |
-| `NIXTLA_EXPLAIN` | Return SHAP-based feature contributions |
-| `NIXTLA_EVALUATE` | Compute MAPE, MAE, MSE across your series |
-| `NIXTLA_FINETUNE` | Finetune the model on your historical data; returns a finetune model ID (Python stored procedure) |
+| Procedure                 | What it does                                                                                      |
+| ------------------------- | ------------------------------------------------------------------------------------------------- |
+| `NIXTLA_FORECAST`         | Zero-shot time series forecasting                                                                 |
+| `NIXTLA_DETECT_ANOMALIES` | Flag anomalous observations with confidence bounds                                                |
+| `NIXTLA_EXPLAIN`          | Return SHAP-based feature contributions                                                           |
+| `NIXTLA_EVALUATE`         | Compute MAPE, MAE, MSE across your series                                                         |
+| `NIXTLA_FINETUNE`         | Finetune the model on your historical data; returns a finetune model ID (Python stored procedure) |
 
 And installation is now a single command after `pip install nixtla[snowflake]`:
 
@@ -128,6 +129,8 @@ Returns a row per (`unique_id`, `forecaster`, `metric`, `value`), making it easy
 4. Call SQL procedures from any interface: Snowflake's worksheet, dbt, or your BI tool
 
 Full documentation is included in the [`nixtla` package on PyPI](https://pypi.org/project/nixtla/).
+
+![Nixtla and Snowflake Integration](/images/timegpt-snowflake-integration/nixtla-snowflake.png)
 
 ---
 
