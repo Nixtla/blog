@@ -49,7 +49,7 @@ Intermittent demand refers to demand patterns characterized by irregular and unp
 
 ## Leveraging TimeGPT for Forecasting
 
-TimeGPT is a time series [forecasting](https://www.nixtla.io/docs/capabilities-forecast-forecast) model developed by [Nixtla](https://www.nixtla.io/), designed to handle various forecasting challenges, including intermittent demand. It utilizes advanced machine learning techniques to provide accurate predictions even in sparse data scenarios.
+TimeGPT is a time series forecasting model developed by [Nixtla](https://www.nixtla.io/), designed to handle various forecasting challenges, including intermittent demand. It utilizes advanced machine learning techniques to provide accurate predictions even in sparse data scenarios.
 
 ## Setting Up the Environment
 

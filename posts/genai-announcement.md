@@ -75,7 +75,7 @@ This moves beyond static forecasting APIs toward autonomous analytical systems t
 
 We've been testing these capabilities in real settings, including the VN1 forecasting competition. Using a combination of multi-model access and agentic reasoning, Nixtla's system autonomously generated and refined forecasting solutions with minimal human guidance.
 
-[https://youtu.be/mrQV8vUdSGU](https://youtu.be/mrQV8vUdSGU)
+[Demo Video in Youtube](https://youtu.be/mrQV8vUdSGU)
 
 The result: first place, outperforming the original competition winner and previously published solutions. This demonstrates how combining foundation models with intelligent control and execution can unlock substantially better outcomes in time series tasks.
 
