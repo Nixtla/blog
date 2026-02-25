@@ -55,7 +55,7 @@ CALL MY_DB.MY_SCHEMA.NIXTLA_DETECT_ANOMALIES(
 );
 ```
 
-Results come back as a table with `unique_id`, `ds`, `y`, the model's prediction (`TimeGPT`), an `anomaly` flag (`"True"` or `"False"`), and confidence bounds (`TimeGPT_lo`, `TimeGPT_hi`). No Python. No data movement.
+Results come back as a table with `unique_id`, `ds`, `y`, the model's prediction (`TimeGPT`), an `anomaly` flag (`"True"` or `"False"`), and confidence bounds (`TimeGPT_lo`, `TimeGPT_hi`). No Python. Just foundation-model forecasting callable directly from SQL — results land back in your warehouse.
 
 ---
 
