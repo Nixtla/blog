@@ -438,7 +438,7 @@ The model we are going to use in this blog post is the [Time GPT-1](https://www.
 
 ### Nixtla API and Implementation
 
-The first thing we will need is to define your API key. You can get one from [Nixtla's platform](https://dashboard.nixtla.io/). Once you have your API key, store it in your system and replace the `api_key` variable below:
+The first thing we will need is to define your API key. You can get one from [Nixtla's platform](https://nixtla.io/free-trial?utm_source=nixtla.io&utm_campaign=/blog/frequency-ts-modelling). Once you have your API key, store it in your system and replace the `api_key` variable below:
 
 ```python
 from nixtla import NixtlaClient
