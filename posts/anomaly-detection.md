@@ -60,7 +60,7 @@ This installs the full Nixtla Python client, which includes support for TimeGPT-
 
 ## Initialize the Nixtla Client
 
-To get started with anomaly detection using TimeGPT, begin by obtaining your API key by signing in at [Nixtla Dashboard](https://dashboard.nixtla.io/) to configure the [Nixtla client](https://www.nixtla.io/docs/intro).
+To get started with anomaly detection using TimeGPT, begin by obtaining your API key by signing in at [Nixtla Dashboard](https://nixtla.io/free-trial?utm_source=nixtla.io&utm_campaign=/blog/anomaly-detection) to configure the [Nixtla client](https://www.nixtla.io/docs/intro).
 
 This client provides access to TimeGPT's forecasting and anomaly detection models via a simple Python interface.
 

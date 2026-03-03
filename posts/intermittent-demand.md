@@ -53,7 +53,7 @@ TimeGPT is a time series [forecasting](https://www.nixtla.io/docs/capabilities-f
 
 ## Setting Up the Environment
 
-To begin forecasting with TimeGPT, we first need to set up our environment by importing necessary libraries and initializing the [Nixtla client](https://dashboard.nixtla.io/sign_in).
+To begin forecasting with TimeGPT, we first need to set up our environment by importing necessary libraries and initializing the [Nixtla client](https://nixtla.io/free-trial?utm_source=nixtla.io&utm_campaign=/blog/intermittent-demand).
 
 ````python
 import time
@@ -271,7 +271,7 @@ train_data = log_transformed_data.drop(test_data.index).reset_index(drop=True)
 
 ## Forecasting with TimeGPT
 
-With the data prepared, we proceed to forecast future demand using [TimeGPT](https://dashboard.nixtla.io/sign_in).
+With the data prepared, we proceed to forecast future demand using [TimeGPT](https://nixtla.io/free-trial?utm_source=nixtla.io&utm_campaign=/blog/intermittent-demand).
 
 ```python
  log_forecast = client.forecast(
