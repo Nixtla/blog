@@ -1,6 +1,6 @@
 ---
 title: "Anomaly Detection in Time Series with TimeGPT and Python"
-seo_title: Anomaly Detection in Time Series with TimeGPT and Python
+seo_title: Time Series Anomaly Detection with TimeGPT and Python
 description: "Discover how to use TimeGPT for scalable, accurate anomaly detection in Python Includes real-world time series, exogenous variables, and adjustable confidence levels."
 image: "/images/anomaly_detection/anomaly_detection.svg"
 categories: ["Anomaly Detection"]
@@ -215,7 +215,7 @@ The plot reveals several key insights:
 
 ## Add Exogenous Features
 
-[Exogenous features](https://www.nixtla.io/docs/tutorials-exogenous_variables) are additional inputs that can help explain what's driving changes in the target variable.
+[Exogenous features](https://www.nixtla.io/docs/forecasting/exogenous-variables/numeric_features) are additional inputs that can help explain what's driving changes in the target variable.
 
 Because Peyton Manning's Wikipedia traffic consistently spikes during the NFL season, adding features like month and year helps TimeGPT recognize these seasonal trends and avoid flagging expected increases as anomalies.
 
@@ -287,7 +287,7 @@ By giving the model more context about seasonality and long-term changes, these 
 
 ## Modifying the Confidence Interval to 70%
 
-You can also control how sensitive TimeGPT is to anomalies by adjusting the [confidence level](https://www.nixtla.io/docs/tutorials-uncertainty_quantification).
+You can also control how sensitive TimeGPT is to anomalies by adjusting the [confidence level](https://www.nixtla.io/docs/forecasting/probabilistic/introduction).
 
 ```python
 anomalies_df_70 = nixtla_client.detect_anomalies(wikipedia, freq="D", level=70)

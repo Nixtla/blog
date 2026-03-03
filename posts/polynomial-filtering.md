@@ -1,6 +1,6 @@
 ---
 title: Savitzky Golay Filtering for Time Series Denoising
-seo_title: Savitzky Golay Filtering for Time Series Denoising
+seo_title: Time Series Denoising with Savitzky-Golay Filter
 description: Denoise your time series with Polynomial Smoothing using Saviztky-Goaly filter
 image: /images/Polynomial_Filtering/Noise_Definition.svg
 author_name: Piero Paialunga

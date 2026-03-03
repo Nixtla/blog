@@ -29,7 +29,7 @@ StatsForecast automates this process by fitting multiple statistical models simu
 
 This article demonstrates how to use StatsForecast's automatic model selection with the M4 hourly competition data, then compares it against TimeGPT, Nixtla's foundation model.
 
-> The source code of this article can be found in the [interactive Jupyter notebook](https://github.com/Nixtla/nixtla_blog/blob/main/examples/notebooks/statsforecast-automatic-model-selection/statsforecast_demo.ipynb).
+> The source code of this article can be found in the [interactive Jupyter notebook](https://raw.githubusercontent.com/Nixtla/blog/refs/heads/main/examples/notebooks/statsforecast-automatic-model-selection/statsforecast_demo.ipynb).
 
 ## Introduction to StatsForecast
 
