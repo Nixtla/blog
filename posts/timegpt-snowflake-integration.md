@@ -9,7 +9,7 @@ publication_date: "2026-02-23"
 
 ## Introduction
 
-Last year, we showed you how TimeGPT could replace Snowflake's native forecasting — delivering [50x faster runtimes and better accuracy](https://www.nixtla.io/blog/timegpt-in-snowflake) with a single SQL call.
+Last year, we showed you how TimeGPT could enhance Snowflake's native forecasting — delivering [50x faster runtimes and better accuracy](https://www.nixtla.io/blog/timegpt-in-snowflake) with a single SQL call.
 
 Today, we're taking it further. The Snowflake integration is now officially part of the `nixtla` Python package, and it ships with five stored procedures — **forecasting**, **anomaly detection**, **SHAP-based explainability**, **evaluation**, and **finetuning** — all inside your Snowflake environment.
 
@@ -17,7 +17,7 @@ Today, we're taking it further. The Snowflake integration is now officially part
 
 ## What's New
 
-The previous integration focused on `NIXTLA_FORECAST`. You can now run the full TimeGPT suite directly in Snowflake:
+The previous integration focused on `NIXTLA_FORECAST`. You can now run the full TimeGPT suite directly within Snowflake:
 
 | Procedure                 | What it does                                                                                      |
 | ------------------------- | ------------------------------------------------------------------------------------------------- |
@@ -111,7 +111,7 @@ Returns a row per (`unique_id`, `forecaster`, `metric`, `value`), making it easy
 
 ---
 
-## Why Run This Inside Snowflake?
+## Why Run TimeGPT Natively Within Snowflake?
 
 **Data never leaves your environment.** For organizations with strict data governance or compliance requirements, this is the critical difference — no data is sent to a third-party orchestration system. The Nixtla API call is made directly from within Snowflake's compute layer via a secured network rule.
 
@@ -136,4 +136,4 @@ Full documentation is included in the [`nixtla` package on PyPI](https://pypi.or
 
 ## Conclusion
 
-TimeGPT's Snowflake integration has graduated from a standalone tool to a first-class part of the `nixtla` SDK. Whether you need fast zero-shot forecasting, anomaly detection for operational monitoring, or SHAP-based explainability for stakeholder reporting — it's now a single `pip install` away, running entirely inside your existing Snowflake environment.
+TimeGPT is now natively available on Snowflake as first-class part of the `nixtla` SDK. Whether you need fast zero-shot forecasting, anomaly detection for operational monitoring, or SHAP-based explainability for stakeholder reporting — it's now a single `pip install` away, running entirely within your existing Snowflake environment.
