@@ -1,6 +1,6 @@
 ---
-title: "TimeGPT vs Snowflake - 50x Faster Forecasting with Better Accuracy"
-seo_title: TimeGPT vs Snowflake: 50x Faster with Better Accuracy
+title: "TimeGPT on Snowflake: 50x Faster Forecasting with Better Accuracy"
+seo_title: TimeGPT on Snowflake: 50x Faster with Better Accuracy
 description: Discover SQL-native time series forecasting for Snowflake that's 10x faster than native tools. Nixtla provides state-of-the-art accuracy without Python, ML infrastructure, or complex setup.
 image: /images/timegpt_in_snowflake/performance_accuracy_quadrant.svg
 categories: ["Time Series Forecasting"]
@@ -17,15 +17,15 @@ publication_date: 2025-08-26
 
 Forecasting directly inside Snowflake is highly desirable: it keeps data in place, simplifies governance, and allows teams to use familiar SQL workflows. Business teams already use Snowflake for analytics, so adding forecasting into the same environment reduces friction and accelerates deployment.
 
-However, native Snowflake forecasting tools fall short. They are difficult to configure, slow to run, and frequently produce inaccurate results, especially at scale.
+However, native Snowflake forecasting tools have room to grow. They can be difficult to configure, slow to run, and may produce inaccurate results, especially at scale.
 
 Nixtla offers a better approach. It brings state-of-the-art forecasting models to Snowflake, fully accessible through SQL with no infrastructure setup or external orchestration required.
 
-## Why Native Snowflake Forecasting Falls Short
+## Enhancing Snowflake's Native Forecasting
 
-**Snowflake's native forecasting capabilities** are hindered by the limits of SQL itself. SQL isn't designed for advanced machine learning workflows, and switching between SQL and Python is cumbersome for most teams.
+**Snowflake's native forecasting capabilities** are shaped by the boundaries of SQL itself. SQL isn't designed for advanced machine learning workflows, and switching between SQL and Python adds friction for most teams.
 
-Even when implemented, Snowflake's default forecasting tends to be slow, the syntax is unintuitive, and the results are often imprecise.
+Even when implemented, Snowflake's default forecasting can be slow, the syntax is complex, and the results may lack precision at scale.
 
 ## Introducing Nixtla on Snowflake
 
@@ -118,7 +118,7 @@ The input table for `NIXTLA_EVALUATE` should contain:
 
 Each forecast column will be compared against `y` to compute the specified metrics.
 
-## Syntax Comparison: Snowflake Forecasting Vs Nixtla Forecasting
+## Syntax Comparison: Snowflake Forecasting and Nixtla Forecasting
 
 Let's compare Nixtla and Snowflake forecasting in terms of syntax.
 
@@ -147,7 +147,7 @@ SELECT
 FROM TABLE(sf_best!FORECAST(FORECASTING_PERIODS => 28));
 ```
 
-Snowflake's forecasting syntax is verbose and rigid, making it harder to adopt and maintain. Specifically:
+Snowflake's forecasting syntax can be verbose, which adds overhead when adopting and maintaining pipelines. Specifically:
 
 - Forecasting requires several manual steps just to configure and retrieve predictions
 - Named objects like forecasting models must be created and referenced explicitly
@@ -186,7 +186,7 @@ Nixtla's forecasting syntax:
 - Eliminates the need for creating persistent named objects
 - Avoids proprietary or unfamiliar constructs, enabling faster adoption
 
-## Performance Comparison: Snowflake Forecasting Vs Nixtla Forecasting
+## Performance Comparison: Snowflake Forecasting and Nixtla Forecasting
 
 Let's compare Nixtla and Snowflake forecasting in terms of performance.
 
@@ -383,7 +383,7 @@ We can see that:
 - Even zero-shot TimeGPT outperforms both Snowflake forecasting methods
 - Fine-tuning provides a 12% accuracy improvement over the zero-shot approach
 - Snowflake's "fast" method delivers the worst performance despite targeting speed
-- All TimeGPT variants demonstrate superior forecasting capabilities compared to native Snowflake tools
+- All TimeGPT variants deliver stronger forecasting capabilities alongside native Snowflake tools
 
 **Runtime Performance**
 
@@ -431,11 +431,11 @@ The table shows that:
 - Snowflake's "fast" method takes over 22 minutes, contradicting its speed claims
 - TimeGPT's performance advantage becomes more pronounced at scale
 
-As data volume increases, these performance differences compound, making Nixtla much better suited for production-scale forecasting.
+As data volume increases, these performance differences compound, making Nixtla a powerful complement for production-scale forecasting within Snowflake.
 
 **Quadrant Chart**
 
-The following quadrant chart maps each model's position across the two critical dimensions: execution time and forecast accuracy. This visualization clearly demonstrates TimeGPT's superiority in both metrics.
+The following quadrant chart maps each model's position across the two critical dimensions: execution time and forecast accuracy. This visualization clearly demonstrates TimeGPT's advantages in both metrics.
 
 ![Performance vs Accuracy Quadrant](/images/timegpt_in_snowflake/performance_accuracy_quadrant.svg)
 
