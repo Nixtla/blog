@@ -13,7 +13,7 @@ tags:
 image: "/images/wiki-traffic-forecast/wiki_traffic_results.png"
 author_name: Nixtla Team
 author_position: Nixtla
-publication_date: 2025-05-15
+publication_date: 2026-05-15
 ---
 
 What if you could forecast every Wikipedia article's daily traffic — 145,000 time series — without writing a single feature engineering pipeline? No seasonality decomposition, no hyperparameter search, no training loop. Just an API call.
