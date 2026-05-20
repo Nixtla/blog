@@ -10,9 +10,9 @@ tags:
   - healthcare
   - case study
   - time series
-author_name: Han Wang
-author_image: "/images/authors/han.jpeg"
-author_position: CTO - Nixtla
+author_name: Mariana
+author_image: "/images/authors/mariana.jpeg"
+author_position: Nixtla
 publication_date: 2026-05-20
 ---
 
