@@ -13,7 +13,6 @@ tags:
   - weather forecasting
   - retail forecasting
 author_name: Nixtla Team
-author_image: "/images/authors/nixtla.jpeg"
 author_position: Nixtla
 publication_date: 2026-05-28
 ---
