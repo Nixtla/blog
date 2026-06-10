@@ -96,7 +96,7 @@ The [M5 Forecasting competition](https://www.kaggle.com/competitions/m5-forecast
 | AutoML (Prophet) | 3.470 | 7.125 | 69.28% | 54.83% | −0.292 |
 | TimeGPT-2.1 | **3.179** | **6.621** | **58.30%** | **50.23%** | −0.995 |
 
-The margin is smaller here — retail demand is genuinely difficult for any model. But TimeGPT still wins on aggregate accuracy across every metric, with no training on this data.
+The margin is smaller here — retail demand is genuinely difficult for any model. But TimeGPT still wins on aggregate accuracy across MAE, RMSE, MAPE, and WAPE, with no training on this data.
 
 **Per-series win rates:**
 
