@@ -1,5 +1,5 @@
 ---
-title: "Nixtla Engine: Built for the scale your business actuall runs at"
+title: "Nixtla Engine: Built for the scale your business actually runs at"
 seo_title: TimeGPT; Next-Gen Time Series; forecasting
 description: "The gap between a promising forecast and a production-grade time series platform has always been infrastructure. Today, we close it."
 categories: ["Time Series Forecasting", "Time Series Anomaly Detection", "Artificial Intelligence"]
@@ -26,7 +26,7 @@ Enterprise deployments now get fully isolated compute and storage — no shared 
 
  * `Minutes` to provision a dedicated environment, down from days
  * `Isolated` compute and storage reserved for your workloads only
- * `Nixtla models` models configured to your desired tech stack
+ * `Nixtla models` configured to your desired tech stack
 
 ```
 "What previously required days of back-and-forth scoping and bespoke engineering can now be stood up in a single conversation."
