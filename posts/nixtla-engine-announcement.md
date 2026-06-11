@@ -14,11 +14,11 @@ author_position: Nixtla
 publication_date: 2026-07-06
 ---
 
-## Introducing Nixlta-Engine
+## Introducing Nixtla-Engine
 
 At Nixtla, our mission is to push the limits of time-series solutions and empower the organization in deriving business values.
 
-Today, we are excited to announce the offering of Nixlta engine to our online API users with enhanced performance, reliability, and flexibility.
+Today, we are excited to announce the offering of Nixtla engine to our online API users with enhanced performance, reliability, and flexibility.
 
 
 ## Nixtla-hosted Dedicated Environment
@@ -26,7 +26,7 @@ Enterprise users have unique requirements to address their business needs. This 
 
 With the new version of Nixtla engine, Nixtla can specifically design a dedicated environment for customers' special serving needs. Dedicated environments ensure that our users can have their own dedicated resources, said reserved computing or databases, for their productionized operations without sharing competing resources with the others.
 
-Previously, it takes substantial engineering hours to tailor a unique set of resources to achive this. Nixtla can now support this customization in a matter of minutes.
+Previously, it takes substantial engineering hours to tailor a unique set of resources to achieve this. Nixtla can now support this customization in a matter of minutes.
 
 ## Get Access to Nixtla Engine
 
