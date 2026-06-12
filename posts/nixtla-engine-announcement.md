@@ -21,8 +21,8 @@ Most forecasting platforms were designed for experimentation. They tolerate nois
 The new Nixtla Engine flips this. You bring the requirements — the models, the throughput, the compliance boundaries — and the infrastructure bends to meet them.
 
 
-## Dedicated Environments, provisioned in minutes
-Enterprise deployments now get fully isolated compute and storage — no shared resources, no competing workloads, no unpredictable latency spikes from tenants you've never met. Key aspects:
+## Dedicated, Secure, and Compliant Environments, provisioned in minutes
+Enterprise now deployments get fully isolated compute and storage — no shared resources, no competing workloads, no unpredictable latency spikes from tenants you've never met. Every environment is hardened for security and built to meet your regulatory requirements out of the box.Deployed environment is secured and users have a peace of mind from regulatory requirements. Key aspects:
 
  * `Minutes` to provision a dedicated environment, down from days
  * `Isolated` compute and storage reserved for your workloads only
