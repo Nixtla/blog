@@ -41,4 +41,4 @@ If you're running high-volume forecasting pipelines, operating in a regulated en
 
 ## Get access to Nixtla Engine
 
-Dedicated environments are available now for enterprise users. [Get started with Nixtla Engine →](https://nixtla.io/free-trial?utm_source=nixtla.io&utm_campaign=/blog/nixtla-engine-announcement)
+Dedicated environments are available now for enterprise users. [Get started with Nixtla Engine →](https://nixtla.io/book-a-call?utm_source=nixtla.io&utm_campaign=/blog/nixtla-engine-announcement)
