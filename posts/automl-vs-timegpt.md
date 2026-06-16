@@ -1,7 +1,7 @@
 ---
 title: "Still using Prophet or AutoARIMA for forecasting?"
 seo_title: TimeGPT vs Databricks AutoML Forecasting Benchmark — Energy, Weather, Retail
-description: "We benchmarked TimeGPT-2.1 against Databricks AutoML across three real-world datasets — electricity, weather, and retail demand — and measured accuracy, speed, and per-series win rates across 3 datasets. TimeGPT-2.1 clearly outperforms AutoML/"
+description: "We benchmarked TimeGPT-2.1 against Databricks AutoML on electricity, weather, and retail demand datasets, comparing accuracy, runtime, and per-series win rates. TimeGPT-2.1 improved MAE, RMSE, MAPE, and WAPE across all three benchmarks."
 image: "/images/automl-benchmark/results_overview.png"
 categories: ["Time Series Forecasting"]
 tags:
@@ -23,7 +23,7 @@ However, in recent years, foundation models have changed the baseline. TimeGPT-2
 
 ## What We Tested
 
-[Databricks AutoML](https://docs.databricks.com/en/machine-learning/automl/index.html) searches over AutoARIMA and Prophet configurations, selects the best trial, and generates a reproducible training notebook. In every experiment here, it selected Prophet as its best model.
+[Databricks AutoML](https://docs.databricks.com/en/machine-learning/automl/index.html) searches over AutoARIMA and Prophet configurations, selects the best trial, and generates a reproducible training notebook. In these runs, the selected AutoML trial was Prophet.
 
 We benchmarked it against TimeGPT-2.1 on three public datasets spanning different forecasting domains, evaluating both methods on identical rolling forecast windows with the same held-out data.
 
@@ -56,7 +56,7 @@ TimeGPT reduces MAPE from 14.39% to 4.24% — a 70% reduction in percentage erro
 | WAPE | 3.3% | **96.7%** |
 | AbsBias | 13.3% | **86.7%** |
 
-On 29 of 30 individual series, TimeGPT produces a lower error by every metric.
+TimeGPT wins on 29 of 30 series for MAE, RMSE, MAPE, and WAPE, and on 26 of 30 series for absolute bias.
 
 **Runtime:** AutoML took 13 minutes to train, plus 12 seconds for inference. TimeGPT took **20 seconds total**.
 
@@ -71,7 +71,7 @@ The [NOAA Integrated Surface Database](https://www.ncei.noaa.gov/products/land-b
 | AutoML (Prophet) | 2.721 | 3.600 | 19.15% | 15.00% | 1.419 |
 | TimeGPT-2.1 | **1.333** | **1.887** | **8.69%** | **7.35%** | **0.334** |
 
-TimeGPT cuts MAE and RMSE roughly in half, and nearly halves MAPE as well. At 491 series, these are not marginal differences.
+TimeGPT cuts MAE and RMSE roughly in half, and nearly halves MAPE as well. Across 491 series, the aggregate differences are large.
 
 **Per-series win rates:**
 
@@ -96,7 +96,7 @@ The [M5 Forecasting competition](https://www.kaggle.com/competitions/m5-forecast
 | AutoML (Prophet) | 3.470 | 7.125 | 69.28% | 54.83% | −0.292 |
 | TimeGPT-2.1 | **3.179** | **6.621** | **58.30%** | **50.23%** | −0.995 |
 
-The margin is smaller here — retail demand is genuinely difficult for any model. But TimeGPT still wins on aggregate accuracy across MAE, RMSE, MAPE, and WAPE, with no training on this data.
+The margin is smaller here — retail demand is genuinely difficult for any model. TimeGPT still wins on the main aggregate error metrics — MAE, RMSE, MAPE, and WAPE — though AutoML has lower aggregate bias magnitude.
 
 **Per-series win rates:**
 
@@ -122,7 +122,7 @@ Even on the most challenging dataset, TimeGPT wins on more than two-thirds of se
 
 TimeGPT has no training column — there is no training step.
 
-Across all three domains, the pattern is the same: TimeGPT is more accurate and way faster to deploy. The accuracy gap is largest where data is cleanest and most structured (energy, weather) and narrower on noisy intermittent retail data, with potential improvement available by adding finetune steps.
+Across all three domains, the pattern is the same: TimeGPT improves the main aggregate error metrics — MAE, RMSE, MAPE, and WAPE — and is much faster to deploy. The accuracy gap is largest where data is cleanest and most structured (energy, weather) and narrower on noisy intermittent retail data, with potential improvement available by adding finetune steps.
 
 ## Why This Happens
 
